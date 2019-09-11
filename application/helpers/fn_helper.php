@@ -638,6 +638,14 @@ function get_reason($reasonid){
 }
 
 
+function get_deptcode_new($username)
+{
+    $obj = new myfn();
+    $result = $obj->get_ci()->db->query("SELECT * FROM dc_user WHERE dc_user_username='$username' ");
+    return $result->row();
+}
+
+
 
 
 

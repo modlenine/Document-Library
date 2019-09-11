@@ -201,6 +201,7 @@ if($get_file2s['lib_main_modify_status'] == ""){
 
                 </div>
                 <input hidden type="text" name="get_check_username" id="get_check_username" value="<?= $get_file2s['dc_data_user']; ?>">
+                <input type="text" name="get_check_deptcode" id="get_check_deptcode" value="<?= $get_file2s['dc_data_dept']; ?>">
 
 
 

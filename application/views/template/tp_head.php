@@ -171,10 +171,18 @@
                                 $username = $_SESSION['username'];
                                 $result = get_group($username);
                                 $getdatarow = $result->row();
+
+                                $deptcode = get_deptcode_new($username)->dc_user_new_dept_code;
                                 ?>
-                                <input hidden  type="text" name="check_group" id="check_group" value="<?=$getdatarow->dc_gp_permis_name?>" />
+
+                                <!-- Check Section -->
+                                <input hidden type="text" name="check_group" id="check_group" value="<?=$getdatarow->dc_gp_permis_name?>" />
                                 <input hidden type="text" name="check_username" id="check_username" value="<?= $getuserCon?>">
+                                <input hidden type="text" name="check_new_deptcode" id="check_new_deptcode" value="<?=$deptcode?>">
+                                <!-- Check Section -->
                             </div>
+
+
                                 <!-- <div class="widget-content-left">
                                     <div class="btn-group">
                                         

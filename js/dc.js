@@ -336,7 +336,7 @@ if($('#check_group').val() == "document control" && $('#check_data_status').val(
 
 
 // Check Permission สำหรับเอกสาร ISO
-if($('#get_check_username').val() != $('#check_username').val()){
+if($('#get_check_deptcode').val() != $('#check_new_deptcode').val()){
     $('.check_option').prop('disabled',true);
 }
 
