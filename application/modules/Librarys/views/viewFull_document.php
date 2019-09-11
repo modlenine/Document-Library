@@ -127,7 +127,9 @@ $get_file1s = $get_file2->row();
                                             <label><b>ประเภทการร้องขอ :</b>&nbsp;<?= get_reason($get_file2s['dc_data_reson']) ?></label>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for=""><b>รายละเอียดการร้องขอ :</b>&nbsp;<a href="#">ดูรายละเอียด&nbsp;<i class="fas fa-search-plus" style="font-size:18px;"></i></a></label>
+                                            <label for=""><b>รายละเอียดการร้องขอ :</b>&nbsp;<a class="reason_detail" href="#" data-toggle="modal" data-target="#reason_detail"
+                                            data_reason_detail = "<?=$get_file2s['dc_data_reson_detail']?>"
+                                            >ดูรายละเอียด&nbsp;<i class="fas fa-search-plus" style="font-size:18px;"></i></a></label>
                                         </div>
                                     </div>
 

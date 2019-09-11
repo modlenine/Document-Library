@@ -205,6 +205,15 @@ $('.edit_user_modal').click(function(){
 });
 
 
+$('.reason_detail').click(function (){
+    var data_reason_detail = $(this).attr('data_reason_detail');
+
+    $('#data_reason_detail_show').val(data_reason_detail);
+
+    $('#reason_detail').modal('show');
+})
+
+
 
 //  ++++++++++++++++++++++++++++++++ Modal Section +++++++++++++++++++++++++++++++++++++
 
