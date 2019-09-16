@@ -258,6 +258,7 @@ $this->load->model("get_lib_model");
 
                                     });
                                     // Search document Section
+
                                     load_datas();
 
                                     function load_datas(query) {
@@ -419,7 +420,6 @@ $this->load->model("get_lib_model");
                                                     }).draw();
                                                 }
                                             });
-                                        
                                     }
 
 

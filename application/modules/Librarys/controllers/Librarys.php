@@ -116,6 +116,8 @@ class Librarys extends MX_Controller {
     }
 
 
+
+// Live search for gl document
 // For ajax live search doccode 
     public function fetch_doccode()
     {
@@ -162,23 +164,7 @@ public function fetch_hashtag()
 
 
 
-// For ajax live search gethashtag
-// public function fetch_gethashtag()
-// {
-//     $output = '';
-//     $query = '';
-
-//     if(isset($_GET['tag'])){
-//         $expression = "/#+([ก-เa-zA-Z0-9_]+)/";
-//         $tag = preg_replace($expression, '', $_GET['tag']);
-//         $query = $tag;
-//     }
-//     $data['rs'] = gl_search_by_hashtag($query);
-//     $this->load->view('testfile',$data);
-// }
-// For ajax live search hashtag 
-
-
+// For ajax live search date
 public function fetch_date()
 {
     $start_date = '';
@@ -192,7 +178,94 @@ public function fetch_date()
     $this->load->view('result_data',$data);
     
 }
+// For ajax live search date
+// Live search for gl document
 
+
+
+
+
+//Live search for iso document
+//For ajax live search doccode
+public function fetch_iso_doccode()
+{
+    $getuser = $this->get_lib_model->get_new_user();
+    $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code);
+    $rsget = $get_deptlib->row();
+
+    $query = '';
+
+
+
+        if($this->input->post('query')){
+            $query = $this->input->post('query');
+        }
+        $data['rs'] = search_by_doccode($rsget->related_code,$query);
+        $this->load->view('result_data_iso',$data);
+}
+//For ajax live search doccode
+
+
+//For ajax live search docname
+public function fetch_iso_docname()
+{
+    $getuser = $this->get_lib_model->get_new_user();
+    $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code);
+    $rsget = $get_deptlib->row();
+    
+    $query = '';
+
+
+
+        if($this->input->post('query')){
+            $query = $this->input->post('query');
+        }
+        $data['rs'] = search_by_docname($rsget->related_code,$query);
+        $this->load->view('result_data_iso',$data);
+}
+//For ajax live search docname
+
+
+//For ajax live search hashtag
+public function fetch_iso_hashtag()
+{
+    $getuser = $this->get_lib_model->get_new_user();
+    $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code);
+    $rsget = $get_deptlib->row();
+    
+    $query = '';
+
+
+
+        if($this->input->post('query')){
+            $query = $this->input->post('query');
+        }
+        $data['rs'] = search_by_hashtag($rsget->related_code,$query);
+        $this->load->view('result_data_iso',$data);
+}
+//For ajax live search hashtag
+
+
+
+//For ajax live search docname
+public function fetch_iso_date()
+{
+    $getuser = $this->get_lib_model->get_new_user();
+    $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code);
+    $rsget = $get_deptlib->row();
+    
+    $start_date = '';
+    $end_date = '';
+
+
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
+
+
+        $data['rs'] = search_by_date($rsget->related_code,$start_date,$end_date);
+        $this->load->view('result_data_iso',$data);
+}
+//For ajax live search docname
 
     
 

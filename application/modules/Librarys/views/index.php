@@ -10,7 +10,6 @@
 <?php
 $this->load->model("get_lib_model");
 $getuser = $this->get_lib_model->get_new_user();
-
 $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code);
 
 
@@ -79,7 +78,7 @@ $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code
                                     <option value="search_by_date">ค้นหาจากวันที่แจ้ง</option>
                                     <option value="search_by_docname">ค้นหาจากชื่อเอกสาร</option>
                                     <option value="search_by_doccode">ค้นหาจากรหัสเอกสาร</option>
-                                    <option value="search_by_darcode">ค้นหาจากเลขที่ใบDAR</option>
+                                    <!-- <option value="search_by_darcode">ค้นหาจากเลขที่ใบDAR</option> -->
                                     <option value="search_by_hashtag">ค้นหาจากแฮชแท็ก</option>
                                 </select>
                             </div>
@@ -91,10 +90,9 @@ $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code
 
                         <!-- SEARCH ZONE -->
                         <!-- Search With Hashtag -->
-                        <form action="" name="" method="post">
-                            <div class="row" id="form_search_by_hashtag">
-
-                                <div class="col-md-8">
+                        <!-- <form action="" name="" method="post"> -->
+                            <div class="row mb-2" id="form_search_by_hashtag">
+                                <div class="col-md-7">
                                     <div class="input-group flex-nowrap">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-search"></i></span>
@@ -103,50 +101,50 @@ $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code
                                         <!-- <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping"> -->
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <!-- <div class="col-md-4">
                                     <a href="<?= base_url('librarys/view_by_dept') ?><?php echo "/"; ?>"><button type="button" class="btn btn-warning"><i class="fas fa-sync-alt"></i>&nbsp;Reset</button></a>
                                     <button type="submit" name="btn_search_hashtag" id="btn_search_hashtag" class="btn btn-success"><i class="fas fa-search"></i>&nbsp;ค้นหา</button>
-                                    <!-- <input type="submit" name="btn_search_hashtag" value="Search" class="btn btn-success"> -->
-                                </div>
-
-                            </div><br>
-                        </form>
+                                </div> -->
+                            </div>
+                        <!-- </form> -->
                         <!-- Search With Hashtag -->
 
                         <!-- Search With Date -->
-                        <form action="" name="" method="post">
+                        <!-- <form action="" name="" method="post"> -->
                             <div class="row mb-2" id="form_search_by_date">
                                 <div class="col-md-8 form-inline">
-                                    <input type="date" name="date_start" id="date_start" class="form-control">&nbsp;TO&nbsp; <input type="date" name="date_end" id="date_end" class="form-control">
-                                    &nbsp;&nbsp;<button type="submit" name="btn_search_date" id="btn_search_date" class="btn btn-success"><i class="fas fa-search"></i>&nbsp;ค้นหา</button>
+                                    <input type="date" name="start_date" id="start_date" class="form-control datepicker_search">&nbsp;TO&nbsp; 
+                                    <input type="date" name="end_date" id="end_date" class="form-control datepicker_search">
+                                    &nbsp;&nbsp;
+                                    <button type="submit" name="btn_search_date" id="btn_search_date" class="btn btn-success"><i class="fas fa-search"></i>&nbsp;ค้นหา</button>
                                 </div>
 
                             </div>
-                        </form>
+                        <!-- </form> -->
                         <!-- Search With Date -->
 
 
                         <!-- Search With Document Name -->
-                        <form action="" name="" id="" method="post">
+                        <!-- <form action="" name="" id="" method="post"> -->
                             <div class="row mb-2" id="form_search_by_docname">
-                                <div class="col-md-8 form-inline">
-                                    <input type="text" name="document_name" id="document_name" class="form-control" placeholder="กรุณาระบุชื่อเอกสาร" style="width:400px;">
-                                    &nbsp;&nbsp;<button type="submit" name="btn_search_docname" id="btn_search_docname" class="btn btn-success"><i class="fas fa-search"></i>&nbsp;ค้นหา</button>
+                                <div class="col-md-7 form-inline">
+                                    <input type="text" name="document_name" id="document_name" class="form-control" placeholder="กรุณาระบุชื่อเอกสาร" style="width:550px;">
+                                    <!-- &nbsp;&nbsp;<button type="submit" name="btn_search_docname" id="btn_search_docname" class="btn btn-success"><i class="fas fa-search"></i>&nbsp;ค้นหา</button> -->
                                 </div>
                             </div>
-                        </form>
+                        <!-- </form> -->
                         <!-- Search With Document Name -->
 
 
                         <!-- Search With Document Number -->
-                        <form action="" name="" id="" method="post">
+                        <!-- <form action="" name="" id="" method="post"> -->
                             <div class="row mb-2" id="form_search_by_doccode">
-                                <div class="col-md-8 form-inline">
-                                    <input type="text" name="document_code" id="document_code" class="form-control" placeholder="กรุณาระบุเลขที่เอกสาร" style="width:400px;">
-                                    &nbsp;&nbsp;<button type="submit" name="btn_search_doccode" id="btn_search_doccode" class="btn btn-success"><i class="fas fa-search"></i>&nbsp;ค้นหา</button>
+                                <div class="col-md-7 form-inline">
+                                    <input type="text" name="document_code" id="document_code" class="form-control" placeholder="กรุณาระบุรหัสเอกสาร" style="width:550px;">
+                                    <!-- &nbsp;&nbsp;<button type="submit" name="btn_search_doccode" id="btn_search_doccode" class="btn btn-success"><i class="fas fa-search"></i>&nbsp;ค้นหา</button> -->
                                 </div>
                             </div>
-                        </form>
+                        <!-- </form> -->
                         <!-- Search With Document Number -->
 
 
@@ -169,7 +167,10 @@ $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code
 
 
                         <div class="row">
-                            <div class="col-md-12">
+
+                        <div class="col-md-12" id="result"></div>
+
+                            <div id="hashtag" class="col-md-12" style="display:none;">
                                 <table id="rs_search_gl" class="table table-striped table-bordered dt-responsive" style="width:100%">
                                     <thead>
                                         <tr>
@@ -211,10 +212,13 @@ if(isset($_POST['btn_search_hashtag'])){
     $result = search_by_darcode($rsget->related_code , $this->input->post('dar_code'));
 
 }else{
+
     if (isset($_GET['tag'])) {
+        $check_tag = 1;
         $expression = "/#+([ก-เa-zA-Z0-9_]+)/";
         $tag = preg_replace($expression, '', $_GET['tag']);
     } else {
+        $check_tag = 0;
         $tag = $this->input->post("search_doc");
     }
 
@@ -236,9 +240,12 @@ if(isset($_POST['btn_search_hashtag'])){
                                             $i++;
                                         } ?>
                                     </tbody>
+                                    <input hidden type="text" name="check_tag" id="check_tag" value="<?=$check_tag?>">
                                 </table>
+                            </div>
 
-                                <script type="text/javascript">
+
+                            <script type="text/javascript">
                                     $(document).ready(function() {
 
                                         var t = $('#rs_search_gl').DataTable({
@@ -262,9 +269,242 @@ if(isset($_POST['btn_search_hashtag'])){
                                         }).draw();
 
 
+
+
+
+
+//Result iso live search  Result iso live search  Result iso live search  Result iso live search 
+                                        load_datas();
+
+                                        $('#document_code').keyup(function() {
+                                        var search = $(this).val();
+                                        if (search != '') {
+                                            load_data(search);
+                                        } else {
+                                            load_data();
+                                        }
                                     });
+
+                                    $('#document_name').keyup(function() {
+                                        var search = $(this).val();
+                                        if (search != '') {
+                                            load_data(search);
+                                        } else {
+                                            load_data();
+                                        }
+                                    });
+
+                                    $('#search_doc').keyup(function() {
+                                        var search = $(this).val();
+                                        if (search != '') {
+                                            load_data(search);
+                                        } else {
+                                            load_data();
+                                        }
+                                    });
+
+                                    $('#btn_search_date').click(function (){
+                                        var fromdate = $('#start_date').val();
+                                        var todate = $('#end_date').val();
+                                        if(fromdate != '' && todate != ''){
+                                            load_search_date(fromdate,todate);
+                                        }else{
+                                            load_datas();
+                                        }
+
+                                    });
+
+
+                                    });
+
+
+
+
+
+                                    var check_input;
+                                    $('#doc_search_method').change(function() {
+                                        var doc_search_method = $('#doc_search_method').val();
+
+                                        if (doc_search_method == "search_by_doccode") {
+                                            check_input = 1;
+                                        } else if (doc_search_method == "search_by_docname") {
+                                            check_input = 2;
+                                        } else if (doc_search_method == "search_by_hashtag") {
+                                            check_input = 3;
+                                        }
+
+
+                                    });
+
+
+                                    function load_datas(query) {
+                                        $.ajax({
+                                            url: "<?php echo base_url(); ?>librarys/fetch_iso_doccode",
+                                            method: "POST",
+                                            data: {
+                                                query: query
+                                            },
+                                            success: function(data) {
+                                                $('#result').html(data);
+                                                var tt = $('#rs_search_iso_live').DataTable({
+                                                    "columnDefs": [{
+                                                        "searchable": false,
+                                                        "orderable": false,
+                                                        "targets": 0
+                                                    }],
+                                                    "order": [
+                                                        [3, 'desc']
+                                                    ]
+                                                });
+
+                                                tt.on('order.dt search.dt', function() {
+                                                    tt.column(0, {
+                                                        search: 'applied',
+                                                        order: 'applied'
+                                                    }).nodes().each(function(cell, i) {
+                                                        cell.innerHTML = i + 1;
+                                                    });
+                                                }).draw();
+                                            }
+                                        });
+                                    }
+
+
+
+
+                                    function load_data(query) {
+                                        if (check_input == 1) {
+                                            $.ajax({
+                                                url: "<?php echo base_url(); ?>librarys/fetch_iso_doccode/",
+                                                method: "POST",
+                                                data: {
+                                                    query: query
+                                                },
+                                                success: function(data) {
+                                                    $('#result').html(data);
+                                                    var tt = $('#rs_search_iso_live').DataTable({
+                                                        "columnDefs": [{
+                                                            "searchable": false,
+                                                            "orderable": false,
+                                                            "targets": 0
+                                                        }],
+                                                        "order": [
+                                                            [3, 'desc']
+                                                        ]
+                                                    });
+
+                                                    tt.on('order.dt search.dt', function() {
+                                                        tt.column(0, {
+                                                            search: 'applied',
+                                                            order: 'applied'
+                                                        }).nodes().each(function(cell, i) {
+                                                            cell.innerHTML = i + 1;
+                                                        });
+                                                    }).draw();
+                                                }
+                                            });
+                                        } else if (check_input == 2) {
+                                            $.ajax({
+                                                url: "<?php echo base_url(); ?>librarys/fetch_iso_docname/",
+                                                method: "POST",
+                                                data: {
+                                                    query: query
+                                                },
+                                                success: function(data) {
+                                                    $('#result').html(data);
+                                                    var tt = $('#rs_search_iso_live').DataTable({
+                                                        "columnDefs": [{
+                                                            "searchable": false,
+                                                            "orderable": false,
+                                                            "targets": 0
+                                                        }],
+                                                        "order": [
+                                                            [3, 'desc']
+                                                        ]
+                                                    });
+
+                                                    tt.on('order.dt search.dt', function() {
+                                                        tt.column(0, {
+                                                            search: 'applied',
+                                                            order: 'applied'
+                                                        }).nodes().each(function(cell, i) {
+                                                            cell.innerHTML = i + 1;
+                                                        });
+                                                    }).draw();
+                                                }
+                                            });
+                                        } else if (check_input == 3) {
+                                            $.ajax({
+                                                url: "<?php echo base_url(); ?>librarys/fetch_iso_hashtag",
+                                                method: "POST",
+                                                data: {
+                                                    query: query
+                                                },
+                                                success: function(data) {
+                                                    $('#result').html(data);
+                                                    var tt = $('#rs_search_iso_live').DataTable({
+                                                        "columnDefs": [{
+                                                            "searchable": false,
+                                                            "orderable": false,
+                                                            "targets": 0
+                                                        }],
+                                                        "order": [
+                                                            [3, 'desc']
+                                                        ]
+                                                    });
+
+                                                    tt.on('order.dt search.dt', function() {
+                                                        tt.column(0, {
+                                                            search: 'applied',
+                                                            order: 'applied'
+                                                        }).nodes().each(function(cell, i) {
+                                                            cell.innerHTML = i + 1;
+                                                        });
+                                                    }).draw();
+                                                }
+                                            });
+                                        }
+                                    }
+
+
+
+                                    function load_search_date(start_date,end_date)
+                                    {
+                                            $.ajax({
+                                                url: "<?php echo base_url(); ?>librarys/fetch_iso_date",
+                                                method: "POST",
+                                                data: { start_date:start_date , end_date:end_date },
+                                                success: function(data) {
+                                                    $('#result').html(data);
+                                                    var tt = $('#rs_search_iso_live').DataTable({
+                                                        "columnDefs": [{
+                                                            "searchable": false,
+                                                            "orderable": false,
+                                                            "targets": 0
+                                                        }],
+                                                        "order": [
+                                                            [3, 'desc']
+                                                        ]
+                                                    });
+
+                                                    tt.on('order.dt search.dt', function() {
+                                                        tt.column(0, {
+                                                            search: 'applied',
+                                                            order: 'applied'
+                                                        }).nodes().each(function(cell, i) {
+                                                            cell.innerHTML = i + 1;
+                                                        });
+                                                    }).draw();
+                                                }
+                                            });
+                                    }
+
+
+
+
+
                                 </script>
-                            </div>
+
 
                             <div class="col-md-12">
                                 <?php
