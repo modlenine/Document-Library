@@ -71,7 +71,7 @@
                 "targets": 0
             }],
             "order": [
-                [4, 'desc']
+                [3, 'desc']
             ]
         });
 

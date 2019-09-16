@@ -149,6 +149,18 @@ $('.datepicker').pickadate({
       ]
   });
 
+  $('.datepicker_search').pickadate({
+    monthsFull: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฏาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+    weekdaysShort: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+    today: 'วันนี้',
+    clear: 'ล้าง',
+    format: 'yyyy-mm-dd',
+    formatSubmit: 'yyyy-mm-dd',
+    hiddenName: true,
+    editable: true,
+    min: false
+  });
+
 
 
  
@@ -389,6 +401,14 @@ $('#doc_search_method').change(function (){
 // Search document Section
 
 
+if($('#check_tag').val() == 1)
+{
+    $('#hashtag').css("display","block");
+    $('#result').css("display","none");
+}else{
+    $('#result').css("display","block"); 
+}
+
 
 
 
@@ -402,6 +422,15 @@ if($('#check_lib_status').val() == "pending"){
 // Check lib pending status
 
 
+
+
+
+
+// search zone
+
+
+
+// search zone
 
 
 

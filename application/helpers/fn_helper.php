@@ -462,7 +462,7 @@ function search_by_hashtag($related_code,$tag)
 
 // Search General Document Zone
 
-function gl_search_by_date($date_start , $date_end)
+function gl_search_by_date($start_date,$end_date)
 {
     $obj = new myfn();
     return $obj->get_ci()->db->query("SELECT
@@ -488,9 +488,10 @@ function gl_search_by_date($date_start , $date_end)
     FROM
     gl_document
     INNER JOIN gl_hashtag ON gl_hashtag.gl_ht_doc_code = gl_document.gl_doc_code 
-    WHERE gl_document.gl_doc_status = 'Approved' AND gl_document.gl_doc_date_request BETWEEN '$date_start' AND '$date_end'
+    WHERE gl_document.gl_doc_status = 'Approved' AND gl_document.gl_doc_date_request BETWEEN '$start_date' AND '$end_date'
     GROUP BY gl_doc_code DESC  ");
 }
+
 
 function gl_search_by_docname($docname)
 {
@@ -518,7 +519,7 @@ function gl_search_by_docname($docname)
     FROM
     gl_document
     INNER JOIN gl_hashtag ON gl_hashtag.gl_ht_doc_code = gl_document.gl_doc_code 
-    WHERE gl_document.gl_doc_status = 'Approved' AND gl_document.gl_doc_name = '$docname'
+    WHERE gl_document.gl_doc_status = 'Approved' AND gl_document.gl_doc_name LIKE '%$docname%'
     GROUP BY gl_doc_code DESC  ");
 }
 
@@ -548,7 +549,7 @@ function gl_search_by_doccode($doccode)
     FROM
     gl_document
     INNER JOIN gl_hashtag ON gl_hashtag.gl_ht_doc_code = gl_document.gl_doc_code 
-    WHERE gl_document.gl_doc_status = 'Approved' AND gl_document.gl_doc_code = '$doccode'
+    WHERE gl_document.gl_doc_status = 'Approved' AND gl_document.gl_doc_code LIKE '%$doccode%'
     GROUP BY gl_doc_code DESC  ");
 }
 

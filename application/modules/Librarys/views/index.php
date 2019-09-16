@@ -78,7 +78,7 @@ $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code
                                     <option value="">โปรดเลือกช่องทางการค้นหา</option>
                                     <option value="search_by_date">ค้นหาจากวันที่แจ้ง</option>
                                     <option value="search_by_docname">ค้นหาจากชื่อเอกสาร</option>
-                                    <option value="search_by_doccode">ค้นหาจากเลขที่เอกสาร</option>
+                                    <option value="search_by_doccode">ค้นหาจากรหัสเอกสาร</option>
                                     <option value="search_by_darcode">ค้นหาจากเลขที่ใบDAR</option>
                                     <option value="search_by_hashtag">ค้นหาจากแฮชแท็ก</option>
                                 </select>

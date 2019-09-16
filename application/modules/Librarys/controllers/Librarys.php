@@ -116,6 +116,87 @@ class Librarys extends MX_Controller {
     }
 
 
+// For ajax live search doccode 
+    public function fetch_doccode()
+    {
+        $output = '';
+        $query = '';
+
+        if($this->input->post('query')){
+            $query = $this->input->post('query');
+        }
+        $data['rs'] = gl_search_by_doccode($query);
+        $this->load->view('result_data',$data);
+    }
+// For ajax live search doccode 
+
+
+// For ajax live search docname
+public function fetch_docname()
+{
+    $output = '';
+    $query = '';
+
+    if($this->input->post('query')){
+        $query = $this->input->post('query');
+    }
+    $data['rs'] = gl_search_by_docname($query);
+    $this->load->view('result_data',$data);
+}
+// For ajax live search docname 
+
+
+// For ajax live search hashtag
+public function fetch_hashtag()
+{
+    $output = '';
+    $query = '';
+
+    if($this->input->post('query')){
+        $query = $this->input->post('query');
+    }
+    $data['rs'] = gl_search_by_hashtag($query);
+    $this->load->view('result_data',$data);
+}
+// For ajax live search hashtag 
+
+
+
+// For ajax live search gethashtag
+// public function fetch_gethashtag()
+// {
+//     $output = '';
+//     $query = '';
+
+//     if(isset($_GET['tag'])){
+//         $expression = "/#+([ก-เa-zA-Z0-9_]+)/";
+//         $tag = preg_replace($expression, '', $_GET['tag']);
+//         $query = $tag;
+//     }
+//     $data['rs'] = gl_search_by_hashtag($query);
+//     $this->load->view('testfile',$data);
+// }
+// For ajax live search hashtag 
+
+
+public function fetch_date()
+{
+    $start_date = '';
+    $end_date = '';
+
+
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
+    
+    $data['rs'] = gl_search_by_date($start_date,$end_date);
+    $this->load->view('result_data',$data);
+    
+}
+
+
+    
+
+
 
 
 
