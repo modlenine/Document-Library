@@ -92,7 +92,7 @@
                                 <div class="form-inline">
                                     <!-- วันที่ร้องขอ -->
                                     <label for=""><?= label("date_request", $this); ?>&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>&nbsp;
-                                    <input class="input-medium form-control datepicker" data-value="<?=date('Y/m/d')?>" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date">
+                                    <input class="input-medium form-control datepicker" data-value="<?= date('Y/m/d') ?>" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date">
 
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <!-- ผู้ร้องขอ -->
@@ -108,7 +108,11 @@
                                     <!-- Department section -->
                                     <label for=""><?= label("department", $this); ?></label>&nbsp;&nbsp;
                                     <select name="dc_data_dept" id="dc_data_dept" class="form-control">
-                                        <option value=""><?= label("choose_department", $this); ?></option>
+                                        <?php
+                                        $get_newuser = get_newuser($_SESSION['username']);
+                                        $get_dept_code = get_dept_byuser($get_newuser->dc_user_new_dept_code);
+                                        ?>
+                                        <option value="<?= $get_dept_code->dc_dept_code; ?>"><?= $get_dept_code->dc_dept_main_name; ?></option>
 
                                         <?php
                                         foreach ($get_dept->result_array() as $rs_gd) {
@@ -133,7 +137,7 @@
                                 <div class="form-inline">
                                     <label for=""><?= label("doc_id", $this); ?>&nbsp;&nbsp;<input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control"></label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label for=""><?= label("doc_num_edit", $this); ?>&nbsp;&nbsp;<input type="number" name="dc_data_edit" id="dc_data_edit" value="" class="form-control"></label>
+                                    <label for=""><?= label("doc_num_edit", $this); ?>&nbsp;&nbsp;<input readonly type="number" name="dc_data_edit" id="dc_data_edit" value="" class="form-control"></label>
                                 </div>
                             </div>
 
@@ -172,12 +176,12 @@
                         <?php foreach ($get_reason->result_array() as $rs_reason) { ?>
                             <!-- Reason request loop -->
                             <?php
-                            if ($rs_reason['dc_reason_code'] == "r-01") {
-                                $checked = ' checked="" ';
-                            } else {
-                                $checked = '';
-                            }
-                            ?>
+                                if ($rs_reason['dc_reason_code'] == "r-01") {
+                                    $checked = ' checked="" ';
+                                } else {
+                                    $checked = '';
+                                }
+                                ?>
                             <div class="col-lg-3 col-md-3 col-sm-3 col-6">
                                 <label class="checkbox-inline"><input <?= $checked ?> type="radio" name="dc_data_reson" id="dc_data_reson" value="<?php echo $rs_reason['dc_reason_code']; ?>" />&nbsp;<?php echo $rs_reason['dc_reason_name']; ?></label>
                             </div>
@@ -210,9 +214,18 @@
                     <div class="form-row mt-2">
                         <div class="form-group">
                             <label for=""><?= label("uploadfile", $this); ?></label>
-                            <input type="file" name="dc_data_file" id="dc_data_file" class="form-control">
+                            <input type="file" name="dc_data_file" id="dc_data_file" class="form-control" accept=".pdf">
                         </div>
                     </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mt-2">
+                            <input type="text" name="li_hashtag[]" id="li_hashtag" class="form-control" placeholder="กรุณาระบุ Hashtag เช่น #คู่มือการใช้งาน" required maxlength="40"/>
+                            <label id="characterLeft"></label><br>
+                            <button type="button" name="dar_addmore" id="dar_addmore" class="btn btn-primary mt-2 dar_addmore"><i class="fas fa-hashtag"></i>&nbsp;เพิ่ม Hashtag</button>
+                        </div>
+                    </div>
+
                     <div class="col-md-3 mt-2">
                         <input type="submit" name="btnUser_submit" id="btnUser_submit" value="<?= label('btnUser_submit', $this); ?>" class="btn btn-primary btn-block">
                     </div>
@@ -221,62 +234,63 @@
                 <!-- หน่วยงานที่เกี่ยวข้อง -->
 
 
-                <!-- ผลการร้องขอ -->
-                <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('managerapprove', $this) ?></h3>
-                <form action="save_sec2" method="POST" name="">
-                    <div class="form-row">
-                        <div><label for=""><input disabled type="radio" name="result_request_status" id="result_request_status1" value="1">&nbsp;&nbsp;<?= label('result_status1', $this); ?></label></div>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <div><label for=""><input disabled type="radio" name="result_request_status" id="result_request_status0" value="0">&nbsp;&nbsp;<?= label('result_status0', $this); ?></label></div>
-                        <textarea disabled name="text_result_request" id="text_result_request" cols="30" rows="5" class="form-control" placeholder="<?= label('text_result_request', $this); ?>"></textarea>
-                    </div>
-
-                    <div class="form-row mt-3">
-                        <div class="col-md-9 border p-5">
-                            <label style="color:red;"><?= label('memo3', $this); ?> :&nbsp;</label><label for=""><?= label('memo4', $this); ?></label>
+                <!-- ผลการร้องขอ Hide-->
+                <div id="add_dar_hide" style="display:none;">
+                    <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('managerapprove', $this) ?></h3>
+                    <form action="save_sec2" method="POST" name="">
+                        <div class="form-row">
+                            <div><label for=""><input disabled type="radio" name="result_request_status" id="result_request_status1" value="1">&nbsp;&nbsp;<?= label('result_status1', $this); ?></label></div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div><label for=""><input disabled type="radio" name="result_request_status" id="result_request_status0" value="0">&nbsp;&nbsp;<?= label('result_status0', $this); ?></label></div>
+                            <textarea disabled name="text_result_request" id="text_result_request" cols="30" rows="5" class="form-control" placeholder="<?= label('text_result_request', $this); ?>"></textarea>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for=""><?= label("approvers", $this); ?></label>
-                                <input disabled type="text" class="form-control" name="" id="">
-                                <input disabled type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec2">
+
+                        <div class="form-row mt-3">
+                            <div class="col-md-9 border p-5">
+                                <label style="color:red;"><?= label('memo3', $this); ?> :&nbsp;</label><label for=""><?= label('memo4', $this); ?></label>
                             </div>
-                </form>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for=""><?= label("approvers", $this); ?></label>
+                                    <input disabled type="text" class="form-control" name="" id="">
+                                    <input disabled type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec2">
+                                </div>
+                    </form>
 
-            </div>
-
-
-        </div>
-        <hr>
-        <!-- ผลการร้องขอ -->
-
-
-        <!-- ผลการร้องขอ -->
-        <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('qmrapprove', $this) ?></h3>
-        <form action="" method="POST" name="">
-            <div class="form-row">
-
-                <div><label for=""><input disabled type="radio" name="dc_data_result_reson_status2" id="dc_data_result_reson_status1" value="1">&nbsp;&nbsp;<?= label('result_status1', $this); ?></label></div>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <div><label for=""><input disabled type="radio" name="dc_data_result_reson_status2" id="dc_data_result_reson_status0" value="0">&nbsp;&nbsp;<?= label('result_status0', $this); ?></label></div>
-
-                <textarea disabled name="dc_data_result_reson_detail2" id="dc_data_result_reson_detail2" cols="30" rows="5" class="form-control" placeholder="<?= label('text_result_request', $this); ?>"></textarea>
-            </div>
-
-            <div class="form-row mt-3">
-                <div class="col-md-9 border p-5">
-                    <label style="color:red;"><?= label('memo3', $this); ?> :&nbsp;</label><label for=""><?= label('memo4', $this); ?></label>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for=""><?= label("approvers", $this); ?></label>
 
-                        <input disabled type="text" class="form-control" name="dc_data_approve_qmr" id="dc_data_approve_qmr" value="">
-                        <input disabled type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec3" id="btnSave_sec3">
+
+            </div>
+            <hr>
+            <!-- ผลการร้องขอ -->
+
+
+            <!-- ผลการร้องขอ -->
+            <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('qmrapprove', $this) ?></h3>
+            <form action="" method="POST" name="">
+                <div class="form-row">
+
+                    <div><label for=""><input disabled type="radio" name="dc_data_result_reson_status2" id="dc_data_result_reson_status1" value="1">&nbsp;&nbsp;<?= label('result_status1', $this); ?></label></div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div><label for=""><input disabled type="radio" name="dc_data_result_reson_status2" id="dc_data_result_reson_status0" value="0">&nbsp;&nbsp;<?= label('result_status0', $this); ?></label></div>
+
+                    <textarea disabled name="dc_data_result_reson_detail2" id="dc_data_result_reson_detail2" cols="30" rows="5" class="form-control" placeholder="<?= label('text_result_request', $this); ?>"></textarea>
+                </div>
+
+                <div class="form-row mt-3">
+                    <div class="col-md-9 border p-5">
+                        <label style="color:red;"><?= label('memo3', $this); ?> :&nbsp;</label><label for=""><?= label('memo4', $this); ?></label>
                     </div>
-        </form>
-        <!-- ผลการร้องขอ -->
-    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for=""><?= label("approvers", $this); ?></label>
+
+                            <input disabled type="text" class="form-control" name="dc_data_approve_qmr" id="dc_data_approve_qmr" value="">
+                            <input disabled type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec3" id="btnSave_sec3">
+                        </div>
+            </form>
+            <!-- ผลการร้องขอ -->
+        </div>
     </div>
     <hr>
     <!-- ผลการร้องขอ -->
@@ -293,6 +307,9 @@
         </div>
         <input disabled class="btn btn-primary " type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>">
     </form>
+    </div>
+
+
 
     </div><!-- Main Section -->
 

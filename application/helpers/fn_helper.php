@@ -108,6 +108,9 @@ function get_folder($dept_id)
     return $result;
 }
 
+
+// Convert Zone  Convert Zone   Convert Zone   Convert Zone
+
 function convert_name($getuser_Fname, $getuser_Lname)
 {
     $obj = new myfn();
@@ -115,6 +118,16 @@ function convert_name($getuser_Fname, $getuser_Lname)
     $result = $obj->get_ci()->doc_get_model->convertName($getuser_Fname, $getuser_Lname);
     return $result;
 }
+
+function convert_darcode_to_doccode($darcode)
+{
+    $obj = new myfn();
+    $rs_doccode = $obj->get_ci()->db->query("SELECT dc_data_darcode , dc_data_doccode FROM dc_datamain WHERE dc_data_darcode='$darcode' ");
+    $result = $rs_doccode->row();
+    return $result->dc_data_doccode;
+}
+
+// Convert Zone  Convert Zone   Convert Zone   Convert Zone
 
 function get_gl_folder_number($dept_id)
 {
@@ -223,6 +236,12 @@ function get_hashtag_doclist($doccode)
 {
     $obj = new myfn();
     return $obj->get_ci()->db->query("SELECT * FROM gl_hashtag WHERE gl_ht_doc_code='$doccode' ");
+}
+
+function get_hashtag_iso($doccode)
+{
+    $obj = new myfn();
+    return $obj->get_ci()->db->query("SELECT * FROM library_hashtag WHERE li_hashtag_doc_code='$doccode' ");
 }
 
 function get_graph1()

@@ -30,10 +30,10 @@ class Doc_add_model extends CI_Model
                 $conDoccode = cut_doccode1($get_doc_code);
             }
 
-            $date = date("d-m-Y-H-i-s"); //ดึงวันที่และเวลามาก่อน
+            $date = date("H-i-s"); //ดึงวันที่และเวลามาก่อน
             $file_name = $_FILES['dc_data_file']['name'];
             $file_name_cut = str_replace(" ", "", $file_name);
-            $file_name_date = substr_replace(".", $get_doc_code . ".pdf", 0);
+            $file_name_date = substr_replace(".", $get_doc_code . "-" . $date . ".pdf", 0);
             $file_size = $_FILES['dc_data_file']['size'];
             $file_tmp = $_FILES['dc_data_file']['tmp_name'];
             $file_type = $_FILES['dc_data_file']['type'];
@@ -77,7 +77,8 @@ class Doc_add_model extends CI_Model
                 $arrelated = array(
                     "related_dept_doccode" => $conDoccode,
                     "related_dept_darcode" => $get_darcode,
-                    "related_dept_code" => $related_dept_codes
+                    "related_dept_code" => $related_dept_codes,
+                    "related_dept_status" => "active"
                 );
                 $this->db->insert("dc_related_dept_use", $arrelated);
             }
@@ -89,13 +90,22 @@ class Doc_add_model extends CI_Model
                 $arsys_cat = array(
                     "dc_type_use_doccode" => $conDoccode,
                     "dc_type_use_darcode" => $get_darcode,
-                    "dc_type_use_code" => $sys_cats
+                    "dc_type_use_code" => $sys_cats,
+                    "dc_type_use_status" => "active"
                 );
                 $this->db->insert("dc_type_use", $arsys_cat);
             }
             // Loop insert System Category
 
 
+            $li_get_hashtag = $this->input->post("li_hashtag");
+            foreach ($li_get_hashtag as $lgd) {
+                $ar_li_hashtag = array(
+                    "li_hashtag_doc_code" => $conDoccode,
+                    "li_hashtag_name" => $lgd
+                );
+                $this->db->insert("library_hashtag", $ar_li_hashtag);
+            }
         } //Check button submit
 
         $result = $this->db->insert("dc_datamain", $armain);
@@ -115,79 +125,79 @@ class Doc_add_model extends CI_Model
         $calldata_email = $this->doc_get_model->get_fulldata($get_darcode);
         $calldata_emails = $calldata_email->row();
 
-            //************************************ZONE***SEND****EMAIL*************************************//
-        
-            $subject = "New ใบคำร้องเกี่ยวกับเอกสาร ( DAR )";
+        //************************************ZONE***SEND****EMAIL*************************************//
 
-            $body = "<h3 style='font-size:26px;'>พบใบคำร้องเกี่ยวกับเอกสาร ( DAR ) ใหม่ !</h3>";
-            $body .= "<strong style='font-size:20px;'>เลขที่ใบ DAR :</strong>&nbsp;".$calldata_emails->dc_data_darcode."&nbsp;&nbsp;&nbsp;";
-            $body .= "<strong style='font-size:20px;'>ระบบที่เกี่ยวข้อง :</strong>&nbsp;";
+        $subject = "New ใบคำร้องเกี่ยวกับเอกสาร ( DAR )";
 
-            $ra_typeuse = $this->doc_get_model->get_doctype_use($get_darcode);
-foreach($ra_typeuse->result_array() as $rst){
-            $body .= $rst['dc_type_name']."&nbsp;,&nbsp;";
-}
+        $body = "<h3 style='font-size:26px;'>พบใบคำร้องเกี่ยวกับเอกสาร ( DAR ) ใหม่ !</h3>";
+        $body .= "<strong style='font-size:20px;'>เลขที่ใบ DAR :</strong>&nbsp;" . $calldata_emails->dc_data_darcode . "&nbsp;&nbsp;&nbsp;";
+        $body .= "<strong style='font-size:20px;'>ระบบที่เกี่ยวข้อง :</strong>&nbsp;";
 
-            $body .= "<br>";
+        $ra_typeuse = $this->doc_get_model->get_doctype_use($get_darcode);
+        foreach ($ra_typeuse->result_array() as $rst) {
+            $body .= $rst['dc_type_name'] . "&nbsp;,&nbsp;";
+        }
 
-            $body .= "<span style='font-size:20px;'><strong>ประเภทเอกสาร :</strong></span>&nbsp;".$calldata_emails->dc_sub_type_name."<br>";
+        $body .= "<br>";
 
-            $body .= "<span style='font-size:20px;'><strong>วันที่ร้องขอ :</strong></span>&nbsp;".con_date($calldata_emails->dc_data_date)."&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ผู้ร้องขอ :</strong></span>&nbsp;".$calldata_emails->dc_data_user."<br>";
+        $body .= "<span style='font-size:20px;'><strong>ประเภทเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_sub_type_name . "<br>";
 
-            $body .= "<span style='font-size:20px;'><strong>แผนก :</strong></span>&nbsp;".$calldata_emails->dc_dept_main_name."&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ชื่อเอกสาร :</strong></span>&nbsp;".$calldata_emails->dc_data_docname."<br>";
+        $body .= "<span style='font-size:20px;'><strong>วันที่ร้องขอ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ผู้ร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_user . "<br>";
 
-            $body .= "<span style='font-size:20px;'><strong>รหัสเอกสาร :</strong></span>&nbsp;".$calldata_emails->dc_data_doccode_display."&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ครั้งที่แก้ไข :</strong></span>&nbsp;".$calldata_emails->dc_data_edit."<br>";
-            
-            $body .= "<span style='font-size:20px;'><strong>วันที่เริ่มใช้ :</strong></span>&nbsp;".con_date($calldata_emails->dc_data_date_start)."&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ระยะเวลาในการจัดเก็บ :</strong></span>&nbsp;".$calldata_emails->dc_data_store."&nbsp;".$calldata_emails->dc_data_store_type."<br>";
+        $body .= "<span style='font-size:20px;'><strong>แผนก :</strong></span>&nbsp;" . $calldata_emails->dc_dept_main_name . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ชื่อเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_docname . "<br>";
 
-            $body .= "<span style='font-size:20px;'><strong>เหตุผลในการร้องขอ :</strong></span>&nbsp;".$calldata_emails->dc_reason_name."<br>";
+        $body .= "<span style='font-size:20px;'><strong>รหัสเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_doccode_display . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ครั้งที่แก้ไข :</strong></span>&nbsp;" . $calldata_emails->dc_data_edit . "<br>";
 
-            $body .= "<span style='font-size:20px;'><strong>รายละเอียด เหตุผลในการร้องขอ :</strong></span>&nbsp;".$calldata_emails->dc_data_reson_detail."<br>";
+        $body .= "<span style='font-size:20px;'><strong>วันที่เริ่มใช้ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date_start) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ระยะเวลาในการจัดเก็บ :</strong></span>&nbsp;" . $calldata_emails->dc_data_store . "&nbsp;" . $calldata_emails->dc_data_store_type . "<br>";
 
-            $body .= "<span style='font-size:20px;'><strong>หน่วยงานที่เกี่ยวข้อง :</strong></span>&nbsp;";
-$ra_related_dept = $this->doc_get_model->get_related_use($get_darcode);
-foreach($ra_related_dept->result_array() as $rrd){
-            $body .= $rrd['related_dept_name']."&nbsp;,&nbsp;";
-}
-            $body .= "<br><br>";
+        $body .= "<span style='font-size:20px;'><strong>เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_reason_name . "<br>";
 
-            $body .= "<span style='font-size:20px;'><strong>ไฟล์เอกสาร :</strong></span>&nbsp;"."<a href='".base_url().$calldata_emails->dc_data_file_location.$calldata_emails->dc_data_file."'>".$calldata_emails->dc_data_file."</a><br>";
+        $body .= "<span style='font-size:20px;'><strong>รายละเอียด เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_reson_detail . "<br>";
 
-            $body .= "<strong>Link Program :</strong>&nbsp;"."<a href='".base_url('document/viewfull/').$calldata_emails->dc_data_darcode."'>ตรวจสอบเอกสารได้ที่นี่</a>";
-            $body .= "</html>\n";
+        $body .= "<span style='font-size:20px;'><strong>หน่วยงานที่เกี่ยวข้อง :</strong></span>&nbsp;";
+        $ra_related_dept = $this->doc_get_model->get_related_use($get_darcode);
+        foreach ($ra_related_dept->result_array() as $rrd) {
+            $body .= $rrd['related_dept_name'] . "&nbsp;,&nbsp;";
+        }
+        $body .= "<br><br>";
 
-            $mail = new PHPMailer();
-            $mail->IsSMTP();
-            $mail->CharSet = "utf-8";  // ในส่วนนี้ ถ้าระบบเราใช้ tis-620 หรือ windows-874 สามารถแก้ไขเปลี่ยนได้
-            $mail->SMTPDebug = 1;                                      // set mailer to use SMTP
-            $mail->Host = "mail.saleecolour.com";  // specify main and backup server
-            //        $mail->Host = "smtp.gmail.com";
-            $mail->Port = 587; // พอร์ท
-            //        $mail->SMTPSecure = 'tls';
-            $mail->SMTPAuth = true;     // turn on SMTP authentication
-            $mail->Username = "document_system@saleecolour.com";  // SMTP username
-            //websystem@saleecolour.com
-            //        $mail->Username = "chainarong039@gmail.com";
-            $mail->Password = "document*1234"; // SMTP password
-            //Ae8686#
-            //        $mail->Password = "ShctBkk1";
+        $body .= "<span style='font-size:20px;'><strong>ไฟล์เอกสาร :</strong></span>&nbsp;" . "<a href='" . base_url() . $calldata_emails->dc_data_file_location . $calldata_emails->dc_data_file . "'>" . $calldata_emails->dc_data_file . "</a><br>";
 
-            $mail->From = "document_system@saleecolour.com";
-            $mail->FromName = "Document System";
+        $body .= "<strong>Link Program :</strong>&nbsp;" . "<a href='" . base_url('document/viewfull/') . $calldata_emails->dc_data_darcode . "'>ตรวจสอบเอกสารได้ที่นี่</a>";
+        $body .= "</html>\n";
 
-            $mail->AddAddress("chainarong_k@saleecolour.com");
-            // $mail->AddCC("");
-            // $mail->AddCC("");
+        $mail = new PHPMailer();
+        $mail->IsSMTP();
+        $mail->CharSet = "utf-8";  // ในส่วนนี้ ถ้าระบบเราใช้ tis-620 หรือ windows-874 สามารถแก้ไขเปลี่ยนได้
+        $mail->SMTPDebug = 1;                                      // set mailer to use SMTP
+        $mail->Host = "mail.saleecolour.com";  // specify main and backup server
+        //        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587; // พอร์ท
+        //        $mail->SMTPSecure = 'tls';
+        $mail->SMTPAuth = true;     // turn on SMTP authentication
+        $mail->Username = "document_system@saleecolour.com";  // SMTP username
+        //websystem@saleecolour.com
+        //        $mail->Username = "chainarong039@gmail.com";
+        $mail->Password = "document*1234"; // SMTP password
+        //Ae8686#
+        //        $mail->Password = "ShctBkk1";
 
-            // $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
-            $mail->WordWrap = 50;                                 // set word wrap to 50 characters
-            // $mail->AddAttachment("/var/tmp/file.tar.gz");         // add attachments
-            // $mail->AddAttachment("/tmp/image.jpg", "new.jpg");    // optional name
-            $mail->IsHTML(true);                                  // set email format to HTML
-            $mail->Subject = $subject;
-            $mail->Body = $body;
-            $mail->send();
-            //************************************ZONE***SEND****EMAIL*************************************//
+        $mail->From = "document_system@saleecolour.com";
+        $mail->FromName = "Document System";
+
+        $mail->AddAddress("chainarong_k@saleecolour.com");
+        // $mail->AddCC("");
+        // $mail->AddCC("");
+
+        // $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
+        $mail->WordWrap = 50;                                 // set word wrap to 50 characters
+        // $mail->AddAttachment("/var/tmp/file.tar.gz");         // add attachments
+        // $mail->AddAttachment("/tmp/image.jpg", "new.jpg");    // optional name
+        $mail->IsHTML(true);                                  // set email format to HTML
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+        // $mail->send();
+        //************************************ZONE***SEND****EMAIL*************************************//
     }
 
 
@@ -197,55 +207,197 @@ foreach($ra_related_dept->result_array() as $rrd){
     public function save_sec2($darcode)
     {
         if ($this->input->post("dc_data_result_reson_status") == 1) {
-            $status = "Manager Approved";
+
+            $ar_save_sec2 = array(
+                "dc_data_result_reson_status" => $this->input->post('dc_data_result_reson_status'),
+                "dc_data_result_reson_detail" => $this->input->post('dc_data_result_reson_detail'),
+                "dc_data_approve_mgr" => $this->input->post('dc_data_approve_mgr'),
+                "dc_data_date_approve_mgr" => date("Y-m-d"),
+                "dc_data_status" => "Manager Approved"
+            );
+
+            $this->db->where("dc_data_darcode", $darcode);
+            $result_sec2 = $this->db->update("dc_datamain", $ar_save_sec2);
+            if ($result_sec2) {
+                echo "<script>";
+                echo "alert('บันทึกข้อมูลสำเร็จ')";
+                echo "</script>";
+            } else {
+                echo "<script>";
+                echo "alert('บันทึกข้อมูลไม่สำเร็จสำเร็จ')";
+                echo "</script>";
+                exit();
+            }
         } else {
-            $getfile = $this->db->query("SELECT dc_data_file , dc_data_file_location FROM dc_datamain WHERE dc_data_darcode='$darcode' ");
-            $rsgetfile = $getfile->row();
-            @unlink($rsgetfile->dc_data_file_location . $rsgetfile->dc_data_file);
-            $this->db->query("UPDATE dc_datamain SET dc_data_doccode='', dc_data_file='' , dc_data_file_location='' , dc_data_old_dar='' WHERE dc_data_darcode='$darcode' ");
 
-            $status = "Manager Not Approve";
+            $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
+            $del_hashtag = $this->db->delete('library_hashtag');
+            if ($del_hashtag) {
+                echo "ลบแฮชแท็กสำเร็จ";
+            } else {
+                echo "ลบแฮชแท็กไม่สำเร็จ";
+            }
+
+
+
+            $ar_mgr_notapprove = array(
+                "dc_data_result_reson_status" => $this->input->post('dc_data_result_reson_status'),
+                "dc_data_result_reson_detail" => $this->input->post('dc_data_result_reson_detail'),
+                "dc_data_approve_mgr" => $this->input->post('dc_data_approve_mgr'),
+                "dc_data_date_approve_mgr" => date("Y-m-d"),
+                "dc_data_status" => "Manager Not Approve"
+                
+            );
+            $this->db->where("dc_data_darcode", $darcode);
+            $rs_notapp = $this->db->update("dc_datamain", $ar_mgr_notapprove);
+            if ($rs_notapp) {
+                echo "อัพเดตข้อมูลสำเร็จ<br>";
+            } else {
+                echo "อัพเดตข้อมูลไม่สำเร็จ";
+            }
+
+
+
+
+
+
+            $query_related_dept = $this->db->query("SELECT * FROM dc_related_dept_use WHERE related_dept_darcode='$darcode' ");
+            if ($query_related_dept) {
+                foreach ($query_related_dept->result_array() as $rs) {
+                    $ar_related = array(
+                        "related_dept_status" => 'inactive'
+                    );
+                    $update_releted_dept = $this->db->where('related_dept_darcode', $darcode);
+                    $update_releted_dept = $this->db->update('dc_related_dept_use', $ar_related);
+                }
+                if ($update_releted_dept) {
+                    echo "ปรับสถานะสำเร็จ<br>";
+                } else {
+                    echo "ปรับสถานะไม่สำเร็จ";
+                }
+            }
+
+
+
+
+            $query_type_use = $this->db->query("SELECT * FROM dc_type_use WHERE dc_type_use_darcode='$darcode' ");
+            if ($query_type_use) {
+                foreach ($query_type_use->result_array() as $rstu) {
+                    $ar_type_use = array(
+                        "dc_type_use_status" => "inactive"
+                    );
+                    $update_type_use = $this->db->where('dc_type_use_darcode', $darcode);
+                    $update_type_use = $this->db->update('dc_type_use', $ar_type_use);
+                }
+                if ($update_type_use) {
+                    echo "ปรับสถานะหมวดหมู่สำเร็จ<br>";
+                } else {
+                    echo "ปรับสถานะหมวดหมู่ไม่สำเร็จ";
+                }
+            }
         }
-
-        $ar_save_sec2 = array(
-            "dc_data_result_reson_status" => $this->input->post('dc_data_result_reson_status'),
-            "dc_data_result_reson_detail" => $this->input->post('dc_data_result_reson_detail'),
-            "dc_data_approve_mgr" => $this->input->post('dc_data_approve_mgr'),
-            "dc_data_date_approve_mgr" => date("Y-m-d"),
-            "dc_data_status" => $status
-        );
-
-        $this->db->where("dc_data_darcode", $darcode);
-        $result_sec2 = $this->db->update("dc_datamain", $ar_save_sec2);
     }
+
+
+
 
 
     public function save_sec3($darcode)
     {
         $get_doc_code = $this->doc_get_model->get_doc_code();
         if ($this->input->post("dc_data_result_reson_status2") == 1) {
-            $status = "Qmr Approved";
+
+            $ar_save_sec3 = array(
+                "dc_data_result_reson_status2" => $this->input->post('dc_data_result_reson_status2'),
+                "dc_data_result_reson_detail2" => $this->input->post('dc_data_result_reson_detail2'),
+                "dc_data_approve_qmr" => $this->input->post('dc_data_approve_qmr'),
+                "dc_data_date_approve_qmr" => date("Y-m-d"),
+                "dc_data_status" => "Qmr Approved"
+            );
+
+            $this->db->where("dc_data_darcode", $darcode);
+            $result_sec3 = $this->db->update("dc_datamain", $ar_save_sec3);
+
+            if ($result_sec3) {
+                echo "<script>";
+                echo "alert('บันทึกข้อมูลสำเร็จ')";
+                echo "</script>";
+            } else {
+                echo "<script>";
+                echo "alert('บันทึกข้อมูลไม่สำเร็จ')";
+                echo "</script>";
+                exit();
+            }
         } else {
-            $getfile = $this->db->query("SELECT dc_data_file , dc_data_file_location FROM dc_datamain WHERE dc_data_darcode='$darcode' ");
-            $rsgetfile = $getfile->row();
-            @unlink($rsgetfile->dc_data_file_location . $rsgetfile->dc_data_file);
-            $this->db->query("UPDATE dc_datamain SET dc_data_doccode='', dc_data_file='' , dc_data_file_location='', dc_data_old_dar='' WHERE dc_data_darcode='$darcode' ");
+             $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
+            $del_hashtag = $this->db->delete('library_hashtag');
+            if ($del_hashtag) {
+                echo "ลบแฮชแท็กสำเร็จ";
+            } else {
+                echo "ลบแฮชแท็กไม่สำเร็จ";
+            }
 
-            $status = "Qmr Not Approve";
+
+
+            $ar_qmr_notapprove = array(
+                "dc_data_result_reson_status2" => $this->input->post('dc_data_result_reson_status2'),
+                "dc_data_result_reson_detail2" => $this->input->post('dc_data_result_reson_detail2'),
+                "dc_data_approve_qmr" => $this->input->post('dc_data_approve_qmr'),
+                "dc_data_date_approve_qmr" => date("Y-m-d"),
+                "dc_data_status" => "Qmr Not Approve"
+                
+            );
+            $this->db->where("dc_data_darcode", $darcode);
+            $rs_notapp = $this->db->update("dc_datamain", $ar_qmr_notapprove);
+            if ($rs_notapp) {
+                echo "อัพเดตข้อมูลสำเร็จ<br>";
+            } else {
+                echo "อัพเดตข้อมูลไม่สำเร็จ";
+            }
+
+
+
+
+
+
+            $query_related_dept = $this->db->query("SELECT * FROM dc_related_dept_use WHERE related_dept_darcode='$darcode' ");
+            if ($query_related_dept) {
+                foreach ($query_related_dept->result_array() as $rs) {
+                    $ar_related = array(
+                        "related_dept_status" => 'inactive'
+                    );
+                    $update_releted_dept = $this->db->where('related_dept_darcode', $darcode);
+                    $update_releted_dept = $this->db->update('dc_related_dept_use', $ar_related);
+                }
+                if ($update_releted_dept) {
+                    echo "ปรับสถานะสำเร็จ<br>";
+                } else {
+                    echo "ปรับสถานะไม่สำเร็จ";
+                }
+            }
+
+
+
+
+            $query_type_use = $this->db->query("SELECT * FROM dc_type_use WHERE dc_type_use_darcode='$darcode' ");
+            if ($query_type_use) {
+                foreach ($query_type_use->result_array() as $rstu) {
+                    $ar_type_use = array(
+                        "dc_type_use_status" => "inactive"
+                    );
+                    $update_type_use = $this->db->where('dc_type_use_darcode', $darcode);
+                    $update_type_use = $this->db->update('dc_type_use', $ar_type_use);
+                }
+                if ($update_type_use) {
+                    echo "ปรับสถานะหมวดหมู่สำเร็จ<br>";
+                } else {
+                    echo "ปรับสถานะหมวดหมู่ไม่สำเร็จ";
+                }
+            }
         }
-
-
-        $ar_save_sec3 = array(
-            "dc_data_result_reson_status2" => $this->input->post('dc_data_result_reson_status2'),
-            "dc_data_result_reson_detail2" => $this->input->post('dc_data_result_reson_detail2'),
-            "dc_data_approve_qmr" => $this->input->post('dc_data_approve_qmr'),
-            "dc_data_date_approve_qmr" => date("Y-m-d"),
-            "dc_data_status" => $status
-        );
-
-        $this->db->where("dc_data_darcode", $darcode);
-        $result_sec3 = $this->db->update("dc_datamain", $ar_save_sec3);
     }
+
+
 
 
     public function save_sec4($darcode)
@@ -322,18 +474,6 @@ foreach($ra_related_dept->result_array() as $rrd){
             "lib_main_status" => "active"
         );
         $this->db->insert("library_main", $ar_lib_save);
-
-
-        $li_get_hashtag = $this->input->post("li_hashtag");
-        foreach($li_get_hashtag as $lgd){
-            $ar_li_hashtag = array(
-                "li_hashtag_doc_code" => $get_doccodes->dc_data_doccode,
-                "li_hashtag_name" => $lgd
-            );
-            $this->db->insert("library_hashtag",$ar_li_hashtag);
-        }
-
-
     }
 
 
@@ -518,16 +658,16 @@ foreach($ra_related_dept->result_array() as $rrd){
             }
             // Loop insert System Category
 
-            
-//Change status on library main table
 
-$ar_update_library = array(
-    "lib_main_modify_status" => "pending"
-);
-$this->db->where("lib_main_darcode",$darcode_h);
-$this->db->update("library_main",$ar_update_library);
+            //Change status on library main table
 
-// Change status on library main table
+            $ar_update_library = array(
+                "lib_main_modify_status" => "pending"
+            );
+            $this->db->where("lib_main_darcode", $darcode_h);
+            $this->db->update("library_main", $ar_update_library);
+
+            // Change status on library main table
 
 
             $result = $this->db->insert("dc_datamain", $armain);
@@ -843,8 +983,8 @@ $this->db->update("library_main",$ar_update_library);
             $ar_update_library = array(
                 "lib_main_modify_status" => "pending"
             );
-            $this->db->where("lib_main_darcode",$darcode_h);
-            $this->db->update("library_main",$ar_update_library);
+            $this->db->where("lib_main_darcode", $darcode_h);
+            $this->db->update("library_main", $ar_update_library);
 
             // Change status on library main table
 
@@ -869,22 +1009,22 @@ $this->db->update("library_main",$ar_update_library);
     {
         $get_doccode = get_gl_doccode();
 
-            $file_name = $_FILES['gl_doc_file']['name'];
-            $file_name_cut = str_replace(" ", "", $file_name);
-            $file_name_cuts = substr_replace(".", $get_doccode . ".pdf", 0);
-            $file_size = $_FILES['gl_doc_file']['size'];
-            $file_tmp = $_FILES['gl_doc_file']['tmp_name'];
-            $file_type = $_FILES['gl_doc_file']['type'];
+        $file_name = $_FILES['gl_doc_file']['name'];
+        $file_name_cut = str_replace(" ", "", $file_name);
+        $file_name_cuts = substr_replace(".", $get_doccode . ".pdf", 0);
+        $file_size = $_FILES['gl_doc_file']['size'];
+        $file_tmp = $_FILES['gl_doc_file']['tmp_name'];
+        $file_type = $_FILES['gl_doc_file']['type'];
 
-            move_uploaded_file($file_tmp, "asset/general_document/" . $file_name_cuts);
-            $filelocation = "asset/general_document/";
+        move_uploaded_file($file_tmp, "asset/general_document/" . $file_name_cuts);
+        $filelocation = "asset/general_document/";
 
 
-            print_r($file_name);
-            echo "<br>" . "Copy/Upload Complete" . "<br>";
+        print_r($file_name);
+        echo "<br>" . "Copy/Upload Complete" . "<br>";
 
         if (isset($_POST['btnAdd_gldoc'])) {
-            
+
 
 
             $add_doc = array(
@@ -915,19 +1055,18 @@ $this->db->update("library_main",$ar_update_library);
                 echo "<script>";
                 echo "alert('บันทึกข้อมูลสำเร็จ')";
                 echo "</script>";
-                header("refresh:0; url=".base_url()."document/list_generel");
+                header("refresh:0; url=" . base_url() . "document/list_generel");
             }
         }
-
     }
 
 
     public function save_gl_doc2($gl_doc_code)
     {
-        if(isset($_POST['btn_save2'])){
-            if($this->input->post("gl_doc_status") == 1){
+        if (isset($_POST['btn_save2'])) {
+            if ($this->input->post("gl_doc_status") == 1) {
                 $gl_doc_status = 'Approved';
-            }else{
+            } else {
                 $gl_doc_status = 'Not Approve';
             }
 
@@ -939,19 +1078,19 @@ $this->db->update("library_main",$ar_update_library);
                 "gl_doc_status" => $gl_doc_status
             );
 
-            $result = $this->db->where("gl_doc_code",$gl_doc_code);
-            $result = $this->db->update("gl_document",$ar_approve);
+            $result = $this->db->where("gl_doc_code", $gl_doc_code);
+            $result = $this->db->update("gl_document", $ar_approve);
 
 
 
             $hashtags = $this->input->post("gl_doc_hashtag");
-            foreach($hashtags as $hashtags_btn){
+            foreach ($hashtags as $hashtags_btn) {
                 $ar_hashtag = array(
                     "gl_ht_doc_code" => $gl_doc_code,
                     "gl_ht_name" => $hashtags_btn
                 );
 
-                $this->db->insert("gl_hashtag",$ar_hashtag);
+                $this->db->insert("gl_hashtag", $ar_hashtag);
             }
 
 
@@ -965,25 +1104,10 @@ $this->db->update("library_main",$ar_update_library);
                 echo "<script>";
                 echo "alert('บันทึกข้อมูลสำเร็จ')";
                 echo "</script>";
-                header("refresh:0; url=".base_url()."document/list_generel");
+                header("refresh:0; url=" . base_url() . "document/list_generel");
             }
         }
-        
-
-        
-
     }
-
-
-
-
-
-
-
-
-
-
-
 }
 
 /* End of file ModelName.php */

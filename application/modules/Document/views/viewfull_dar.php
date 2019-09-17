@@ -279,11 +279,24 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
                         </div>
                     </div>
 
+                    <div class="form-row mt-2">
+                        <div class="col-md-12">
+                            <label>แฮชแท็ก :</label>
+                            <?php 
+                            $get_hashtag = get_hashtag_iso($getF->dc_data_doccode);
+                                foreach($get_hashtag->result_array() as $ght){
+                                    echo "<a href='#'><label>".$ght['li_hashtag_name']."&nbsp;&nbsp;</label></a>";
+                                }
+                            ?>
+                        </div>
+                    </div>
+
                 </form><!-- Form Section 1 -->
                 <hr>
                 <!-- หน่วยงานที่เกี่ยวข้อง -->
 
 
+                <div id="manager_approve">
                 <!-- ผลการร้องขอ -->
                 <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('managerapprove', $this) ?></h3>
                 <form action="<?= base_url('document/save_sec2/' . $getF->dc_data_darcode); ?>" method="POST" name="" >
@@ -342,10 +355,12 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
         </div>
         <hr>
         <!-- ผลการร้องขอ -->
+        </div>
 
 
 
         <!-- ผลการร้องขอ -->
+        <div id="qmr_approve">
         <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('qmrapprove', $this) ?></h3>
         <form action="<?= base_url('document/save_sec3/' . $getF->dc_data_darcode); ?>" method="POST" name="" >
             <div class="form-row">
@@ -402,9 +417,11 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
     </div>
     </div>
     <hr>
+    </div>
     <!-- ผลการร้องขอ -->
 
 
+    <div id="dcc_approve">
     <!-- สำหรับผู้ควบคุมเอกสาร -->
     <h3 class="p2 mb-3"><?= label("forstaff", $this); ?></h3>
     <form action="<?= base_url('document/save_sec4/' . $getF->dc_data_darcode); ?>" method="POST" enctype="multipart/form-data">
@@ -437,12 +454,12 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
             <textarea name="dc_data_method" id="dc_data_method" cols="30" rows="5" class="form-control" placeholder="การดำเนินการ"><?= $getF->dc_data_method; ?></textarea>
         </div>
 
-        <div class="form-row">
+        <!-- <div class="form-row">
             <div class="form-group col-md-6 mt-2">
             <input type="text" name="li_hashtag[]" id="li_hashtag" class="form-control" placeholder="กรุณาระบุ Hashtag เช่น #คู่มือการใช้งาน" required/>
             <button type="button" name="dar_addmore" id="dar_addmore" class="btn btn-primary mt-2 dar_addmore"><i class="fas fa-hashtag"></i>&nbsp;เพิ่ม Hashtag</button>
             </div>
-        </div>
+        </div> -->
 
         <div class="form-row mt-3">
             <?php
@@ -459,6 +476,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
         </div>
         <input class="btn btn-primary " type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>" onclick="javascript:return confirm('ยืนยันการบันทึกข้อมูลใช่หรือไม่')">
     </form>
+    </div>
 
 
 

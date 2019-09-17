@@ -385,7 +385,13 @@ public function get_last_dar($doccode)
                 echo "window.history.back(-1)";
                 echo "</script>";
                 exit();
-            } else {
+            } else if ($this->input->post('li_hashtag') == ""){
+                echo "<script>";
+                echo "alert('กรุณาระบุแฮชแท็กด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            }else {
                 echo "<script>";
                 echo "alert('ข้อมูลถูกต้องครบถ้วน')";
                 echo "</script>";
@@ -456,12 +462,6 @@ public function get_last_dar($doccode)
             }else if($this->input->post('dc_data_method') == ""){
                 echo "<script>";
                 echo "alert('กรุณาระบุรายละเอียดด้วยค่ะ');";
-                echo "window.history.back(-1)";
-                echo "</script>";
-                exit();
-            }else if($this->input->post('li_hashtag') == ""){
-                echo "<script>";
-                echo "alert('กรุณาระบุแฮชแท็กด้วยค่ะ');";
                 echo "window.history.back(-1)";
                 echo "</script>";
                 exit();

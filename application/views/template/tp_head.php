@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="en">
+<?php
 
+error_reporting(E_ALL & ~E_NOTICE);
+
+?>
 <head>
 
     <!-- Latest compiled and minified CSS -->
@@ -176,7 +180,7 @@
                                 ?>
 
                                 <!-- Check Section -->
-                                <input hidden type="text" name="check_group" id="check_group" value="<?=$getdatarow->dc_gp_permis_name?>" />
+                                <input  type="text" name="check_group" id="check_group" value="<?=$getdatarow->dc_gp_permis_name?>" />
                                 <input hidden type="text" name="check_username" id="check_username" value="<?= $getuserCon?>">
                                 <input hidden type="text" name="check_new_deptcode" id="check_new_deptcode" value="<?=$deptcode?>">
                                 <!-- Check Section -->
