@@ -173,11 +173,11 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
 
                                     <?php
-                                    $checkEdit = $this->db->query("SELECT dc_data_edit FROM dc_datamain WHERE dc_data_doccode='$get_fulldatas->dc_data_doccode' AND dc_data_edit >='0' ");
+                                    $checkEdit = $this->db->query("SELECT dc_data_edit FROM dc_datamain WHERE dc_data_doccode='$get_fulldatas->dc_data_doccode' AND dc_data_edit > '0' ");
                                     $checkNumRow = $checkEdit->num_rows();
-                                    $genEdit = $checkNumRow++;
+                                    $checkNumRow++;
                                     ?>
-                                    <label for=""><?= label("doc_num_edit", $this); ?>&nbsp;&nbsp;<input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $genEdit; ?>" class="form-control" readonly></label>
+                                    <label for=""><?= label("doc_num_edit", $this); ?>&nbsp;&nbsp;<input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $checkNumRow; ?>" class="form-control" readonly></label>
                                 </div>
                             </div>
 
@@ -292,83 +292,6 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                 </form><!-- Form Section 1 -->
                 <hr>
                 <!-- หน่วยงานที่เกี่ยวข้อง -->
-
-
-                <!-- ผลการร้องขอ -->
-                <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('managerapprove', $this) ?></h3>
-                <form action="save_sec2" method="POST" name="">
-                    <div class="form-row">
-                        <div><label for=""><input disabled type="radio" name="result_request_status" id="result_request_status1" value="1">&nbsp;&nbsp;<?= label('result_status1', $this); ?></label></div>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <div><label for=""><input disabled type="radio" name="result_request_status" id="result_request_status0" value="0">&nbsp;&nbsp;<?= label('result_status0', $this); ?></label></div>
-                        <textarea disabled name="text_result_request" id="text_result_request" cols="30" rows="5" class="form-control" placeholder="<?= label('text_result_request', $this); ?>"></textarea>
-                    </div>
-
-                    <div class="form-row mt-3">
-                        <div class="col-md-9 border p-5">
-                            <label style="color:red;"><?= label('memo3', $this); ?> :&nbsp;</label><label for=""><?= label('memo4', $this); ?></label>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for=""><?= label("approvers", $this); ?></label>
-                                <input disabled type="text" class="form-control" name="" id="">
-                                <input disabled type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec2">
-                            </div>
-                </form>
-
-            </div>
-
-
-        </div>
-        <hr>
-        <!-- ผลการร้องขอ -->
-
-
-        <!-- ผลการร้องขอ -->
-        <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('qmrapprove', $this) ?></h3>
-        <form action="" method="POST" name="">
-            <div class="form-row">
-
-                <div><label for=""><input disabled type="radio" name="dc_data_result_reson_status2" id="dc_data_result_reson_status1" value="1">&nbsp;&nbsp;<?= label('result_status1', $this); ?></label></div>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <div><label for=""><input disabled type="radio" name="dc_data_result_reson_status2" id="dc_data_result_reson_status0" value="0">&nbsp;&nbsp;<?= label('result_status0', $this); ?></label></div>
-
-                <textarea disabled name="dc_data_result_reson_detail2" id="dc_data_result_reson_detail2" cols="30" rows="5" class="form-control" placeholder="<?= label('text_result_request', $this); ?>"></textarea>
-            </div>
-
-            <div class="form-row mt-3">
-                <div class="col-md-9 border p-5">
-                    <label style="color:red;"><?= label('memo3', $this); ?> :&nbsp;</label><label for=""><?= label('memo4', $this); ?></label>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for=""><?= label("approvers", $this); ?></label>
-
-                        <input disabled type="text" class="form-control" name="dc_data_approve_qmr" id="dc_data_approve_qmr" value="">
-                        <input disabled type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec3" id="btnSave_sec3">
-                    </div>
-        </form>
-        <!-- ผลการร้องขอ -->
-    </div>
-    </div>
-    <hr>
-    <!-- ผลการร้องขอ -->
-
-
-    <!-- สำหรับผู้ควบคุมเอกสาร -->
-    <h3 class="p2 mb-3"><?= label("forstaff", $this); ?></h3>
-    <form action="">
-        <div class="form-row">
-            <textarea disabled name="staff_action" id="staff_action" cols="30" rows="5" class="form-control" placeholder="การดำเนินการ"></textarea>
-        </div>
-        <div class="form-row mt-3">
-            <label><?= label('operator_label', $this); ?> : <input disabled type="text" name="" id="" class="form-control"></label>
-        </div>
-        <input disabled class="btn btn-primary " type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>">
-
-
-        
-    </form>
 
     </div><!-- Main Section -->
 

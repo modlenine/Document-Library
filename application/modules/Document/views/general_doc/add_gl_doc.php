@@ -50,7 +50,7 @@ $get_user = $this->login_model->getuser();
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="">ชื่อเอกสาร</label>
-                            <input type="text" name="gl_doc_name" id="gl_doc_name" class="form-control">
+                            <input type="text" name="gl_doc_name" id="gl_doc_name" class="form-control" required>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="">รหัสเอกสาร</label>
@@ -74,20 +74,33 @@ $get_user = $this->login_model->getuser();
 
                         <div class="form-group col-md-3">
                             <label for="">อัพโหลดไฟล์เอกสาร</label>
-                            <input type="file" name="gl_doc_file" id="gl_doc_file" class="form-control" accept=".pdf">
+                            <input type="file" name="gl_doc_file" id="gl_doc_file" class="form-control" accept=".pdf" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="">รายละเอียดของเอกสาร</label>
-                            <textarea name="gl_doc_detail" id="gl_doc_detail" cols="30" rows="5" class="form-control"></textarea>
+                            <textarea name="gl_doc_detail" id="gl_doc_detail" cols="30" rows="5" class="form-control" required></textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <?php 
+                            $string = $get_view_docs->gl_doc_hashtag;
+                            $string = convertHashtoLink($string);
+                            ?>
+                            <span><?=$string?></span>
+                            <?php 
+                            if($get_view_docs->gl_doc_reson_detail == ""){ ?>
+                        <input type="text" name="gl_doc_hashtag[]" id="gl_doc_hashtag" class="form-control" placeholder="ระบุ แฮชแท็กของไฟล์เอกสาร เช่น #เอกสารทั่วไป #ประกาศบริษัท" required maxlength='40'>
+                        <?php    }
+                            ?>
+                            <button type="button" name="btnAddMore" id="btnAddMore" class="add_more btn btn-primary mt-2">เพิ่ม</button>
                         </div>
                     </div>
                     <input type="submit" value="บันทึกข้อมูล" name="btnAdd_gldoc" class="btn btn-primary">
                 </form>
 
 
-                <hr>
+                <!-- <hr>
                 <h2 style="text-align:center;">สำหรับ Document Control</h2><br>
                 <form action="" method="post" name="" id="">
                     <div class="form-row">
@@ -110,5 +123,5 @@ $get_user = $this->login_model->getuser();
                             <input disabled type="text" name="gl_doc_approve" id="gl_doc_approve" class="form-control">
                         </div>
                     </div>
-                </form>
+                </form> -->
                 

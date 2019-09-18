@@ -55,6 +55,7 @@ public function get_file1($subtype,$related_code)
     dc_datamain.dc_data_sub_type_sds,
     dc_sub_type.dc_sub_type_name,
     dc_datamain.dc_data_docname,
+    dc_datamain.dc_data_date,
     dc_datamain.dc_data_doccode,
     dc_datamain.dc_data_darcode,
     dc_datamain.dc_data_doccode_display,

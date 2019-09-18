@@ -4,6 +4,7 @@ class Doc_get_model extends CI_Model
     public function __construct()
     {
         parent::__construct();
+        date_default_timezone_set("Asia/Bangkok");
     }
 
 
@@ -60,6 +61,7 @@ class Doc_get_model extends CI_Model
     {
         return $this->db->query("SELECT
 dc_datamain.dc_data_doccode,
+dc_datamain.dc_data_doccode_display,
 dc_datamain.dc_data_id,
 dc_datamain.dc_data_law_doccode,
 dc_datamain.dc_data_sds_doccode,
@@ -402,7 +404,115 @@ public function get_last_dar($doccode)
         } else {
             echo "ไม่มีการกดปุ่มมา";
         }
-    } 
+    }
+    
+    
+
+    public function check_null_change()
+    {
+        if (isset($_POST['btnUser_submit'])) {
+
+
+            // เริ่มต้นการตรวจสอบค่าว่าง
+
+            if ($this->input->post('dc_data_type') == "") {
+                echo "<script>";
+                echo "alert('กรุณาเลือกประเภทของเอกสารด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($this->input->post('dc_data_sub_type') == "") {
+                echo "<script>";
+                echo "alert('กรุณาเลือกหมวดหมู่ของเอกสารด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($this->input->post('dc_data_date') == "") {
+                echo "<script>";
+                echo "alert('กรุณาระบุวันที่ร้องขอด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($this->input->post('dc_data_user') == "") {
+                echo "<script>";
+                echo "alert('กรุณาระบุชื่อผู้ร้องขอด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($this->input->post('dc_data_dept') == "") {
+                echo "<script>";
+                echo "alert('กรุณาระบุแผนกด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($this->input->post('dc_data_docname') == "") {
+                echo "<script>";
+                echo "alert('กรุณาระบุชื่อเอกสารด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($this->input->post('dc_data_docname') == "") {
+                echo "<script>";
+                echo "alert('กรุณาระบุชื่อเอกสารด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            }else if ($this->input->post('dc_data_date_start') == "") {
+                echo "<script>";
+                echo "alert('กรุณาระบุวันที่เริ่มใช้เอกสารด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($this->input->post('dc_data_store') == "") {
+                echo "<script>";
+                echo "alert('กรุณาระบุวันที่จัดเก็บด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($this->input->post('dc_data_store_type') == "") {
+                echo "<script>";
+                echo "alert('กรุณาระบุระยะเวลาจัดเก็บด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($this->input->post('dc_data_reson') == "") {
+                echo "<script>";
+                echo "alert('กรุณาระบุเหตุผลด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($this->input->post('dc_data_reson_detail') == "") {
+                echo "<script>";
+                echo "alert('กรุณาระบุรายละเอียดของเหตุผลด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($this->input->post('related_dept_code') == "") {
+                echo "<script>";
+                echo "alert('กรุณาระบุแผนกที่เกี่ยวข้องด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            } else if ($_FILES['dc_data_file']['name'] == "") {
+                echo "<script>";
+                echo "alert('กรุณาแนบไฟล์เอกสารที่ต้องการดำเนินการด้วยค่ะ');";
+                echo "window.history.back(-1)";
+                echo "</script>";
+                exit();
+            }else {
+                echo "<script>";
+                echo "alert('ข้อมูลถูกต้องครบถ้วน')";
+                echo "</script>";
+            }
+
+            // เสร็จสิ้นขั้นตอนการตรวจสอบค่าว่าง
+
+        } else {
+            echo "ไม่มีการกดปุ่มมา";
+        }
+    }
+
+
     
     public function check_manager_Zone()
     {
@@ -520,7 +630,7 @@ public function get_last_dar($doccode)
         if ($this->input->post('dc_data_sub_type') == 's') {
             // Get short dept
             $rs_short_dept  = $this->get_short_dept($short_dept);
-            $date_requests = $this->input->post("dc_data_date");
+            $date_requests = con_date($this->input->post("dc_data_date"));
             $date_request = str_replace("/", "-", $date_requests);
 
 
@@ -565,7 +675,7 @@ public function get_last_dar($doccode)
         } else if ($this->input->post('dc_data_sub_type') == 'f') {
             // Get short dept
             $rs_short_dept  = $this->get_short_dept($short_dept);
-            $date_requests = $this->input->post("dc_data_date");
+            $date_requests = con_date($this->input->post("dc_data_date"));
             $date_request = str_replace("/", "-", $date_requests);
 
 
@@ -610,7 +720,7 @@ public function get_last_dar($doccode)
         } else if ($this->input->post('dc_data_sub_type') == 'x') {
             // Get short dept
             $rs_short_dept  = $this->get_short_dept($short_dept);
-            $date_requests = $this->input->post("dc_data_date");
+            $date_requests = con_date($this->input->post("dc_data_date"));
             $date_request = str_replace("/", "-", $date_requests);
 
 

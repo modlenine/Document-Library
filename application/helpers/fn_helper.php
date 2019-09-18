@@ -666,6 +666,15 @@ function get_deptcode_new($username)
 }
 
 
+// Get data reson from datamain table for check status un delete hastag on dcc add model
+function get_data_reson($darcode)
+{
+    $obj = new myfn();
+    $result = $obj->get_ci()->db->query("SELECT dc_data_reson FROM dc_datamain WHERE dc_data_darcode='$darcode' ");
+    return $result->row();
+}
+
+
 
 
 

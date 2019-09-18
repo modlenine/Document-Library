@@ -111,7 +111,7 @@ $get_view_docs = $get_view_doc->row();
                             ?>
                             
                         </div>
-                        <div class="form-group col-md-6">
+                        <!-- <div class="form-group col-md-6">
                             <?php 
                             $string = $get_view_docs->gl_doc_hashtag;
                             $string = convertHashtoLink($string);
@@ -119,11 +119,11 @@ $get_view_docs = $get_view_doc->row();
                             <span><?=$string?></span>
                             <?php 
                             if($get_view_docs->gl_doc_reson_detail == ""){ ?>
-                        <input type="text" name="gl_doc_hashtag[]" id="gl_doc_hashtag" class="form-control" placeholder="ระบุ แฮชแท็กของไฟล์เอกสาร เช่น #เอกสารทั่วไป #ประกาศบริษัท">
+                        <input type="text" name="gl_doc_hashtag[]" id="gl_doc_hashtag" class="form-control" placeholder="ระบุ แฮชแท็กของไฟล์เอกสาร เช่น #เอกสารทั่วไป #ประกาศบริษัท" maxlength='40'>
                         <?php    }
                             ?>
                             <button type="button" name="btnAddMore" id="btnAddMore" class="add_more btn btn-primary mt-2">เพิ่ม</button>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-3">

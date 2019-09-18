@@ -25,12 +25,13 @@
                     <thead>
                         <tr>
                             <th style="width:50px;"><?=label('id',$this);?></th>
-                            <th style="width:200px;"><?=label('td_doccode',$this);?></th>
+                            <th style="width:150px;">เลขที่ใบ DAR</th>
+                            <th style="width:200px;">รหัสเอกสาร</th>
                             <th><?=label('td_doctype',$this);?></th>
                             <th><?=label('td_daterequest',$this);?></th>
                             <th><?=label('td_userrequest',$this);?></th>
                             <th><?=label('td_reson',$this);?></th>
-                            <th style="width:150px;"><?=label('td_status',$this);?></th>
+                            <th style="width:100px;"><?=label('td_status',$this);?></th>
                         </tr>
                     </thead>
 
@@ -69,6 +70,7 @@
                             <tr>
                                 <td></td>
                                 <td><a href="<?= base_url();?>document/<?=$linkpage?><?= $rslist['dc_data_darcode']; ?>"><i class="fas fa-book-open"></i>&nbsp;&nbsp;<?= $rslist['dc_data_darcode']; ?></a></td>
+                                <td><?= $rslist['dc_data_doccode_display']; ?></td>
                                 <td><?= $rslist['dc_sub_type_name']; ?></td>
                                 <td><?= con_date($rslist['dc_data_date'] )?></td>
                                 <td><i class="fas fa-user"></i>&nbsp;&nbsp;<?= $rslist['dc_data_user']; ?></td>

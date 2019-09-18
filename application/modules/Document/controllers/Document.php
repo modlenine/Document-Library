@@ -13,6 +13,7 @@ class Document extends MX_Controller
         $this->load->model("doc_add_model");
         $this->load->model("doc_get_model");
         $this->load->model("login/login_model");
+        date_default_timezone_set("Asia/Bangkok");
     }
 
 
@@ -22,6 +23,11 @@ class Document extends MX_Controller
         get_head();
         get_content("index");
         get_footer();
+    }
+
+    public function checkdate()
+    {
+        $this->doc_add_model->checkdate();
     }
 
 
@@ -187,7 +193,7 @@ class Document extends MX_Controller
         check_login();
         $this->doc_get_model->check_doc_Zone();
         $this->doc_add_model->save_sec4($darcode);
-        header("refresh:0; url=" . base_url('document/list_dar/'));
+        // header("refresh:0; url=" . base_url('document/list_dar/'));
     }
 
     public function save_sec4deptedit($darcode)
@@ -304,7 +310,7 @@ class Document extends MX_Controller
 
     public function save_sec1_edit($doccode)
     {
-        $this->doc_get_model->checkNull_add();
+        $this->doc_get_model->check_null_change();
         $this->doc_add_model->save_sec1_edit($doccode);
         header("refresh:0; url=" . base_url('document/list_dar'));
 
@@ -391,6 +397,7 @@ class Document extends MX_Controller
 
     public function save_sec1change($doccode)
     {
+        $this->doc_get_model->check_null_change();
         $this->doc_add_model->save_sec1change($doccode);
         header("refresh:0; url=" . base_url('document/list_dar'));
     }

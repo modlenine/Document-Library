@@ -183,7 +183,7 @@
                                 }
                                 ?>
                             <div class="col-lg-3 col-md-3 col-sm-3 col-6">
-                                <label class="checkbox-inline"><input <?= $checked ?> type="radio" name="dc_data_reson" id="dc_data_reson" value="<?php echo $rs_reason['dc_reason_code']; ?>" />&nbsp;<?php echo $rs_reason['dc_reason_name']; ?></label>
+                                <label class="checkbox-inline"><input <?= $checked ?> type="radio" name="dc_data_reson" id="dc_data_reson" value="<?php echo $rs_reason['dc_reason_code']; ?>" onclick="return false"/>&nbsp;<?php echo $rs_reason['dc_reason_name']; ?></label>
                             </div>
                             <!-- Reason request loop -->
                         <?php }; ?>

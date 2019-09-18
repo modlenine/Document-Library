@@ -11,6 +11,12 @@ class Doc_add_model extends CI_Model
         //Do your magic here
         $this->load->model("doc_get_model");
         require("PHPMailer_5.2.0/class.phpmailer.php");
+        date_default_timezone_set("Asia/Bangkok");
+    }
+
+    public function checkdate()
+    {
+        echo date("d-m-Y-H-i-s");
     }
 
 
@@ -230,12 +236,32 @@ class Doc_add_model extends CI_Model
             }
         } else {
 
-            $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
-            $del_hashtag = $this->db->delete('library_hashtag');
-            if ($del_hashtag) {
-                echo "ลบแฮชแท็กสำเร็จ";
-            } else {
-                echo "ลบแฮชแท็กไม่สำเร็จ";
+            
+            if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04') {
+                echo "ไม่เท่ากับ r-02";
+                $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
+                $del_hashtag = $this->db->delete('library_hashtag');
+                if ($del_hashtag) {
+                    echo "ลบแฮชแท็กสำเร็จ";
+                } else {
+                    echo "ลบแฮชแท็กไม่สำเร็จ";
+                }
+            }else{
+                echo get_data_reson($darcode)->dc_data_reson."<br>";
+            }
+
+
+
+
+            $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
+            $checknumrow = $checkolddar->num_rows();
+            if ($checknumrow > 0) {
+                $getolddar = $checkolddar->row();
+                $clear_padding = array(
+                    "lib_main_modify_status" => ""
+                );
+                $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
+                $this->db->update("library_main", $clear_padding);
             }
 
 
@@ -245,8 +271,9 @@ class Doc_add_model extends CI_Model
                 "dc_data_result_reson_detail" => $this->input->post('dc_data_result_reson_detail'),
                 "dc_data_approve_mgr" => $this->input->post('dc_data_approve_mgr'),
                 "dc_data_date_approve_mgr" => date("Y-m-d"),
-                "dc_data_status" => "Manager Not Approve"
-                
+                "dc_data_status" => "Manager Not Approve",
+                "dc_data_edit" => 0
+
             );
             $this->db->where("dc_data_darcode", $darcode);
             $rs_notapp = $this->db->update("dc_datamain", $ar_mgr_notapprove);
@@ -329,12 +356,30 @@ class Doc_add_model extends CI_Model
                 exit();
             }
         } else {
-             $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
-            $del_hashtag = $this->db->delete('library_hashtag');
-            if ($del_hashtag) {
-                echo "ลบแฮชแท็กสำเร็จ";
-            } else {
-                echo "ลบแฮชแท็กไม่สำเร็จ";
+
+            if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04') {
+                echo "ไม่เท่ากับ r-02";
+                $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
+                $del_hashtag = $this->db->delete('library_hashtag');
+                if ($del_hashtag) {
+                    echo "ลบแฮชแท็กสำเร็จ";
+                } else {
+                    echo "ลบแฮชแท็กไม่สำเร็จ";
+                }
+            }else{
+                echo get_data_reson($darcode)->dc_data_reson."<br>";
+            }
+
+
+            $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
+            $checknumrow = $checkolddar->num_rows();
+            if ($checknumrow > 0) {
+                $getolddar = $checkolddar->row();
+                $clear_padding = array(
+                    "lib_main_modify_status" => ""
+                );
+                $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
+                $this->db->update("library_main", $clear_padding);
             }
 
 
@@ -344,8 +389,9 @@ class Doc_add_model extends CI_Model
                 "dc_data_result_reson_detail2" => $this->input->post('dc_data_result_reson_detail2'),
                 "dc_data_approve_qmr" => $this->input->post('dc_data_approve_qmr'),
                 "dc_data_date_approve_qmr" => date("Y-m-d"),
-                "dc_data_status" => "Qmr Not Approve"
-                
+                "dc_data_status" => "Qmr Not Approve",
+                "dc_data_edit" => 0
+
             );
             $this->db->where("dc_data_darcode", $darcode);
             $rs_notapp = $this->db->update("dc_datamain", $ar_qmr_notapprove);
@@ -452,6 +498,7 @@ class Doc_add_model extends CI_Model
         $this->db->where("dc_data_darcode", $darcode);
         $result_sec4 = $this->db->update("dc_datamain", $ar_save_sec4);
 
+
         $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
         $checknumrow = $checkolddar->num_rows();
         if ($checknumrow > 0) {
@@ -463,6 +510,24 @@ class Doc_add_model extends CI_Model
             $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
             $this->db->update("library_main", $inactive);
         }
+
+
+        foreach($checkolddar->result_array() as $get_od){
+            $inactive_related_dept_use = array(
+                "related_dept_status" => "inactive"
+            );
+            $this->db->where("related_dept_darcode",$get_od['dc_data_old_dar']);
+            $this->db->update("dc_related_dept_use",$inactive_related_dept_use);
+        }
+
+        foreach($checkolddar->result_array() as $get_ods){
+            $inactive_type_use = array(
+                "dc_type_use_status" => "inactive"
+            );
+            $this->db->where("dc_type_use_darcode",$get_ods['dc_data_old_dar']);
+            $this->db->update("dc_type_use",$inactive_type_use);
+        }
+
 
         $ar_lib_save = array(
             "lib_main_doccode" => $get_doccodes->dc_data_doccode,
@@ -554,10 +619,10 @@ class Doc_add_model extends CI_Model
                     $dc_data_doccode = $cut1 . $dc_data_edit . $cut3;
                 }
 
-                $date = date("d-m-Y-H-i-s"); //ดึงวันที่และเวลามาก่อน
+                $date = date("H-i-s"); //ดึงวันที่และเวลามาก่อน
                 $file_name = $_FILES['dc_data_file']['name'];
                 $file_name_cut = str_replace(" ", "", $file_name);
-                $file_name_date = substr_replace(".", $dc_data_doccode . ".pdf", 0);
+                $file_name_date = substr_replace(".", $dc_data_doccode . "-" . $date . ".pdf", 0);
                 $file_size = $_FILES['dc_data_file']['size'];
                 $file_tmp = $_FILES['dc_data_file']['tmp_name'];
                 $file_type = $_FILES['dc_data_file']['type'];
@@ -569,10 +634,10 @@ class Doc_add_model extends CI_Model
                 print_r($file_name);
                 echo "<br>" . "Copy/Upload Complete" . "<br>";
             } else {
-                $date = date("d-m-Y-H-i-s"); //ดึงวันที่และเวลามาก่อน
+                $date = date("H-i-s"); //ดึงวันที่และเวลามาก่อน
                 $file_name = $_FILES['dc_data_file']['name'];
                 $file_name_cut = str_replace(" ", "", $file_name);
-                $file_name_date = substr_replace(".", $dc_data_doccode . $rev . $dc_data_edit . ".pdf", 0);
+                $file_name_date = substr_replace(".", $dc_data_doccode . $rev . $dc_data_edit . "-" . $date . ".pdf", 0);
                 $file_size = $_FILES['dc_data_file']['size'];
                 $file_tmp = $_FILES['dc_data_file']['tmp_name'];
                 $file_type = $_FILES['dc_data_file']['type'];
@@ -622,8 +687,8 @@ class Doc_add_model extends CI_Model
 
 
             // Delete old Related department
-            $this->db->where("related_dept_doccode", $conDoccode);
-            $this->db->delete("dc_related_dept_use");
+            // $this->db->where("related_dept_doccode", $conDoccode);
+            // $this->db->delete("dc_related_dept_use");
             // Delete old Related department
 
 
@@ -633,7 +698,8 @@ class Doc_add_model extends CI_Model
                 $arrelated = array(
                     "related_dept_doccode" => $conDoccode,
                     "related_dept_darcode" => $get_darcode,
-                    "related_dept_code" => $related_dept_codes
+                    "related_dept_code" => $related_dept_codes,
+                    "related_dept_status" => "active"
                 );
                 $this->db->insert("dc_related_dept_use", $arrelated);
             }
@@ -641,8 +707,8 @@ class Doc_add_model extends CI_Model
 
 
             // Delete old Category 
-            $this->db->where("dc_type_use_doccode", $conDoccode);
-            $this->db->delete("dc_type_use");
+            // $this->db->where("dc_type_use_doccode", $conDoccode);
+            // $this->db->delete("dc_type_use");
             // Delete old Category 
 
 
@@ -652,21 +718,21 @@ class Doc_add_model extends CI_Model
                 $arsys_cat = array(
                     "dc_type_use_doccode" => $conDoccode,
                     "dc_type_use_darcode" => $get_darcode,
-                    "dc_type_use_code" => $sys_cats
+                    "dc_type_use_code" => $sys_cats,
+                    "dc_type_use_status" => "active"
                 );
                 $this->db->insert("dc_type_use", $arsys_cat);
             }
             // Loop insert System Category
 
 
-            //Change status on library main table
 
+            //Change status on library main table
             $ar_update_library = array(
                 "lib_main_modify_status" => "pending"
             );
             $this->db->where("lib_main_darcode", $darcode_h);
             $this->db->update("library_main", $ar_update_library);
-
             // Change status on library main table
 
 
@@ -872,10 +938,10 @@ class Doc_add_model extends CI_Model
                     $dc_data_doccode = $cut1 . $dc_data_edit . $cut3;
                 }
 
-                $date = date("d-m-Y-H-i-s"); //ดึงวันที่และเวลามาก่อน
+                $date = date("H-i-s"); //ดึงวันที่และเวลามาก่อน
                 $file_name = $_FILES['dc_data_file']['name'];
                 $file_name_cut = str_replace(" ", "", $file_name);
-                $file_name_date = substr_replace(".", $dc_data_doccode . ".pdf", 0);
+                $file_name_date = substr_replace(".", $dc_data_doccode . "-" . $date . ".pdf", 0);
                 $file_size = $_FILES['dc_data_file']['size'];
                 $file_tmp = $_FILES['dc_data_file']['tmp_name'];
                 $file_type = $_FILES['dc_data_file']['type'];
@@ -887,10 +953,10 @@ class Doc_add_model extends CI_Model
                 print_r($file_name);
                 echo "<br>" . "Copy/Upload Complete" . "<br>";
             } else {
-                $date = date("d-m-Y-H-i-s"); //ดึงวันที่และเวลามาก่อน
+                $date = date("H-i-s"); //ดึงวันที่และเวลามาก่อน
                 $file_name = $_FILES['dc_data_file']['name'];
                 $file_name_cut = str_replace(" ", "", $file_name);
-                $file_name_date = substr_replace(".", $dc_data_doccode . $rev . $dc_data_edit . ".pdf", 0);
+                $file_name_date = substr_replace(".", $dc_data_doccode . $rev . $dc_data_edit . "-" . $date . ".pdf", 0);
                 $file_size = $_FILES['dc_data_file']['size'];
                 $file_tmp = $_FILES['dc_data_file']['tmp_name'];
                 $file_type = $_FILES['dc_data_file']['type'];
@@ -940,8 +1006,8 @@ class Doc_add_model extends CI_Model
 
 
             // Delete old Related department
-            $this->db->where("related_dept_doccode", $conDoccode);
-            $this->db->delete("dc_related_dept_use");
+            // $this->db->where("related_dept_doccode", $conDoccode);
+            // $this->db->delete("dc_related_dept_use");
             // Delete old Related department
 
 
@@ -951,7 +1017,8 @@ class Doc_add_model extends CI_Model
                 $arrelated = array(
                     "related_dept_doccode" => $conDoccode,
                     "related_dept_darcode" => $get_darcode,
-                    "related_dept_code" => $related_dept_codes
+                    "related_dept_code" => $related_dept_codes,
+                    "related_dept_status" => "active"
                 );
                 $this->db->insert("dc_related_dept_use", $arrelated);
             }
@@ -959,8 +1026,8 @@ class Doc_add_model extends CI_Model
 
 
             // Delete old Category 
-            $this->db->where("dc_type_use_doccode", $conDoccode);
-            $this->db->delete("dc_type_use");
+            // $this->db->where("dc_type_use_doccode", $conDoccode);
+            // $this->db->delete("dc_type_use");
             // Delete old Category 
 
 
@@ -970,7 +1037,8 @@ class Doc_add_model extends CI_Model
                 $arsys_cat = array(
                     "dc_type_use_doccode" => $conDoccode,
                     "dc_type_use_darcode" => $get_darcode,
-                    "dc_type_use_code" => $sys_cats
+                    "dc_type_use_code" => $sys_cats,
+                    "dc_type_use_status" => "active"
                 );
                 $this->db->insert("dc_type_use", $arsys_cat);
             }
@@ -1045,6 +1113,18 @@ class Doc_add_model extends CI_Model
                 "gl_doc_status" => "Open"
             );
 
+
+            $hashtags = $this->input->post("gl_doc_hashtag");
+            foreach ($hashtags as $hashtags_btn) {
+                $ar_hashtag = array(
+                    "gl_ht_doc_code" => $get_doccode,
+                    "gl_ht_name" => $hashtags_btn
+                );
+
+                $this->db->insert("gl_hashtag", $ar_hashtag);
+            }
+
+
             $result = $this->db->insert("gl_document", $add_doc);
             if (!$result) {
                 echo "<script>";
@@ -1065,35 +1145,32 @@ class Doc_add_model extends CI_Model
     {
         if (isset($_POST['btn_save2'])) {
             if ($this->input->post("gl_doc_status") == 1) {
-                $gl_doc_status = 'Approved';
-            } else {
-                $gl_doc_status = 'Not Approve';
-            }
 
-
-            $ar_approve = array(
-                "gl_doc_approve_status" => $this->input->post("gl_doc_status"),
-                "gl_doc_reson_detail" => $this->input->post("gl_doc_reson_detail"),
-                "gl_doc_approve_by" => $this->input->post("gl_doc_approve_by"),
-                "gl_doc_status" => $gl_doc_status
-            );
-
-            $result = $this->db->where("gl_doc_code", $gl_doc_code);
-            $result = $this->db->update("gl_document", $ar_approve);
-
-
-
-            $hashtags = $this->input->post("gl_doc_hashtag");
-            foreach ($hashtags as $hashtags_btn) {
-                $ar_hashtag = array(
-                    "gl_ht_doc_code" => $gl_doc_code,
-                    "gl_ht_name" => $hashtags_btn
+                $ar_approve = array(
+                    "gl_doc_approve_status" => $this->input->post("gl_doc_status"),
+                    "gl_doc_reson_detail" => $this->input->post("gl_doc_reson_detail"),
+                    "gl_doc_approve_by" => $this->input->post("gl_doc_approve_by"),
+                    "gl_doc_status" => "Approved"
                 );
 
-                $this->db->insert("gl_hashtag", $ar_hashtag);
+                $result = $this->db->where("gl_doc_code", $gl_doc_code);
+                $result = $this->db->update("gl_document", $ar_approve);
+            } else {
+
+                $this->db->where('gl_ht_doc_code', $gl_doc_code);
+                $this->db->delete('gl_hashtag');
+
+
+                $ar_approve = array(
+                    "gl_doc_approve_status" => $this->input->post("gl_doc_status"),
+                    "gl_doc_reson_detail" => $this->input->post("gl_doc_reson_detail"),
+                    "gl_doc_approve_by" => $this->input->post("gl_doc_approve_by"),
+                    "gl_doc_status" => "Not Approve"
+                );
+
+                $result = $this->db->where("gl_doc_code", $gl_doc_code);
+                $result = $this->db->update("gl_document", $ar_approve);
             }
-
-
 
             if (!$result) {
                 echo "<script>";

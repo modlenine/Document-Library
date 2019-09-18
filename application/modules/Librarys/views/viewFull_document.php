@@ -80,11 +80,12 @@ $get_file1s = $get_file2->row();
                                     dc_type_use.dc_type_use_darcode,
                                     dc_type_use.dc_type_use_doccode,
                                     dc_type_use.dc_type_use_code,
+                                    dc_type_use.dc_type_use_status,
                                     dc_type.dc_type_name
                                     FROM
                                     dc_type_use
                                     INNER JOIN dc_type ON dc_type.dc_type_code = dc_type_use.dc_type_use_code
-                                    WHERE dc_type_use_doccode = '$dcdoccode' ");
+                                    WHERE dc_type_use_doccode = '$dcdoccode' && dc_type_use_status ='active' ");
 
                                                 foreach ($get_doc_type->result_array() as $get_doc_types) {
                                                     echo "<label>" . $get_doc_types['dc_type_name'] . "</label>&nbsp;,&nbsp;";

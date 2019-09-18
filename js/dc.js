@@ -261,14 +261,14 @@ $(function () {
         } else {
             $('#rs_notapprove').prop("checked", true);
         }
-        $('#btn_save2,#btnAddMore').hide();
+        $('#btn_save2').hide();
     }
 
 
 
     $('.add_more').click(function (e) {
         e.preventDefault();
-        $(this).before("<input name='gl_doc_hashtag[]' id='gl_doc_hashtag' type='text' class='form-control mt-2' placeholder='ระบุ แฮชแท็กของไฟล์เอกสาร เช่น #เอกสารทั่วไป #ประกาศบริษัท' />");
+        $(this).before("<input name='gl_doc_hashtag[]' id='gl_doc_hashtag' type='text' class='form-control mt-2' placeholder='ระบุ แฮชแท็กของไฟล์เอกสาร เช่น #เอกสารทั่วไป #ประกาศบริษัท' required maxlength='40'/>");
     });
 
 
@@ -281,16 +281,23 @@ $(function () {
 
     if ($('#check_group').val() == "user" || $('#check_status_gldoc').val() == "Approved") {
         $('a#up_file_gl').prop({ 'href': '#', 'target': '_self' });
-        $('input[type=radio][name=gl_doc_status],#gl_doc_reson_detail,#gl_doc_hashtag,#btnAddMore,#gl_doc_approve_by,#btn_save2').prop('disabled', true);
+        $('input[type=radio][name=gl_doc_status],#gl_doc_reson_detail,#gl_doc_approve_by,#btn_save2').prop('disabled', true);
     }
 
     // Check section for document control
-    if ($('#check_group').val() != "document control") {
-        $('input[type=radio][name=gl_doc_status],#gl_doc_reson_detail,#gl_doc_hashtag,#btnAddMore,#gl_doc_approve_by,#btn_save2').prop('disabled', true);
+    if ($('#check_group').val() != "document control" && $('#check_group').val() != "superuser") {
+        $('input[type=radio][name=gl_doc_status],#gl_doc_reson_detail,#gl_doc_approve_by,#btn_save2').prop('disabled', true);
     }
+    
 
 
     // Permission Genaral document
+
+
+
+
+
+
 
 
 
