@@ -22,7 +22,9 @@ $get_file1s = $get_file2->row();
             <div class="container-fulid border p-4 bg-white">
                 <!-- Main Section -->
                 <div class="row">
+                    
                     <div class="col-md-12 form-group">
+                    <label class="pending_text" for="" style="color:red;">เอกสารนี้อยู่ระหว่างถูกร้องขอดำเนินการแก้ไข ยังไม่พร้อมให้แก้ไข เปลี่ยนแปลง หรือทำสำเนาในขณะนี้ค่ะ</label>
                         <a href="<?= base_url('document/change_document/') ?><?= $get_file1s->dc_data_doccode; ?>"><button class="btn btn-warning check_option"><i class="fas fa-edit" style="font-size:16px;"></i>&nbsp;&nbsp;เปลี่ยนแปลงเอกสาร</button></a>
                         <a href="<?= base_url('document/edit_dept/') ?><?= $get_file1s->dc_data_doccode; ?>"><button class="btn btn-info check_option"><i class="far fa-copy" style="font-size:16px;"></i>&nbsp;&nbsp;ขอสำเนาเพิ่ม</button></a>
                         <a href="<?= base_url('document/edit_document/') ?><?= $get_file1s->dc_data_doccode; ?>"><button class="btn btn-warning check_option"><i class="fas fa-exchange-alt" style="font-size:16px;"></i>&nbsp;&nbsp;ขอแก้ไขเอกสาร</button></a>
@@ -138,6 +140,18 @@ $get_file1s = $get_file2->row();
 <!-- Modal Section Reson detail -->
 
 
+
+
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label for=""><b>แผนกที่เกี่ยวข้อง :&nbsp;</b></label>
+                                            <?php
+                                            
+                                            foreach(get_related_use($get_file2s['dc_data_darcode'])->result_array() as $get_ru){
+                                                echo $get_ru['related_dept_name']."&nbsp;,&nbsp;";
+                                            } ?>
+                                        </div>
+                                    </div>
 
 
 

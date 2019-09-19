@@ -125,7 +125,7 @@ public function get_file2($subtype,$doccode)
     library_main
     INNER JOIN dc_datamain ON dc_datamain.dc_data_darcode = library_main.lib_main_darcode
     INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
-    WHERE dc_data_sub_type='$subtype' AND dc_data_doccode='$doccode' ORDER BY dc_data_edit DESC
+    WHERE dc_data_sub_type='$subtype' AND dc_data_doccode='$doccode' ORDER BY dc_data_id DESC
     ");
 }
 

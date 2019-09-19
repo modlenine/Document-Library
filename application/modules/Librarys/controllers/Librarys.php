@@ -51,6 +51,7 @@ class Librarys extends MX_Controller {
         check_login();
         $data['get_file1'] = $this->get_lib_model->get_file1($subtype,$related_code);
         $data['get_file2'] = $this->get_lib_model->get_file2($subtype,$doccode);
+        
         // $data['get_doc_type'] = $this->get_lib_model->get_doc_type($subtype,$related_code);
 
         get_head();

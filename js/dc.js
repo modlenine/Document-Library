@@ -444,8 +444,10 @@ $(function () {
 
 
     // Check lib pending status
+    $('.pending_text').css("display","none");
     if ($('#check_lib_status').val() == "pending") {
-        $('.check_option').prop('disabled', true);
+        $('.check_option').css("display","none");
+        $('.pending_text').css("display","block");
     }
     // Check lib pending status
 
@@ -468,6 +470,8 @@ $(function () {
         // check status for hide section qmr approve and dcc approve
         $('#qmr_approve').css("display", "none");
         $('#dcc_approve').css("display", "none");
+        // For Copy Dept
+    $('.copy_dept').css("display","none");
 
         if ($('#check_group').val() != 'manager' && $('#check_group').val() != 'superuser') {
             $('#manager_approve').css("display", "none");
@@ -477,6 +481,8 @@ $(function () {
     } else if ($('#check_data_status').val() == 'Manager Approved') {
         // Check status for hide section dcc approve
         $('#dcc_approve').css("display", "none");
+        // For Copy Dept
+    $('.copy_dept').css("display","none");
 
         if ($('#check_group').val() != 'qmr' && $('#check_group').val() != 'superuser') {
             $('#qmr_approve').css("display", "none");
@@ -486,19 +492,46 @@ $(function () {
 
         if ($('#check_group').val() != 'document control' && $('#check_group').val() != 'superuser') {
             $('#dcc_approve').css("display", "none");
+            $('.copy_dept').css("display","none");
+        }
+        if($('#check_dc_data_reson').val() == "r-03" && $('#check_group').val() != 'user'){
+            $('.copy_dept').css("display","block");
+            $('#dcc_approve').css("display","none");
+        }else{
+            $('.copy_dept').css("display","none");
+            $('#dcc_approve').css("display","block");
         }
 
+    }else if ($('#check_data_status').val() == 'Complete') {
+        if($('#check_dc_data_reson').val() == "r-03"){
+            $('.copy_dept').css("display","block");
+            $('#dcc_approve').css("display","none");
+        }else{
+            $('.copy_dept').css("display","none");
+            $('#dcc_approve').css("display","block"); 
+        }
+            
+            
     } else if ($('#check_data_status').val() == 'Qmr Not Approve') {
 
         $('#dcc_approve').css("display", "none");
+        $('.copy_dept').css("display","none");
 
     } else if ($('#check_data_status').val() == 'Manager Not Approve') {
         $('#qmr_approve').css("display", "none");
         $('#dcc_approve').css("display", "none");
+        $('.copy_dept').css("display","none");
     }
 
     // Check status for control every thing : Check status for control every thing
 
+
+
+    
+    // if($('#check_dc_data_reson').val() == "r-03"){
+    //     $('.copy_dept').css("display","block");
+    //     $('#dcc_approve').css("display","none");
+    // }
 
 
 

@@ -237,7 +237,7 @@ class Doc_add_model extends CI_Model
         } else {
 
             
-            if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04') {
+            if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04' && get_data_reson($darcode)->dc_data_reson != 'r-03') {
                 echo "ไม่เท่ากับ r-02";
                 $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
                 $del_hashtag = $this->db->delete('library_hashtag');
@@ -357,7 +357,7 @@ class Doc_add_model extends CI_Model
             }
         } else {
 
-            if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04') {
+            if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04' && get_data_reson($darcode)->dc_data_reson != 'r-03') {
                 echo "ไม่เท่ากับ r-02";
                 $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
                 $del_hashtag = $this->db->delete('library_hashtag');
@@ -543,8 +543,14 @@ class Doc_add_model extends CI_Model
 
 
 
+
+
     public function save_sec4deptedit($darcode)
     {
+        // Get document code
+        $get_doccode = $this->db->query("SELECT dc_data_doccode , dc_data_file FROM dc_datamain WHERE dc_data_darcode='$darcode' ");
+        $get_doccodes = $get_doccode->row();
+        $get_doc_code = substr($get_doccodes->dc_data_file, 0, -4);
 
         $status = "Complete";
 
@@ -555,14 +561,53 @@ class Doc_add_model extends CI_Model
             "dc_data_date_operation" => date("Y-m-d"),
             "dc_data_status" => $status
         );
-
         $this->db->where("dc_data_darcode", $darcode);
         $result_sec4 = $this->db->update("dc_datamain", $ar_save_sec4);
 
-        //delete old related
-        $olddarcheck = $this->input->post("dc_data_old_dar");
-        $this->db->where("related_dept_darcode", $olddarcheck);
-        $this->db->delete("dc_related_dept_use");
+
+        $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
+        $checknumrow = $checkolddar->num_rows();
+        if ($checknumrow > 0) {
+            $getolddar = $checkolddar->row();
+            $inactive = array(
+                "lib_main_status" => "inactive",
+                "lib_main_modify_status" => ""
+            );
+            $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
+            $this->db->update("library_main", $inactive);
+        }
+
+        foreach($checkolddar->result_array() as $get_od){
+            $inactive_related_dept_use = array(
+                "related_dept_status" => "inactive"
+            );
+            $this->db->where("related_dept_darcode",$get_od['dc_data_old_dar']);
+            $this->db->update("dc_related_dept_use",$inactive_related_dept_use);
+        }
+
+        foreach($checkolddar->result_array() as $get_ods){
+            $inactive_type_use = array(
+                "dc_type_use_status" => "inactive"
+            );
+            $this->db->where("dc_type_use_darcode",$get_ods['dc_data_old_dar']);
+            $this->db->update("dc_type_use",$inactive_type_use);
+        }
+
+//Get old data for add to new data
+$query = $this->db->query("SELECT * FROM library_main WHERE lib_main_darcode='$getolddar->dc_data_old_dar' ");
+$get_data_old = $query->row();
+        $ar_lib_save = array(
+            "lib_main_doccode" => $get_doccodes->dc_data_doccode,
+            "lib_main_darcode" => $darcode,
+            "lib_main_doccode_master" => $get_data_old->lib_main_doccode_master,
+            "lib_main_doccode_copy" => $get_data_old->lib_main_doccode_copy,
+            "lib_main_file_location_master" => $get_data_old->lib_main_file_location_master,
+            "lib_main_file_location_copy" => $get_data_old->lib_main_file_location_copy,
+            "lib_main_status" => "active"
+        );
+        $this->db->insert("library_main", $ar_lib_save);
+
+
     }
 
 
@@ -588,6 +633,9 @@ class Doc_add_model extends CI_Model
         $this->db->update('library_main', $ar);
         redirect('document/thkpage/');
     }
+
+
+
 
 
 
@@ -754,10 +802,14 @@ class Doc_add_model extends CI_Model
 
 
 
-    public function save_edit_dept($doccode)
+
+
+
+    public function save_sec1_copy($darcode)
     {
 
         $get_darcode = $this->doc_get_model->get_dar_code();
+
         $armain = array(
             "dc_data_doccode" => $this->input->post("dc_data_doccode"),
             "dc_data_doccode_display" => $this->input->post("dc_data_doccode_display"),
@@ -769,7 +821,7 @@ class Doc_add_model extends CI_Model
             "dc_data_user" => $this->input->post("dc_data_user"),
             "dc_data_dept" => $this->input->post("dc_data_depts"),
             "dc_data_docname" => $this->input->post("dc_data_docname"),
-            "dc_data_edit" => "-1",
+            "dc_data_edit" => $this->input->post("dc_data_edit"),
             "dc_data_date_start" => $this->input->post("dc_data_date_start"),
             "dc_data_store" => $this->input->post("dc_data_store"),
             "dc_data_store_type" => $this->input->post("dc_data_store_type"),
@@ -777,13 +829,13 @@ class Doc_add_model extends CI_Model
             "dc_data_reson_detail" => $this->input->post("dc_data_reson_detail"),
             "dc_data_file" => $this->input->post("dc_data_file"),
             "dc_data_file_location" => $this->input->post("dc_data_file_location"),
-            "dc_data_status" => "open",
+            "dc_data_status" => "Open",
             "dc_data_old_dar" => $this->input->post("dc_data_old_dar")
         );
 
 
         // Delete old Related department
-        // $this->db->where("related_dept_doccode", $doccode);
+        // $this->db->where("related_dept_doccode", $darcode);
         // $this->db->delete("dc_related_dept_use");
         // Delete old Related department
 
@@ -794,11 +846,35 @@ class Doc_add_model extends CI_Model
             $arrelated = array(
                 "related_dept_doccode" => $this->input->post("dc_data_doccode"),
                 "related_dept_darcode" => $get_darcode,
-                "related_dept_code" => $related_dept_codes
+                "related_dept_code" => $related_dept_codes,
+                "related_dept_status" => "active"
             );
             $this->db->insert("dc_related_dept_use", $arrelated);
         }
         // Loop insert related department
+
+
+         // Loop insert System Category
+         $sys_cat = $this->input->post("dc_data_type");
+         foreach ($sys_cat as $sys_cats) {
+             $arsys_cat = array(
+                 "dc_type_use_doccode" => $this->input->post("dc_data_doccode"),
+                 "dc_type_use_darcode" => $get_darcode,
+                 "dc_type_use_code" => $sys_cats,
+                 "dc_type_use_status" => "active"
+             );
+             $this->db->insert("dc_type_use", $arsys_cat);
+         }
+         // Loop insert System Category
+
+
+        //Change status on library main table
+        $ar_update_library = array(
+            "lib_main_modify_status" => "pending"
+        );
+        $this->db->where("lib_main_darcode", $this->input->post("dc_data_old_dar"));
+        $this->db->update("library_main", $ar_update_library);
+        // Change status on library main table
 
 
 
@@ -812,7 +888,6 @@ class Doc_add_model extends CI_Model
             echo "<script>";
             echo "alert('บันทึกข้อมูลสำเร็จ')";
             echo "</script>";
-            header("refresh:1; url=" . base_url() . "document/list_dar");
         }
     }
 

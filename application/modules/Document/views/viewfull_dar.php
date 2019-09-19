@@ -479,6 +479,40 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
     </div>
 
 
+    <div id="dcc_approve" class="copy_dept">
+        <!-- สำหรับผู้ควบคุมเอกสาร -->
+        <h3 class="p2 mb-3"><?= label("forstaff", $this); ?></h3>
+        <form action="<?=base_url('document/save_sec4deptedit/'.$getF->dc_data_darcode);?>" method="POST" enctype="multipart/form-data">
+            <div class="form-row">
+                <label for="">ยืนยันการทำสำเนาเอกสาร :</label>&nbsp;<label for=""><a href="<?=base_url()?><?=$getF->dc_data_file_location.$getF->dc_data_file;?>" target="_blank"><?=$getF->dc_data_file;?></a></label>
+                <input hidden type="text" name="dc_data_file" id="dc_data_file" value="<?=$getF->dc_data_file;?>"/>
+            </div>
+            
+            
+            <div class="form-row">
+                <textarea name="dc_data_method" id="dc_data_method" cols="30" rows="5" class="form-control" placeholder="การดำเนินการ"><?=$getF->dc_data_method;?></textarea>
+            </div>
+
+            <div class="form-row mt-3">
+            <?php
+    if($getF->dc_data_operation == '')
+    { 
+    ?>
+            <label>ผู้ดำเนินการ : <input type="text" name="dc_data_operation" id="dc_data_operation" class="form-control" value="<?=$getuserCon;?>"></label>
+    <?php
+    }else{ ?>
+            <label>ผู้ดำเนินการ : <input disabled type="text" name="dc_data_operation" id="dc_data_operation" class="form-control" value="<?=$getF->dc_data_operation;?>"></label>
+<?php
+    }
+?>
+                
+            </div>
+            <input class="btn btn-primary " type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>">
+            <input hidden type="text" name="dc_data_old_dar" id="dc_data_old_dar" value="<?=$getF->dc_data_old_dar;?>">
+        </form>
+    </div>
+    <input hidden type="text" name="check_dc_data_reson" id="check_dc_data_reson" value="<?=get_data_reson($getF->dc_data_darcode)->dc_data_reson?>">
+
 
 
 

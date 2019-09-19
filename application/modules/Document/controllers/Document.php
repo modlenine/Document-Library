@@ -193,7 +193,7 @@ class Document extends MX_Controller
         check_login();
         $this->doc_get_model->check_doc_Zone();
         $this->doc_add_model->save_sec4($darcode);
-        // header("refresh:0; url=" . base_url('document/list_dar/'));
+        header("refresh:0; url=" . base_url('document/list_dar/'));
     }
 
     public function save_sec4deptedit($darcode)
@@ -339,7 +339,8 @@ class Document extends MX_Controller
 
     public function save_edit_dept($doccode)
     {
-        $this->doc_add_model->save_edit_dept($doccode);
+        $this->doc_add_model->save_sec1_copy($doccode);
+        header("refresh:0; url=" . base_url() . "document/list_dar");
     }
 
 

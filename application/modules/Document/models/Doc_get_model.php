@@ -249,12 +249,14 @@ public function get_last_dar($doccode)
         dc_related_dept.related_id,
         dc_related_dept.related_dept_name,
         dc_related_dept_use.related_dept_doccode,
+        dc_related_dept_use.related_dept_darcode,
         dc_related_dept_use.related_dept_id,
-        dc_related_dept_use.related_dept_code
+        dc_related_dept_use.related_dept_code,
+        dc_related_dept_use.related_dept_status
         FROM
         dc_related_dept
         INNER JOIN dc_related_dept_use ON dc_related_dept.related_code = dc_related_dept_use.related_dept_code
-        WHERE related_dept_doccode='$doccode' ");
+        WHERE related_dept_darcode='$darcode' ");
     }
 
 
