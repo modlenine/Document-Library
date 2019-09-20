@@ -88,7 +88,7 @@
                                 "targets": 0
                             }],
                             "order": [
-                                [0, 'desc']
+                                [3, 'desc']
                             ]
                         });
 

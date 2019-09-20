@@ -302,7 +302,7 @@ $(function () {
 
 
     // Permission Group
-    if ($('#check_group').val() == "it" || $('#check_group').val() == "admin" || $('#check_group').val() == "document control") {
+    if ($('#check_group').val() == "it" || $('#check_group').val() == "admin" || $('#check_group').val() == "document control" || $('#check_group').val() == "superuser") {
         $('li#admin_section').css("display", "inline");
     }
 
@@ -466,72 +466,154 @@ $(function () {
 
     // Check status for control every thing : Check status for control every thing
 
-    if ($('#check_data_status').val() == 'Open') {
-        // check status for hide section qmr approve and dcc approve
-        $('#qmr_approve').css("display", "none");
-        $('#dcc_approve').css("display", "none");
-        // For Copy Dept
-    $('.copy_dept').css("display","none");
+    // if ($('#check_data_status').val() == 'Open') {
+    //     // check status for hide section qmr approve and dcc approve
+    //     $('#qmr_approve').css("display", "none");
+    //     $('#dcc_approve').css("display", "none");
+    //     // For Copy Dept
+    // $('.copy_dept').css("display","none");
 
-        if ($('#check_group').val() != 'manager' && $('#check_group').val() != 'superuser') {
-            $('#manager_approve').css("display", "none");
-        }
-        // check status for hide section qmr approve and dcc approve
+    //     if ($('#check_group').val() != 'manager' && $('#check_group').val() != 'superuser') {
+    //         $('#manager_approve').css("display", "none");
+    //     }
+    //     // check status for hide section qmr approve and dcc approve
 
-    } else if ($('#check_data_status').val() == 'Manager Approved') {
-        // Check status for hide section dcc approve
-        $('#dcc_approve').css("display", "none");
-        // For Copy Dept
-    $('.copy_dept').css("display","none");
+    // } else if ($('#check_data_status').val() == 'Manager Approved') {
+    //     // Check status for hide section dcc approve
+    //     $('#dcc_approve').css("display", "none");
+    //     // For Copy Dept
+    // $('.copy_dept').css("display","none");
 
-        if ($('#check_group').val() != 'qmr' && $('#check_group').val() != 'superuser') {
-            $('#qmr_approve').css("display", "none");
-        }
-        // Check status for hide section dcc approve
-    } else if ($('#check_data_status').val() == 'Qmr Approved') {
+    //     if ($('#check_group').val() != 'qmr' && $('#check_group').val() != 'superuser') {
+    //         $('#qmr_approve').css("display", "none");
+    //     }
+    //     // Check status for hide section dcc approve
+    // } else if ($('#check_data_status').val() == 'Qmr Approved') {
 
-        if ($('#check_group').val() != 'document control' && $('#check_group').val() != 'superuser') {
-            $('#dcc_approve').css("display", "none");
-            $('.copy_dept').css("display","none");
-        }
-        if($('#check_dc_data_reson').val() == "r-03" && $('#check_group').val() != 'user'){
-            $('.copy_dept').css("display","block");
-            $('#dcc_approve').css("display","none");
-        }else{
-            $('.copy_dept').css("display","none");
-            $('#dcc_approve').css("display","block");
-        }
+    //     if ($('#check_group').val() != 'document control' && $('#check_group').val() != 'superuser') {
+    //         $('#dcc_approve').css("display", "none");
+    //         $('.copy_dept').css("display","none");
+    //     }
+    //     if($('#check_dc_data_reson').val() == "r-03" && $('#check_group').val() != 'user'){
+    //         $('.copy_dept').css("display","block");
+    //         $('#dcc_approve').css("display","none");
+    //     }else{
+    //         $('.copy_dept').css("display","none");
+    //         $('#dcc_approve').css("display","none");
+    //     }
 
-    }else if ($('#check_data_status').val() == 'Complete') {
-        if($('#check_dc_data_reson').val() == "r-03"){
-            $('.copy_dept').css("display","block");
-            $('#dcc_approve').css("display","none");
-        }else{
-            $('.copy_dept').css("display","none");
-            $('#dcc_approve').css("display","block"); 
-        }
+    //     if($('#check_dc_data_reson').val() == "r-05" && $('#check_group').val() != 'user'){
+    //         $('.copy_dept').css("display","none");
+    //         $('#dcc_approve').css("display","none");
+    //         $('#dcc_approve.cancel_doc').css("display","block");
+    //     }else{
+    //         $('.copy_dept').css("display","none");
+    //         $('#dcc_approve').css("display","none");
+    //         $('#dcc_approve.cancel_doc').css("display","none");
+    //     }
+
+    // }else if ($('#check_data_status').val() == 'Complete') {
+    //     if($('#check_dc_data_reson').val() == "r-03"){
+    //         $('.copy_dept').css("display","block");
+    //         $('#dcc_approve').css("display","none");
+    //     }else{
+    //         $('.copy_dept').css("display","none");
+    //         $('#dcc_approve').css("display","block"); 
+    //     }
+
+    //     if($('#check_dc_data_reson').val() == "r-05"){
+    //         $('.copy_dept').css("display","none");
+    //         $('#dcc_approve').css("display","none");
+    //         $('#dcc_approve.cancel_doc').css("display","block");
+    //     }else{
+    //         $('.copy_dept').css("display","none");
+    //         $('#dcc_approve').css("display","none");
+    //         $('#dcc_approve.cancel_doc').css("display","none");
+    //     }
             
             
-    } else if ($('#check_data_status').val() == 'Qmr Not Approve') {
+    // } else if ($('#check_data_status').val() == 'Qmr Not Approve') {
 
-        $('#dcc_approve').css("display", "none");
-        $('.copy_dept').css("display","none");
+    //     $('#dcc_approve').css("display", "none");
+    //     $('.copy_dept').css("display","none");
 
-    } else if ($('#check_data_status').val() == 'Manager Not Approve') {
-        $('#qmr_approve').css("display", "none");
-        $('#dcc_approve').css("display", "none");
-        $('.copy_dept').css("display","none");
+    // } else if ($('#check_data_status').val() == 'Manager Not Approve') {
+    //     $('#qmr_approve').css("display", "none");
+    //     $('#dcc_approve').css("display", "none");
+    //     $('.copy_dept').css("display","none");
+    // }
+
+
+$('#manager_approve').css("display","none");
+$('#qmr_approve').css("display","none");
+$('#dcc_approve_normal').css("display","none");
+$('#dcc_approve_copydept').css("display","none");
+$('#dcc_approve_cancel').css("display","none");
+
+if ($('#check_data_status').val() == 'Open'){
+    $('#manager_approve').css("display","block");
+    if ($('#check_group').val() !== 'manager' && $('#check_group').val() !== 'superuser'){
+        $('#manager_approve').css("display","none");
     }
+
+
+}else if($('#check_data_status').val() == 'Manager Approved'){
+    $('#manager_approve').css("display","block");
+    $('#qmr_approve').css("display","block");
+    if ($('#check_group').val() !== 'manager' && $('#check_group').val() !== 'superuser'){
+        $('#qmr_approve').css("display","none");
+    }
+
+}else if($('#check_data_status').val() == 'Qmr Approved'){
+    $('#manager_approve').css("display","block");
+    $('#qmr_approve').css("display","block");
+  
+    if($('#check_dc_data_reson').val() == "r-03"){
+        $('#dcc_approve_copydept').css("display","block");
+        if($('#check_group').val() !== 'manager' && $('#check_group').val() !== 'superuser'){
+            $('#dcc_approve_copydept').css("display","none");
+        }
+    }else if($('#check_dc_data_reson').val() == "r-05"){
+        $('#dcc_approve_cancel').css("display","block");
+        if($('#check_group').val() !== 'manager' && $('#check_group').val() !== 'superuser'){
+            $('#dcc_approve_cancel').css("display","none");
+        }
+    }else{
+        $('#dcc_approve_normal').css("display","block");
+        if($('#check_group').val() !== 'manager' && $('#check_group').val() !== 'superuser'){
+            $('#dcc_approve_normal').css("display","none");
+        }
+    }
+
+}else if($('#check_data_status').val() == 'Complete'){
+    $('#manager_approve').css("display","block");
+    $('#qmr_approve').css("display","block");
+    
+    if($('#check_dc_data_reson').val() == "r-03"){
+        $('#dcc_approve_copydept').css("display","block");
+        $('.btncopydept').hide();
+    }else if($('#check_dc_data_reson').val() == "r-05"){
+        $('#dcc_approve_cancel').css("display","block");
+        $('.btncancel').hide();
+    }else{
+        $('#dcc_approve_normal').css("display","block");
+    }
+
+}else if($('#check_data_status').val() == 'Manager Not Approve'){
+    $('#manager_approve').css("display","block");
+
+}else if($('#check_data_status').val() == 'Qmr Not Approve'){
+    $('#manager_approve').css("display","block");
+    $('#qmr_approve').css("display","block");
+}
+
 
     // Check status for control every thing : Check status for control every thing
 
 
 
-    
-    // if($('#check_dc_data_reson').val() == "r-03"){
-    //     $('.copy_dept').css("display","block");
-    //     $('#dcc_approve').css("display","none");
-    // }
+
+
 
 
 

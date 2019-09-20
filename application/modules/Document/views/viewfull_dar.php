@@ -421,7 +421,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
     <!-- ผลการร้องขอ -->
 
 
-    <div id="dcc_approve">
+    <div id="dcc_approve_normal">
     <!-- สำหรับผู้ควบคุมเอกสาร -->
     <h3 class="p2 mb-3"><?= label("forstaff", $this); ?></h3>
     <form action="<?= base_url('document/save_sec4/' . $getF->dc_data_darcode); ?>" method="POST" enctype="multipart/form-data">
@@ -430,7 +430,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
             <input hidden type="text" name="dc_data_file" id="dc_data_file" value="<?= $getF->dc_data_file; ?>" />
         </div>
         <div class="form-row">
-            <label for="">เพื่อทำลายน้ำสำหรับจัดเก็บ และ แจกจ่าย หลังจากใส่ลายน้ำเรียบร้อยแล้ว ให้นำไฟล์มาอัพโหลดเข้าระบบอีกครั้งที่นี่</label>
+            <label class="all">เพื่อทำลายน้ำสำหรับจัดเก็บ และ แจกจ่าย หลังจากใส่ลายน้ำเรียบร้อยแล้ว ให้นำไฟล์มาอัพโหลดเข้าระบบอีกครั้งที่นี่</label>
         </div>
 
         <div class="form-inline mb-2">
@@ -479,7 +479,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
     </div>
 
 
-    <div id="dcc_approve" class="copy_dept">
+    <div id="dcc_approve_copydept">
         <!-- สำหรับผู้ควบคุมเอกสาร -->
         <h3 class="p2 mb-3"><?= label("forstaff", $this); ?></h3>
         <form action="<?=base_url('document/save_sec4deptedit/'.$getF->dc_data_darcode);?>" method="POST" enctype="multipart/form-data">
@@ -507,12 +507,66 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
 ?>
                 
             </div>
-            <input class="btn btn-primary " type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>">
+            <input class="btn btn-primary btncopydept" type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>">
             <input hidden type="text" name="dc_data_old_dar" id="dc_data_old_dar" value="<?=$getF->dc_data_old_dar;?>">
         </form>
     </div>
     <input hidden type="text" name="check_dc_data_reson" id="check_dc_data_reson" value="<?=get_data_reson($getF->dc_data_darcode)->dc_data_reson?>">
 
+
+
+
+
+
+    <div id="dcc_approve_cancel">
+    <!-- สำหรับผู้ควบคุมเอกสาร -->
+    <h3 class="p2 mb-3"><?= label("forstaff", $this); ?></h3>
+    <form action="<?= base_url('document/save_sec4cancel/' . $getF->dc_data_darcode); ?>" method="POST" enctype="multipart/form-data">
+        <div class="form-row">
+            <label for="">กรุณาดาวน์โหลดเอกสารต้นฉบับที่นี่ :</label>&nbsp;<label for=""><a id="dc_data_file" href="<?= base_url() ?><?= $getF->dc_data_file_location . $getF->dc_data_file; ?>" target="_blank"><?= $getF->dc_data_file; ?></a></label>
+            <input hidden type="text" name="dc_data_file" id="dc_data_file" value="<?= $getF->dc_data_file; ?>" />
+        </div>
+        <div class="form-row">
+            <label class="cancel">เพื่อทำลายน้ำสำหรับ ยกเลิกเอกสาร หลังจากใส่ลายน้ำเรียบร้อยแล้ว ให้นำไฟล์มาอัพโหลดเข้าระบบอีกครั้งที่นี่</label>
+        </div>
+
+        <div class="form-inline mb-2">
+            <div class="form-group col-md-4">
+
+                <input type="file" name="document_master" id="document_master" class="form-control m-2" accept=".pdf">
+                <label for="">อัพโหลดไฟล์สำหรับ จัดเก็บ</label>
+
+            </div>
+        </div>
+
+
+        <div class="form-row">
+            <textarea name="dc_data_method" id="dc_data_method" cols="30" rows="5" class="form-control" placeholder="การดำเนินการ"><?= $getF->dc_data_method; ?></textarea>
+        </div>
+
+        <!-- <div class="form-row">
+            <div class="form-group col-md-6 mt-2">
+            <input type="text" name="li_hashtag[]" id="li_hashtag" class="form-control" placeholder="กรุณาระบุ Hashtag เช่น #คู่มือการใช้งาน" required/>
+            <button type="button" name="dar_addmore" id="dar_addmore" class="btn btn-primary mt-2 dar_addmore"><i class="fas fa-hashtag"></i>&nbsp;เพิ่ม Hashtag</button>
+            </div>
+        </div> -->
+
+        <div class="form-row mt-3">
+            <?php
+            if ($getF->dc_data_operation == '') {
+                ?>
+            <label>ผู้ดำเนินการ : <input type="text" name="dc_data_operation" id="dc_data_operation" class="form-control" value="<?= $getuserCon; ?>"></label>
+            <?php
+            } else { ?>
+            <label>ผู้ดำเนินการ : <input disabled type="text" name="dc_data_operation" id="dc_data_operation" class="form-control" value="<?= $getF->dc_data_operation; ?>"></label>
+            <?php
+            }
+            ?>
+
+        </div>
+        <input class="btn btn-primary btncancel" type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>" onclick="javascript:return confirm('ยืนยันการบันทึกข้อมูลใช่หรือไม่')">
+    </form>
+    </div>
 
 
 

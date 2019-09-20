@@ -229,7 +229,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                         <?php }; ?>
                     </div>
                     <div class="form-row pt-3">
-                        <textarea name="dc_data_reson_detail" id="dc_data_reson_detail" cols="30" rows="5" class="form-control"></textarea>
+                        <textarea name="dc_data_reson_detail" id="dc_data_reson_detail" cols="30" rows="5" class="form-control" required></textarea>
                     </div>
                     <div style="text-align:center;color:red;" class="mt-3 p-2 border"><?= label('memo1', $this); ?></div>
                     <hr>
@@ -298,7 +298,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 <input hidden type="text" name="dc_data_darcode" id="dc_data_darcode" value="<?=$get_fulldatas->dc_data_darcode?>">
 <input hidden type="text" name="dc_data_file" id="dc_data_file" value="<?=$get_fulldatas->dc_data_file?>">
 <input hidden type="text" name="dc_data_file_location" id="dc_data_file_location" value="<?=$get_fulldatas->dc_data_file_location?>">
-<input hidden type="text" name="dc_data_old_dar" id="dc_data_old_dar" value="<?=$get_last_dars->related_dept_darcode?>">
+<input hidden type="text" name="dc_data_old_dar" id="dc_data_old_dar" value="<?=$get_last_dars->dc_data_darcode?>">
 <input hidden type="text" name="dc_data_depts" id="dc_data_depts" value="<?=$get_fulldatas->dc_data_dept?>">
 
 

@@ -173,11 +173,14 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
 
                                     <?php
-                                    $checkEdit = $this->db->query("SELECT dc_data_edit FROM dc_datamain WHERE dc_data_doccode='$get_fulldatas->dc_data_doccode' AND dc_data_edit > '0' ");
+                                    $checkEdit = $this->db->query("SELECT dc_data_edit FROM dc_datamain WHERE dc_data_doccode='$get_fulldatas->dc_data_doccode' AND dc_data_edit > '0' ORDER BY dc_data_id DESC ");
                                     $checkNumRow = $checkEdit->num_rows();
+                                    $result_edit= $checkEdit->row();
+                                    $count_data_edit = $result_edit->dc_data_edit;
+                                    $count_data_edit++;
                                     $checkNumRow++;
                                     ?>
-                                    <label for=""><?= label("doc_num_edit", $this); ?>&nbsp;&nbsp;<input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $checkNumRow; ?>" class="form-control" readonly ></label>
+                                    <label for=""><?= label("doc_num_edit", $this); ?>&nbsp;&nbsp;<input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $count_data_edit; ?>" class="form-control" readonly ></label>
                                 </div>
                             </div>
 
@@ -254,7 +257,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
     INNER JOIN dc_related_dept_use ON dc_related_dept.related_code = dc_related_dept_use.related_dept_code
     INNER JOIN dc_datamain ON dc_related_dept_use.related_dept_doccode = dc_datamain.dc_data_doccode
     
-    WHERE dc_data_doccode= '$get_fulldatas->dc_data_doccode' ");
+    WHERE related_dept_darcode= '$get_fulldatas->dc_data_darcode' ");
 
                             $checked = '';
                             foreach ($query_related_use->result_array() as $get_related_use) {

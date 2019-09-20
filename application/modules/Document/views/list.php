@@ -56,11 +56,8 @@
                                 $tdcolor = '';
                             }
 
-                            if ($rslist['dc_data_reson'] == "r-05") {
-                                $linkpage = "view_cancel_document/";
-                            }else{
+                           
                                 $linkpage = "viewfull/";
-                            }
                             ?>
 
 

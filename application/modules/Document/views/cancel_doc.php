@@ -127,12 +127,10 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                         <!-- Right content -->
                         <div class="col-sm-6 border p-2">
                             <div class="form-group">
-                                <div class="form-inline">
+                            <div class="form-inline">
                                     <!-- วันที่ร้องขอ -->
                                     <label for=""><?= label("date_request", $this); ?>&nbsp;</label>
-                                    <!-- <input class="input-medium form-control datepicker" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date" value="<?=$get_fulldatas->dc_data_date;?>"> -->
-
-                                    <input readonly class="form-control" type="text" name="dc_data_date" id="dc_data_date" value="<?=$get_fulldatas->dc_data_date;?>">
+                                    <input disabled class="input-medium form-control datepicker" type="date" data-value="<?=date('Y/m/d')?>" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date">
 
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <!-- ผู้ร้องขอ -->
@@ -177,17 +175,15 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
 
                                     
-                                    <label for=""><?= label("doc_num_edit", $this); ?>&nbsp;&nbsp;<input disabled type="number" name="dc_data_edit" id="dc_data_edit" value="" class="form-control"></label>
+                                    <label for=""><?= label("doc_num_edit", $this); ?>&nbsp;&nbsp;<input readonly type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $get_fulldatas->dc_data_edit; ?>" class="form-control"></label>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="form-inline">
                                     <label for=""><?= label("date_start_use", $this); ?>&nbsp;&nbsp;</label>
-                                    <!-- <input disabled class="input-medium form-control datepicker" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date_start" id="dc_data_date_start" value="<?= $get_fulldatas->dc_data_date_start; ?>"> -->
+                                    <input disabled class="input-medium form-control datepicker" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date_start" id="dc_data_date_start" data-value="<?= $get_fulldatas->dc_data_date_start?>">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                    <input readonly class="form-control" type="text" id="dc_data_date_start" name="dc_data_date_start" value="<?= $get_fulldatas->dc_data_date_start; ?>"/>
 
                                 </div>
                             </div>
@@ -252,13 +248,14 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
     dc_related_dept_use.related_dept_darcode,
     dc_related_dept_use.related_dept_id,
     dc_related_dept_use.related_dept_code,
+    dc_related_dept_use.related_dept_status,
     dc_datamain.dc_data_doccode
     FROM
     dc_related_dept
     INNER JOIN dc_related_dept_use ON dc_related_dept.related_code = dc_related_dept_use.related_dept_code
     INNER JOIN dc_datamain ON dc_related_dept_use.related_dept_darcode = dc_datamain.dc_data_darcode
     
-    WHERE dc_data_doccode= '$get_fulldatas->dc_data_doccode' ");
+    WHERE related_dept_darcode= '$get_fulldatas->dc_data_darcode' ");
 
                             $checked = '';
                             foreach ($query_related_use->result_array() as $get_related_use) {
@@ -271,7 +268,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                             ?>
 
                             <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                                <label class="checkbox-inline"><input <?= $checked ?> class="related_dept" type="checkbox" name="related_dept_code[]" id="related_dept_code" value="<?php echo $rs_related_dept['related_code']; ?>" />&nbsp;<?php echo $rs_related_dept['related_dept_name']; ?></label>
+                                <label class="checkbox-inline"><input <?= $checked ?> class="related_dept" type="checkbox" name="related_dept_code[]" id="related_dept_code" value="<?php echo $rs_related_dept['related_code']; ?>" onclick="return false">&nbsp;<?php echo $rs_related_dept['related_dept_name']; ?></label>
                             </div>
                             <!-- Related dept loop -->
                         <?php }; ?>
@@ -296,13 +293,13 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
     $get_last_dars = $get_last_dar->row();
 ?>
 
-<input type="text" name="dc_data_doccode" id="dc_data_doccode" value="<?=$get_fulldatas->dc_data_doccode?>">
-<input type="text" name="dc_data_doccode_display" id="dc_data_doccode_display" value="<?=$get_fulldatas->dc_data_doccode_display?>">
-<input type="text" name="dc_data_darcode" id="dc_data_darcode" value="<?=$get_fulldatas->dc_data_darcode?>">
-<input type="text" name="dc_data_file" id="dc_data_file" value="<?=$get_fulldatas->dc_data_file?>">
-<input type="text" name="dc_data_file_location" id="dc_data_file_location" value="<?=$get_fulldatas->dc_data_file_location?>">
-<input type="text" name="dc_data_old_dar" id="dc_data_old_dar" value="<?=$get_last_dars->related_dept_darcode?>">
-<input type="text" name="dc_data_depts" id="dc_data_depts" value="<?=$get_fulldatas->dc_data_dept?>">
+<input hidden type="text" name="dc_data_doccode" id="dc_data_doccode" value="<?=$get_fulldatas->dc_data_doccode?>">
+<input hidden type="text" name="dc_data_doccode_display" id="dc_data_doccode_display" value="<?=$get_fulldatas->dc_data_doccode_display?>">
+<input hidden type="text" name="dc_data_darcode" id="dc_data_darcode" value="<?=$get_fulldatas->dc_data_darcode?>">
+<input hidden type="text" name="dc_data_file" id="dc_data_file" value="<?=$get_fulldatas->dc_data_file?>">
+<input hidden type="text" name="dc_data_file_location" id="dc_data_file_location" value="<?=$get_fulldatas->dc_data_file_location?>">
+<input hidden type="text" name="dc_data_old_dar" id="dc_data_old_dar" value="<?=$get_last_dars->dc_data_darcode?>">
+<input hidden type="text" name="dc_data_depts" id="dc_data_depts" value="<?=$get_fulldatas->dc_data_dept?>">
 
 
 
@@ -310,85 +307,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                 <hr>
                 <!-- หน่วยงานที่เกี่ยวข้อง -->
 
-
-                <!-- ผลการร้องขอ -->
-                <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('managerapprove', $this) ?></h3>
-                <form action="save_sec2_edit_dept" method="POST" name="">
-                    <div class="form-row">
-                        <div><label for=""><input disabled type="radio" name="result_request_status" id="result_request_status1" value="1">&nbsp;&nbsp;<?= label('result_status1', $this); ?></label></div>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <div><label for=""><input disabled type="radio" name="result_request_status" id="result_request_status0" value="0">&nbsp;&nbsp;<?= label('result_status0', $this); ?></label></div>
-                        <textarea disabled name="text_result_request" id="text_result_request" cols="30" rows="5" class="form-control" placeholder="<?= label('text_result_request', $this); ?>"></textarea>
-                    </div>
-
-                    <div class="form-row mt-3">
-                        <div class="col-md-9 border p-5">
-                            <label style="color:red;"><?= label('memo3', $this); ?> :&nbsp;</label><label for=""><?= label('memo4', $this); ?></label>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for=""><?= label("approvers", $this); ?></label>
-                                <input disabled type="text" class="form-control" name="" id="">
-                                <input disabled type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec2">
-                            </div>
-                </form>
-
-            </div>
-
-
-        </div>
-        <hr>
-        <!-- ผลการร้องขอ -->
-
-
-        <!-- ผลการร้องขอ -->
-        <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('qmrapprove', $this) ?></h3>
-        <form action="" method="POST" name="">
-            <div class="form-row">
-
-                <div><label for=""><input disabled type="radio" name="dc_data_result_reson_status2" id="dc_data_result_reson_status1" value="1">&nbsp;&nbsp;<?= label('result_status1', $this); ?></label></div>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <div><label for=""><input disabled type="radio" name="dc_data_result_reson_status2" id="dc_data_result_reson_status0" value="0">&nbsp;&nbsp;<?= label('result_status0', $this); ?></label></div>
-
-                <textarea disabled name="dc_data_result_reson_detail2" id="dc_data_result_reson_detail2" cols="30" rows="5" class="form-control" placeholder="<?= label('text_result_request', $this); ?>"></textarea>
-            </div>
-
-            <div class="form-row mt-3">
-                <div class="col-md-9 border p-5">
-                    <label style="color:red;"><?= label('memo3', $this); ?> :&nbsp;</label><label for=""><?= label('memo4', $this); ?></label>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for=""><?= label("approvers", $this); ?></label>
-
-                        <input disabled type="text" class="form-control" name="dc_data_approve_qmr" id="dc_data_approve_qmr" value="">
-                        <input disabled type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec3" id="btnSave_sec3">
-                    </div>
-        </form>
-        <!-- ผลการร้องขอ -->
-    </div>
-    </div>
-    <hr>
-    <!-- ผลการร้องขอ -->
-
-
-    <!-- สำหรับผู้ควบคุมเอกสาร -->
-    <h3 class="p2 mb-3"><?= label("forstaff", $this); ?></h3>
-    <form action="">
-        <div class="form-row">
-            <textarea disabled name="staff_action" id="staff_action" cols="30" rows="5" class="form-control" placeholder="การดำเนินการ"></textarea>
-        </div>
-        <div class="form-row mt-3">
-            <label><?= label('operator_label', $this); ?> : <input disabled type="text" name="" id="" class="form-control"></label>
-        </div>
-        <input disabled class="btn btn-primary " type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>">
-    </form>
-
     </div><!-- Main Section -->
-
-
-
-
 
 
 

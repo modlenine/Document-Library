@@ -26,7 +26,7 @@
                 <div class="row">
                 <div class="col-md-8">
 
-                    <?php foreach ($view_full_data->result_array() as $get_file2s) {
+                <?php foreach ($view_full_data->result_array() as $get_file2s) {
                         if ($get_file2s['lib_main_status'] == "inactive") {
                             $cardcolor = " background-color:#F5F5F5!important;color:#696969!important; ";
                         } else {
@@ -76,7 +76,7 @@
                                     FROM
                                     dc_type_use
                                     INNER JOIN dc_type ON dc_type.dc_type_code = dc_type_use.dc_type_use_code
-                                    WHERE dc_type_use_doccode = '$dcdoccode' ");
+                                    WHERE dc_type_use_doccode = '$dcdoccode' && dc_type_use_status ='active' ");
 
                                                 foreach ($get_doc_type->result_array() as $get_doc_types) {
                                                     echo "<label>" . $get_doc_types['dc_type_name'] . "</label>&nbsp;,&nbsp;";
@@ -111,6 +111,30 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label for="" class=""><b>ระยะเวลาจัดเก็บ :</b></label>&nbsp;<?= $get_file2s['dc_data_store']; ?>&nbsp;<?= $get_file2s['dc_data_store_type']; ?>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row mb-2">
+                                        <div class="col-md-6">
+                                            <label><b>ประเภทการร้องขอ :</b>&nbsp;<?= get_reason($get_file2s['dc_data_reson']) ?></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for=""><b>รายละเอียดการร้องขอ :</b>&nbsp;<a class="reason_detail" href="#" data-toggle="modal" data-target="#reason_detail"
+                                            data_reason_detail = "<?=$get_file2s['dc_data_reson_detail']?>"
+                                            >ดูรายละเอียด&nbsp;<i class="fas fa-search-plus" style="font-size:18px;"></i></a></label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label for=""><b>แผนกที่เกี่ยวข้อง :&nbsp;</b></label>
+                                            <?php
+                                            
+                                            foreach(get_related_use($get_file2s['dc_data_darcode'])->result_array() as $get_ru){
+                                                echo $get_ru['related_dept_name']."&nbsp;,&nbsp;";
+                                            } ?>
                                         </div>
                                     </div>
 
@@ -156,10 +180,4 @@
 
 
 
-            </div>
-        </div>
-    </div>
-
-</body>
-
-</html>
+ 

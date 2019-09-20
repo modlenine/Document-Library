@@ -76,7 +76,7 @@ class Get_staff_model extends CI_Model{
             INNER JOIN dc_datamain ON dc_datamain.dc_data_darcode = library_main.lib_main_darcode
             INNER JOIN dc_reason_request ON dc_reason_request.dc_reason_code = dc_datamain.dc_data_reson
             INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
-            WHERE lib_main_doccode = '$doccode' ORDER BY dc_data_edit DESC ");
+            WHERE lib_main_doccode = '$doccode' ORDER BY dc_data_id DESC ");
     }
 
     public function save_dept()

@@ -205,14 +205,11 @@ WHERE dc_data_doccode = '$doccode' ORDER BY dc_data_id DESC LIMIT 1 ");
 public function get_last_dar($doccode)
 {
     return $this->db->query("SELECT
-    dc_related_dept_use.related_dept_id,
-    dc_related_dept_use.related_dept_darcode,
-    dc_related_dept_use.related_dept_doccode,
-    dc_related_dept_use.related_dept_code
+    dc_datamain.dc_data_darcode
     FROM
-    dc_related_dept_use
-    WHERE related_dept_doccode = '$doccode' 
-    ORDER BY related_dept_darcode DESC LIMIT 1");
+    dc_datamain
+    WHERE dc_data_doccode = '$doccode' && dc_data_status = 'Complete' 
+    ORDER BY dc_data_id DESC LIMIT 1");
 }
 
 

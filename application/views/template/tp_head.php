@@ -180,7 +180,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 ?>
 
                                 <!-- Check Section -->
-                                <input  type="text" name="check_group" id="check_group" value="<?=$getdatarow->dc_gp_permis_name?>" />
+                                <input hidden type="text" name="check_group" id="check_group" value="<?=$getdatarow->dc_gp_permis_name?>" />
                                 <input hidden type="text" name="check_username" id="check_username" value="<?= $getuserCon?>">
                                 <input hidden type="text" name="check_new_deptcode" id="check_new_deptcode" value="<?=$deptcode?>">
                                 <!-- Check Section -->
@@ -365,20 +365,20 @@ error_reporting(E_ALL & ~E_NOTICE);
                             <li class="<?= $doc_list ?>">
                                 <a href="#">
                                     <i class="metismenu-icon fas fa-folder"></i>
-                                    รายการเอกสาร
+                                    รายการคำร้อง
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                 </a>
                                 <ul>
                                     <li>
                                         <a class="navleft <?= $doc_list_iso ?>" href="<?= base_url("document/list_dar") ?>">
                                             <i class="metismenu-icon">
-                                            </i>รายการเอกสาร ISO
+                                            </i>รายการคำร้องเอกสาร ISO
                                         </a>
                                     </li>
                                     <li>
                                         <a class="navleft <?= $doc_list_gl ?>" href="<?= base_url("document/list_generel"); ?>">
                                             <i class="metismenu-icon">
-                                            </i>รายการเอกสารทั่วไป
+                                            </i>รายการคำร้องเอกสารทั่วไป
                                         </a>
                                     </li>
 
@@ -406,20 +406,20 @@ error_reporting(E_ALL & ~E_NOTICE);
                             <li class="<?= $add_doc ?>">
                                 <a href="#">
                                     <i class="metismenu-icon fas fa-folder-plus"></i>
-                                    เพิ่มเอกสาร
+                                    เพิ่มคำร้อง
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                 </a>
                                 <ul>
                                     <li>
                                         <a class="navleft <?= $add_iso ?>" href="<?= base_url("document/add_dar"); ?>">
                                             <i class="metismenu-icon">
-                                            </i>เพิ่มเอกสาร ISO
+                                            </i>เพิ่มคำร้องเอกสาร ISO
                                         </a>
                                     </li>
                                     <li>
                                         <a class="navleft <?= $add_gl ?>" href="<?= base_url('document/add_gl_doc') ?>">
                                             <i class="metismenu-icon">
-                                            </i>เพิ่มเอกสาร ทั่วไป
+                                            </i>เพิ่มคำร้องเอกสาร ทั่วไป
                                         </a>
                                     </li>
 
@@ -429,22 +429,22 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 
                             <?php
-                            if ($this->uri->segment(2) == "manage_dept" || $this->uri->segment(2) == "select_dept") {
+                            if ($this->uri->segment(2) == "") {
+                                $isolist = 'mm-active';
+                               
+                            }else if($this->uri->segment(2) == "manage_dept"){
                                 $foradmin = 'mm-active';
-                                $manage_d = 'mm-active';
-                                $manage_u = '';
-                            }else if($this->uri->segment(2) == "view_user"){
+                                $manage_dept = 'mm-active';
+                                $isolist = '';
+                            } else if($this->uri->segment(2) == "view_user"){
                                 $foradmin = 'mm-active';
-                                $manage_u = 'mm-active';
-                                $manage_d = '';
-                            } else {
-                                $foradmin = '';
-                                $manage_d = '';
-                                $manage_u = '';
+                                $view_user = 'mm-active';
+                                $manage_dept = '';
+                                
                             }
                             ?>
                             <li id="admin_section"class="app-sidebar__heading"></i>For Admin</li>
-                            <li id="admin_section" class="<?= $foradmin ?>">
+                            <li id="admin_section" class="<?=$foradmin?>">
                                 <a href="#">
                                     <i class="metismenu-icon fas fa-user-shield"></i>
                                     สำหรับผู้ดูแลระบบ
@@ -452,7 +452,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 </a>
                                 <ul>
                                     <li>
-                                        <a class="navleft <?= $manage_d ?>" href="<?= base_url('staff/manage_dept') ?>">
+                                        <a class="navleft <?=$manage_dept?>" href="<?= base_url('staff/manage_dept') ?>">
                                             <i class="metismenu-icon"></i>
                                             จัดการตู้เอกสารทั่วไป
                                         </a>
@@ -461,7 +461,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                         <hr>
                                     </li>
                                     <li>
-                                        <a class="navleft <?= $manage_u ?>" href="<?= base_url('staff/view_user') ?>">
+                                        <a class="navleft <?= $view_user ?>" href="<?= base_url('staff/view_user') ?>">
                                             <i class="metismenu-icon"></i>
                                             จัดการผู้ใช้งาน
                                         </a>
@@ -469,7 +469,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 </ul>
                             </li>
 
-                            <li id="admin_section">
+                            <li id="admin_section" class="<?= $isolist ?>">
                                 <a href="#">
                                     <i class="metismenu-icon fas fa-folder"></i>
                                     รายการเอกสาร
@@ -477,17 +477,17 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="<?= base_url('staff') ?>" class="">
+                                        <a href="<?= base_url('staff') ?>" class="<?= $isolist ?>">
                                             <i class="metismenu-icon"></i>
                                             ตู้เอกสาร ISO
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="<?= base_url('staff') ?>" class="">
+                                    <!-- <li>
+                                        <a href="<?= base_url('staff/gl/') ?>" class="">
                                             <i class="metismenu-icon"></i>
                                             ตู้เอกสาร ทั่วไป
                                         </a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </li>
 

@@ -23,6 +23,17 @@ class Staff extends MX_Controller{
         
     }
 
+
+    public function gl()
+    {
+        check_login();
+        check_permis();
+        $data['get_doc_list'] = $this->get_staff_model->get_doc_list();
+        get_head();
+        get_contents("gl",$data);
+        get_footer();
+    }
+
     
     public function view_full_data($doccode)
     {
