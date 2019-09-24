@@ -125,26 +125,50 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
                         <!-- Right content -->
                         <div class="col-sm-6 border p-2">
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <!-- วันที่ร้องขอ -->
-                                    <label for=""><?= label("date_request", $this); ?>&nbsp;</label>
-                                    <input class="input-medium form-control datepicker" type="date" data-value="<?=date('Y/m/d')?>" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date">
 
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <!-- ผู้ร้องขอ -->
-                                    <label for=""><?= label("user_request", $this); ?>&nbsp;<input readonly type="text" name="dc_data_user" id="dc_data_user" value="<?= $username; ?>" class="form-control"></label>
+
+                        <div class="row mb-2">
+                                <!-- Date request -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="text-center"><?= label("date_request", $this); ?>&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <input class="input-medium form-control datepicker" type="date" data-value="<?=date('Y/m/d')?>" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date">
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- Date request -->
+
+                                <!-- User Request -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("user_request", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <input readonly type="text" name="dc_data_user" id="dc_data_user" value="<?= $username; ?>" class="form-control">
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- User Request -->
+
                             </div>
 
 
 
-                            <div class="form-group">
-                                <div class="form-inline">
 
-                                    <!-- Department section -->
-                                    <label for=""><?= label("department", $this); ?></label>&nbsp;&nbsp;
-                                    <select readonly name="dc_data_dept" id="dc_data_dept" class="form-control">
+                            <div class="row mb-2">
+                                <!-- Department -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("department", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <select readonly name="dc_data_dept" id="dc_data_dept" class="form-control">
                                         <option value="<?= $get_fulldatas->dc_dept_code; ?>"><?= $get_fulldatas->dc_dept_main_name; ?></option>
 
                                         <!-- <?php
@@ -154,25 +178,44 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                         ?> -->
 
                                     </select>
-                                    <!-- Department section -->
-
-                                    <!-- Document name section -->
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label for=""><?= label("doc_name", $this); ?>&nbsp;&nbsp;<input readonly type="text" name="dc_data_docname" id="dc_data_docname" value="<?= $get_fulldatas->dc_data_docname; ?>" class="form-control"></label>
-                                    <!-- Document name section -->
-
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- Department -->
+
+                                <!-- Document name -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("doc_name", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <input readonly type="text" name="dc_data_docname" id="dc_data_docname" value="<?= $get_fulldatas->dc_data_docname; ?>" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Document name -->
                             </div>
 
 
 
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <label for=""><?= label("doc_id", $this); ?>&nbsp;&nbsp;<input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $get_fulldatas->dc_data_doccode_display; ?>"></label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <div class="row mb-2">
+                                <!-- Doccode -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("doc_id", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $get_fulldatas->dc_data_doccode_display; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Doccode -->
 
 
-                                    <?php
+                                <?php
                                     $checkEdit = $this->db->query("SELECT dc_data_edit FROM dc_datamain WHERE dc_data_doccode='$get_fulldatas->dc_data_doccode' AND dc_data_edit > '0' ORDER BY dc_data_id DESC ");
                                     $checkNumRow = $checkEdit->num_rows();
                                     $result_edit= $checkEdit->row();
@@ -180,30 +223,60 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                     $count_data_edit++;
                                     $checkNumRow++;
                                     ?>
-                                    <label for=""><?= label("doc_num_edit", $this); ?>&nbsp;&nbsp;<input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $count_data_edit; ?>" class="form-control" readonly></label>
+                                <!-- Doc Edit -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("doc_num_edit", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $count_data_edit; ?>" class="form-control" readonly>
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- Doc Edit -->
+
                             </div>
 
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <label for=""><?= label("date_start_use", $this); ?>&nbsp;&nbsp;</label>
-                                    <input class="input-medium form-control datepicker" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date_start" id="dc_data_date_start">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+
+                            <div class="row mb-2">
+                                <!-- Date Start -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("date_start_use", $this); ?>&nbsp;&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <input class="input-medium form-control datepicker" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date_start" id="dc_data_date_start">
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- Date Start -->
+
                             </div>
 
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <label for=""><?= label("time_store", $this); ?>&nbsp;&nbsp;<input type="number" name="dc_data_store" id="dc_data_store" value="<?= $get_fulldatas->dc_data_store; ?>" class="form-control">&nbsp;
+
+
+                            <div class="row">
+                                                <!-- Doc Store -->
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for=""><?= label("time_store", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8 form-inline">
+                                        <input type="number" name="dc_data_store" id="dc_data_store" value="<?= $get_fulldatas->dc_data_store; ?>" class="form-control">
                                         <select name="dc_data_store_type" id="dc_data_store_type" class="form-control">
                                             <option value="<?= $get_fulldatas->dc_data_store_type; ?>"><?= $get_fulldatas->dc_data_store_type; ?></option>
                                             <option value="เดือน">เดือน</option>
                                             <option value="ปี">ปี</option>
                                         </select>
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- Doc Store -->
                             </div>
-
 
                         </div>
                         <!-- Right content -->

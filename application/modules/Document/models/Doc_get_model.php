@@ -393,15 +393,11 @@ public function get_last_dar($doccode)
                 echo "</script>";
                 exit();
             }else {
-                echo "<script>";
-                echo "alert('ข้อมูลถูกต้องครบถ้วน')";
-                echo "</script>";
+                echo "ข้อมูลถูกต้องครบถ้วน";
             }
 
             // เสร็จสิ้นขั้นตอนการตรวจสอบค่าว่าง
 
-        } else {
-            echo "ไม่มีการกดปุ่มมา";
         }
     }
     
@@ -499,15 +495,11 @@ public function get_last_dar($doccode)
                 echo "</script>";
                 exit();
             }else {
-                echo "<script>";
-                echo "alert('ข้อมูลถูกต้องครบถ้วน')";
-                echo "</script>";
+                echo "ข้อมูลถูกต้องครบถ้วน";
             }
 
             // เสร็จสิ้นขั้นตอนการตรวจสอบค่าว่าง
 
-        } else {
-            echo "ไม่มีการกดปุ่มมา";
         }
     }
 

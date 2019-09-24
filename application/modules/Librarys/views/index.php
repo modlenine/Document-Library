@@ -512,6 +512,7 @@ if(isset($_POST['btn_search_hashtag'])){
  library_hashtag.li_hashtag_id,
  library_hashtag.li_hashtag_doc_code,
  library_hashtag.li_hashtag_name,
+ library_hashtag.li_hashtag_status,
  dc_related_dept.related_dept_name,
  dc_related_dept.related_code,
  dc_related_dept_use.related_dept_code
@@ -519,7 +520,7 @@ if(isset($_POST['btn_search_hashtag'])){
  library_hashtag
  INNER JOIN dc_related_dept_use ON dc_related_dept_use.related_dept_doccode = library_hashtag.li_hashtag_doc_code
  INNER JOIN dc_related_dept ON dc_related_dept.related_code = dc_related_dept_use.related_dept_code
- WHERE dc_related_dept_use.related_dept_code = '$rsget->related_code'
+ WHERE dc_related_dept_use.related_dept_code = '$rsget->related_code' && library_hashtag.li_hashtag_status = 'active'
  GROUP BY li_hashtag_name DESC LIMIT 50");
 
                                 foreach ($query->result_array() as $rs) {

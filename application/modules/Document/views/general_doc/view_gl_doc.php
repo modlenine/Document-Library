@@ -27,8 +27,10 @@ $get_view_docs = $get_view_doc->row();
             <div class="container-fulid border p-4 bg-white">
                 <!-- Main Section -->
 
-
-                <h2 style="text-align:center;">Form ขอใช้งานเอกสารภายใน</h2><label style="float:right;"><b>สถานะ :</b>&nbsp;<?=$get_view_docs->gl_doc_status;?></label><br>
+<div class="row" style="float:right;">
+<label style="float:right;"><b>สถานะ :</b>&nbsp;<?=$get_view_docs->gl_doc_status;?></label>
+</div>
+                <h2 style="text-align:center;">Form ขอใช้งานเอกสารภายใน</h2>
                 <input hidden type="text" name="check_gl_status" id="check_gl_status" value="<?=$get_view_docs->gl_doc_status;?>"/>
                 <!-- <form action="<?=base_url('document/save_gl_doc')?>" method="post" name="" enctype="multipart/form-data"> -->
 
@@ -42,6 +44,8 @@ $get_view_docs = $get_view_doc->row();
                         <div class="form-group col-md-3">
                             <label for="">ผู้ร้องขอ</label>
                             <input type="text" name="gl_doc_username" id="gl_doc_username" class="form-control read" value="<?=$get_view_docs->gl_doc_username;?>">
+                            <input hidden type="text" name="check_dc_data_user" id="check_dc_data_user" value="<?= $get_view_docs->gl_doc_username; ?>">
+                                            <!-- Check owner user for btn_edit -->
                         </div>
 
                         <div class="form-group col-md-3">

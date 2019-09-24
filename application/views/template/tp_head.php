@@ -208,6 +208,8 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 <div class="widget-content-left  ml-3 header-user-info">
                                     <div class="widget-heading">
                                         <?= $getuserCon; ?>
+                                        <input hidden type="text" name="check_userlogin" id="check_userlogin" value="<?= $getuserCon; ?>">
+                                        <!-- Check user permission for btn_edit -->
                                     </div>
                                     <div class="widget-subheading">
                                         <?= $getuser->ecode; ?> - <?= $getuser->DeptCode; ?>
@@ -374,13 +376,13 @@ error_reporting(E_ALL & ~E_NOTICE);
                                     <li>
                                         <a class="navleft <?= $doc_list_iso ?>" href="<?= base_url("document/list_dar") ?>">
                                             <i class="metismenu-icon">
-                                            </i>รายการคำร้องเอกสาร ISO&nbsp;<span class="badge badge-pill badge-success"><?=count_darfile()?></span>
+                                            </i><span class="badge badge-pill badge-success"><?=count_darfile()?></span>&nbsp;&nbsp;รายการคำร้องเอกสาร ISO
                                         </a>
                                     </li>
                                     <li>
                                         <a class="navleft <?= $doc_list_gl ?>" href="<?= base_url("document/list_generel"); ?>">
                                             <i class="metismenu-icon">
-                                            </i>รายการคำร้องเอกสารทั่วไป&nbsp;<span class="badge badge-pill badge-warning"><?=count_glfile()?></span>
+                                            </i><span class="badge badge-pill badge-warning"><?=count_glfile()?></span>&nbsp;&nbsp;รายการคำร้องเอกสารทั่วไป
                                         </a>
                                     </li>
 

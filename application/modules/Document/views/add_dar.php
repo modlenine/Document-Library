@@ -88,79 +88,148 @@
 
                         <!-- Right content -->
                         <div class="col-sm-6 border p-2">
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <!-- วันที่ร้องขอ -->
-                                    <label for=""><?= label("date_request", $this); ?>&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>&nbsp;
-                                    <input class="input-medium form-control datepicker" data-value="<?= date('Y/m/d') ?>" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date">
 
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <!-- ผู้ร้องขอ -->
-                                    <label for=""><?= label("user_request", $this); ?>&nbsp;<input readonly type="text" name="dc_data_user" id="dc_data_user" value="<?= $username; ?>" class="form-control"></label>
+                            <div class="row mb-2">
+                                <!-- Date request -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="text-center"><?= label("date_request", $this); ?>&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input class="input-medium form-control datepicker" data-value="<?= date('Y/m/d') ?>" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date">
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- Date request -->
+
+                                <!-- User Request -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("user_request", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input readonly type="text" name="dc_data_user" id="dc_data_user" value="<?= $username; ?>" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- User Request -->
+
+                            </div>
+
+
+                            <div class="row mb-2">
+                                <!-- Department -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("department", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select name="dc_data_dept" id="dc_data_dept" class="form-control">
+                                                <?php
+                                                $get_newuser = get_newuser($_SESSION['username']);
+                                                $get_dept_code = get_dept_byuser($get_newuser->dc_user_new_dept_code);
+                                                ?>
+                                                <option value="<?= $get_dept_code->dc_dept_code; ?>"><?= $get_dept_code->dc_dept_main_name; ?></option>
+
+                                                <?php
+                                                foreach ($get_dept->result_array() as $rs_gd) {
+                                                    echo "<option value='" . $rs_gd['dc_dept_code'] . "'>" . $rs_gd['dc_dept_main_name'] . "</option>";
+                                                }
+                                                ?>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Department -->
+
+                                <!-- Document name -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("doc_name", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" name="dc_data_docname" id="dc_data_docname" value="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Document name -->
                             </div>
 
 
 
-                            <div class="form-group">
-                                <div class="form-inline">
-
-                                    <!-- Department section -->
-                                    <label for=""><?= label("department", $this); ?></label>&nbsp;&nbsp;
-                                    <select name="dc_data_dept" id="dc_data_dept" class="form-control">
-                                        <?php
-                                        $get_newuser = get_newuser($_SESSION['username']);
-                                        $get_dept_code = get_dept_byuser($get_newuser->dc_user_new_dept_code);
-                                        ?>
-                                        <option value="<?= $get_dept_code->dc_dept_code; ?>"><?= $get_dept_code->dc_dept_main_name; ?></option>
-
-                                        <?php
-                                        foreach ($get_dept->result_array() as $rs_gd) {
-                                            echo "<option value='" . $rs_gd['dc_dept_code'] . "'>" . $rs_gd['dc_dept_main_name'] . "</option>";
-                                        }
-                                        ?>
-
-                                    </select>
-                                    <!-- Department section -->
-
-                                    <!-- Document name section -->
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label for=""><?= label("doc_name", $this); ?>&nbsp;&nbsp;<input type="text" name="dc_data_docname" id="dc_data_docname" value="" class="form-control"></label>
-                                    <!-- Document name section -->
-
+                            <div class="row mb-2">
+                                <!-- Doccode -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("doc_id", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control">
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- Doccode -->
+
+                                <!-- Doc Edit -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("doc_num_edit", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input readonly type="number" name="dc_data_edit" id="dc_data_edit" value="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Doc Edit -->
+
                             </div>
 
 
 
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <label for=""><?= label("doc_id", $this); ?>&nbsp;&nbsp;<input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control"></label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label for=""><?= label("doc_num_edit", $this); ?>&nbsp;&nbsp;<input readonly type="number" name="dc_data_edit" id="dc_data_edit" value="" class="form-control"></label>
+                            <div class="row mb-2">
+                                <!-- Date Start -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("date_start_use", $this); ?>&nbsp;&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input class="input-medium form-control datepicker" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date_start" id="dc_data_date_start">
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- Date Start -->
+
+                                
+
                             </div>
 
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <label for=""><?= label("date_start_use", $this); ?>&nbsp;&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>&nbsp;
-                                    <input class="input-medium form-control datepicker" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date_start" id="dc_data_date_start">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="row">
+                                                <!-- Doc Store -->
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for=""><?= label("time_store", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8 form-inline">
+                                            <input type="number" name="dc_data_store" id="dc_data_store" value="" class="form-control">
+                                            <select name="dc_data_store_type" id="dc_data_store_type" class="form-control">
+                                                <option value="ปี">ปี</option>
+                                                <option value="เดือน">เดือน</option>
 
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- Doc Store -->
                             </div>
-
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <label for=""><?= label("time_store", $this); ?>&nbsp;&nbsp;<input type="number" name="dc_data_store" id="dc_data_store" value="" class="form-control">&nbsp;
-                                        <select name="dc_data_store_type" id="dc_data_store_type" class="form-control">
-                                            <option value="ปี">ปี</option>
-                                            <option value="เดือน">เดือน</option>
-
-                                        </select>
-                                </div>
-                            </div>
-
 
                         </div>
                         <!-- Right content -->
@@ -183,7 +252,7 @@
                                 }
                                 ?>
                             <div class="col-lg-3 col-md-3 col-sm-3 col-6">
-                                <label class="checkbox-inline"><input <?= $checked ?> type="radio" name="dc_data_reson" id="dc_data_reson" value="<?php echo $rs_reason['dc_reason_code']; ?>" onclick="return false"/>&nbsp;<?php echo $rs_reason['dc_reason_name']; ?></label>
+                                <label class="checkbox-inline"><input <?= $checked ?> type="radio" name="dc_data_reson" id="dc_data_reson" value="<?php echo $rs_reason['dc_reason_code']; ?>" onclick="return false" />&nbsp;<?php echo $rs_reason['dc_reason_name']; ?></label>
                             </div>
                             <!-- Reason request loop -->
                         <?php }; ?>
@@ -220,7 +289,7 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-6 mt-2">
-                            <input type="text" name="li_hashtag[]" id="li_hashtag" class="form-control" placeholder="กรุณาระบุ Hashtag เช่น #คู่มือการใช้งาน" required maxlength="40"/>
+                            <input type="text" name="li_hashtag[]" id="li_hashtag" class="form-control" placeholder="กรุณาระบุ Hashtag เช่น #คู่มือการใช้งาน" required maxlength="40" />
                             <label id="characterLeft"></label><br>
                             <button type="button" name="dar_addmore" id="dar_addmore" class="btn btn-primary mt-2 dar_addmore"><i class="fas fa-hashtag"></i>&nbsp;เพิ่ม Hashtag</button>
                         </div>
@@ -232,6 +301,12 @@
                 </form><!-- Form Section 1 -->
                 <hr>
                 <!-- หน่วยงานที่เกี่ยวข้อง -->
+
+
+
+
+
+
 
 
                 <!-- ผลการร้องขอ Hide-->

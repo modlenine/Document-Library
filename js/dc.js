@@ -377,7 +377,7 @@ $(function () {
 
     // Check Permission สำหรับเอกสาร ISO
     if ($('#get_check_deptcode').val() != $('#check_new_deptcode').val()) {
-        $('.check_option').prop('disabled', true);
+        $('.check_option').css("display","none");
     }
 
 
@@ -613,11 +613,13 @@ if ($('#check_data_status').val() == 'Open'){
 
 
 //Hide edit btn
-if($('#check_data_status').val() == "Open"){
+var userlogin = $('#check_userlogin').val();
+var userowner = $('#check_dc_data_user').val();
+if($('#check_data_status').val() == "Open" && userlogin == userowner){
     $('#btn_edit').css("display","inline");
 }
 
-if($('#check_gl_status').val() == "Open"){
+if($('#check_gl_status').val() == "Open" && userlogin == userowner){
     $('#btn_edit_gl').css("display","inline");
     
 }
@@ -639,12 +641,11 @@ if($('#check_gl_status').val() == "Approved" || $('#check_gl_status').val() == "
 
 
 
-
-
-
-
 });
 // Ready function
+
+
+
 
 
 

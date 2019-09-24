@@ -60,5 +60,13 @@ th {
     display:none !important;
 }
 
+.vertical-nav-menu ul{
+    padding: .5em 0 0 .5rem !important;
+}
+
+.labelAddform{
+    text-align:center;
+}
+
 
 /* graph */

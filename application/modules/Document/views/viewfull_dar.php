@@ -154,23 +154,50 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
 
                             <!-- Right content -->
                             <div class="col-sm-6 border p-2">
-                                <div class="form-group">
-                                    <div class="form-inline">
-                                        <!-- วันที่ร้องขอ -->
-                                        <label for=""><?= label("date_request", $this); ?>&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>&nbsp;
-                                        <input class="input-medium form-control" type="text" data-provide="datepicker" data-date-language="th-th" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date" value="<?=con_date($getF->dc_data_date); ?>" disabled>
 
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <!-- ผู้ร้องขอ -->
-                                        <label for=""><?= label("user_request", $this); ?>&nbsp;<input readonly type="text" name="dc_data_user" id="dc_data_user" value="<?= $getF->dc_data_user; ?>" class="form-control" disabled></label>
+
+                            <div class="row mb-2">
+                                <!-- Date request -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="text-center"><?= label("date_request", $this); ?>&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input class="input-medium form-control datepicker" data-value="<?= $getF->dc_data_date ?>" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date" disabled>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Date request -->
 
-                                <div class="form-group">
-                                    <div class="form-inline">
+                                <!-- User Request -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("user_request", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" name="dc_data_user" id="dc_data_user" value="<?= $getF->dc_data_user; ?>" class="form-control" disabled>
+                                            <input hidden type="text" name="check_dc_data_user" id="check_dc_data_user" value="<?= $getF->dc_data_user; ?>">
+                                            <!-- Check owner user for btn_edit -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- User Request -->
 
-                                        <!-- Department section -->
-                                        <label for=""><?= label("department", $this); ?></label>&nbsp;&nbsp;
+                            </div>
+
+
+
+
+                            <div class="row mb-2">
+                                <!-- Department -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("department", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
                                         <select name="dc_data_dept" id="dc_data_dept" class="form-control" disabled>
                                             <option value="<?= $getF->dc_data_dept; ?>"><?= $getF->dc_dept_main_name; ?></option>
 
@@ -181,45 +208,99 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
                                             ?>
 
                                         </select>
-                                        <!-- Department section -->
-
-                                        <!-- Document name section -->
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <label for=""><?= label("doc_name", $this); ?>&nbsp;&nbsp;<input type="text" name="dc_data_docname" id="dc_data_docname" value="<?= $getF->dc_data_docname; ?>" class="form-control" disabled></label>
-                                        <!-- Document name section -->
-
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Department -->
 
-                                <div class="form-group">
-                                    <div class="form-inline">
-                                        <label for=""><?= label("doc_id", $this); ?>&nbsp;&nbsp;<input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $getF->dc_data_doccode_display; ?>" disabled></label>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <label for=""><?= label("doc_num_edit", $this); ?>&nbsp;&nbsp;<input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $getF->dc_data_edit; ?>" class="form-control" disabled></label>
+                                <!-- Document name -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("doc_name", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <input type="text" name="dc_data_docname" id="dc_data_docname" value="<?= $getF->dc_data_docname; ?>" class="form-control" disabled>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Document name -->
+                            </div>
 
-                                <div class="form-group">
-                                    <div class="form-inline">
-                                        <label for=""><?= label("date_start_use", $this); ?>&nbsp;&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>&nbsp;
-                                        <input class="input-medium form-control" type="text" data-provide="datepicker" data-date-language="th-th" placeholder="วว/ดด/ปปปป" name="dc_data_date_start" id="dc_data_date_start" value="<?= con_date($getF->dc_data_date_start); ?>" disabled>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+
+                            <div class="row mb-2">
+                                <!-- Doccode -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("doc_id", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <input type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $getF->dc_data_doccode_display; ?>" disabled>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Doccode -->
 
-                                <div class="form-group">
-                                    <div class="form-inline">
-                                        <label for=""><?= label("time_store", $this); ?>&nbsp;&nbsp;<input type="number" name="dc_data_store" id="dc_data_store" value="<?= $getF->dc_data_store; ?>" class="form-control" disabled>&nbsp;
-                                            <select name="dc_data_store_type" id="dc_data_store_type" class="form-control" disabled>
+                                <!-- Doc Edit -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("doc_num_edit", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $getF->dc_data_edit; ?>" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Doc Edit -->
+
+                            </div>
+
+
+
+                            <div class="row mb-2">
+                                <!-- Date Start -->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for=""><?= label("date_start_use", $this); ?>&nbsp;&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input class="input-medium form-control datepicker" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date_start" id="dc_data_date_start" data-value="<?=$getF->dc_data_date_start?>" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Date Start -->
+
+                            </div>
+
+
+                            <div class="row">
+                                                <!-- Doc Store -->
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for=""><?= label("time_store", $this); ?></label>
+                                        </div>
+                                        <div class="col-md-8 form-inline">
+                                        <input type="number" name="dc_data_store" id="dc_data_store" value="<?= $getF->dc_data_store; ?>" class="form-control" disabled>
+                                        <select name="dc_data_store_type" id="dc_data_store_type" class="form-control" disabled>
                                                 <option value="<?= $getF->dc_data_store_type; ?>"><?= $getF->dc_data_store_type; ?></option>
                                                 <option value="เดือน">เดือน</option>
                                                 <option value="ปี">ปี</option>
                                             </select>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Doc Store -->
+                            </div>
+
+
                             </div>
                             <!-- Right content -->
+
                         </div>
                         <!-- descript section -->
                     </section>
@@ -359,7 +440,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
                                 }
                                 ?>
 
-                                <input type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec2" id="btnSave_sec2" onclick="javasctiop:return confirm('คุณต้องการบันทึกข้อมูลใช่หรือไม่')">
+                                <input type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec2" id="btnSave_sec2" >
                             </div>
                 </form>
                 <!-- ผลการร้องขอ -->
@@ -422,7 +503,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
                         }
                         ?>
 
-                        <input type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec3" id="btnSave_sec3" onclick="javasctiop:return confirm('คุณต้องการบันทึกข้อมูลใช่หรือไม่')">
+                        <input type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec3" id="btnSave_sec3">
                     </div>
         </form>
         <!-- ผลการร้องขอ -->
@@ -486,7 +567,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
             ?>
 
         </div>
-        <input class="btn btn-primary " type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>" onclick="javascript:return confirm('ยืนยันการบันทึกข้อมูลใช่หรือไม่')">
+        <input class="btn btn-primary " type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>" >
     </form>
     </div>
 
@@ -576,7 +657,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
             ?>
 
         </div>
-        <input class="btn btn-primary btncancel" type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>" onclick="javascript:return confirm('ยืนยันการบันทึกข้อมูลใช่หรือไม่')">
+        <input class="btn btn-primary btncancel" type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>" >
     </form>
     </div>
 

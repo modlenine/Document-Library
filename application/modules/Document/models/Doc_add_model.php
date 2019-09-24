@@ -124,10 +124,7 @@ class Doc_add_model extends CI_Model
             echo "window.history.back(-1)";
             echo "</script>";
         } else {
-            echo "<script>";
-            echo "alert('บันทึกข้อมูลสำเร็จ')";
-            echo "</script>";
-            // header("refresh:10; url=".base_url()."document");
+            echo "บันทึกข้อมูลสำเร็จ";
 
         }
     }
@@ -222,7 +219,8 @@ class Doc_add_model extends CI_Model
             foreach ($li_get_hashtag as $lgd) {
                 $ar_li_hashtag = array(
                     "li_hashtag_doc_code" => $conDoccode,
-                    "li_hashtag_name" => $lgd
+                    "li_hashtag_name" => $lgd,
+                    "li_hashtag_status" => "pending"
                 );
                 $this->db->insert("library_hashtag", $ar_li_hashtag);
             }
@@ -231,14 +229,11 @@ class Doc_add_model extends CI_Model
         $result = $this->db->insert("dc_datamain", $armain);
         if (!$result) {
             echo "<script>";
-            echo "alert('บันทึกข้อมูลไม่สำเร็จ')";
+            echo "alert('บันทึกข้อมูลไม่สำเร็จ กรุณาตรวจสอบข้อมูลอีกครั้ง')";
             echo "window.history.back(-1)";
             echo "</script>";
         } else {
-            echo "<script>";
-            echo "alert('บันทึกข้อมูลสำเร็จ')";
-            echo "</script>";
-            // header("refresh:10; url=".base_url()."document");
+            echo "บันทึกข้อมูลสำเร็จ";
 
         }
 
@@ -344,9 +339,7 @@ class Doc_add_model extends CI_Model
                 $this->db->where("dc_data_darcode", $darcode);
                 $result_sec2 = $this->db->update("dc_datamain", $ar_save_sec2);
                 if ($result_sec2) {
-                    echo "<script>";
-                    echo "alert('บันทึกข้อมูลสำเร็จ')";
-                    echo "</script>";
+                    echo "บันทึกข้อมูลสำเร็จ";
                 } else {
                     echo "<script>";
                     echo "alert('บันทึกข้อมูลไม่สำเร็จสำเร็จ')";
@@ -469,9 +462,7 @@ class Doc_add_model extends CI_Model
                 $result_sec3 = $this->db->update("dc_datamain", $ar_save_sec3);
 
                 if ($result_sec3) {
-                    echo "<script>";
-                    echo "alert('บันทึกข้อมูลสำเร็จ')";
-                    echo "</script>";
+                    echo "บันทึกข้อมูลสำเร็จ";
                 } else {
                     echo "<script>";
                     echo "alert('บันทึกข้อมูลไม่สำเร็จ')";
@@ -655,6 +646,20 @@ class Doc_add_model extends CI_Model
                 $this->db->update("dc_type_use", $inactive_type_use);
             }
 
+            //query for update hashtag
+            $query_hashtag = $this->db->query("SELECT li_hashtag_doc_code FROM library_hashtag WHERE li_hashtag_doc_code='$get_doccodes->dc_data_doccode' ");
+            foreach($query_hashtag->result_array() as $get_hashtag_doccode){
+                $ar_update_hashtag_status = array(
+                    "li_hashtag_status" => "active"
+                );
+                $this->db->where("li_hashtag_doc_code",$get_hashtag_doccode['li_hashtag_doc_code']);
+                $this->db->update("library_hashtag",$ar_update_hashtag_status);
+            }
+
+
+
+
+
 
             $ar_lib_save = array(
                 "lib_main_doccode" => $get_doccodes->dc_data_doccode,
@@ -667,9 +672,7 @@ class Doc_add_model extends CI_Model
             );
             $result = $this->db->insert("library_main", $ar_lib_save);
             if ($result) {
-                echo "<script>";
-                echo "alert('บันทึกข้อมูลสำเร็จ')";
-                echo "</script>";
+                echo "บันทึกข้อมูลสำเร็จ";
             } else {
                 echo "<script>";
                 echo "alert('บันทึกข้อมูลไม่สำเร็จ')";
@@ -931,10 +934,7 @@ class Doc_add_model extends CI_Model
                 echo "window.history.back(-1)";
                 echo "</script>";
             } else {
-                echo "<script>";
-                echo "alert('บันทึกข้อมูลสำเร็จ')";
-                echo "</script>";
-                // header("refresh:10; url=".base_url()."document");
+                echo "บันทึกข้อมูลสำเร็จ";
 
             }
         }
@@ -1025,9 +1025,7 @@ class Doc_add_model extends CI_Model
             echo "window.history.back(-1)";
             echo "</script>";
         } else {
-            echo "<script>";
-            echo "alert('บันทึกข้อมูลสำเร็จ')";
-            echo "</script>";
+            echo "บันทึกข้อมูลสำเร็จ";
         }
     }
 
@@ -1109,9 +1107,7 @@ class Doc_add_model extends CI_Model
             echo "window.history.back(-1)";
             echo "</script>";
         } else {
-            echo "<script>";
-            echo "alert('บันทึกข้อมูลสำเร็จ')";
-            echo "</script>";
+            echo "บันทึกข้อมูลสำเร็จ";
         }
     }
 
@@ -1219,6 +1215,10 @@ class Doc_add_model extends CI_Model
                 "lib_main_status" => "inactive"
             );
             $this->db->insert("library_main", $ar_lib_save);
+
+
+            $result = $this->db->where("li_hashtag_doc_code",$get_doccodes->dc_data_doccode);
+            $result = $this->db->delete("library_hashtag");
         }
     }
 
@@ -1378,9 +1378,7 @@ class Doc_add_model extends CI_Model
                 echo "window.history.back(-1)";
                 echo "</script>";
             } else {
-                echo "<script>";
-                echo "alert('บันทึกข้อมูลสำเร็จ')";
-                echo "</script>";
+                echo "บันทึกข้อมูลสำเร็จ";
                 // header("refresh:10; url=".base_url()."document");
 
             }
@@ -1443,9 +1441,7 @@ class Doc_add_model extends CI_Model
                 echo "window.history.back(-1)";
                 echo "</script>";
             } else {
-                echo "<script>";
-                echo "alert('บันทึกข้อมูลสำเร็จ')";
-                echo "</script>";
+                echo "บันทึกข้อมูลสำเร็จ";
                 
             }
         }
@@ -1516,9 +1512,7 @@ class Doc_add_model extends CI_Model
                 echo "window.history.back(-1)";
                 echo "</script>";
             } else {
-                echo "<script>";
-                echo "alert('บันทึกข้อมูลสำเร็จ')";
-                echo "</script>";
+                echo "บันทึกข้อมูลสำเร็จ";
                 header("refresh:0; url=" . base_url() . "document/list_generel");
             }
         }
@@ -1562,9 +1556,7 @@ class Doc_add_model extends CI_Model
                 echo "window.history.back(-1)";
                 echo "</script>";
             } else {
-                echo "<script>";
-                echo "alert('บันทึกข้อมูลสำเร็จ')";
-                echo "</script>";
+                echo "บันทึกข้อมูลสำเร็จ";
                 header("refresh:0; url=" . base_url() . "document/list_generel");
             }
         }
