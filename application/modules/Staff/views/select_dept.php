@@ -53,8 +53,6 @@ $select_depts = $select_dept->row();
                         <div class="card border-primary mb-3">
                             <div class="card-header bg-success text-white">รายชื่อโฟลเดอร์</div>
                             <div class="card-body text-primary">
-                                <h5 class="card-title">Primary card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 
                                 <table id="folder" class="table table-striped table-bordered dt-responsive" style="width:100%">
                                     <thead>

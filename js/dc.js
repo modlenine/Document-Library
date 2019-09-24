@@ -607,10 +607,29 @@ if ($('#check_data_status').val() == 'Open'){
     $('#qmr_approve').css("display","block");
 }
 
+// Check status for control every thing : Check status for control every thing
 
-    // Check status for control every thing : Check status for control every thing
 
 
+
+//Hide edit btn
+if($('#check_data_status').val() == "Open"){
+    $('#btn_edit').css("display","inline");
+}
+
+if($('#check_gl_status').val() == "Open"){
+    $('#btn_edit_gl').css("display","inline");
+    
+}
+
+$('#gl_doc_approve').css("display","none");
+if($('#check_group').val() == 'superuser'){
+    $('#gl_doc_approve').css("display","block");
+}
+
+if($('#check_gl_status').val() == "Approved" || $('#check_gl_status').val() == "Not Approve"){
+    $('#gl_doc_approve').css("display","block");
+}
 
 
 

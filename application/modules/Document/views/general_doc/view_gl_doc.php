@@ -17,11 +17,19 @@ $get_view_docs = $get_view_doc->row();
         <!-- Content Zone -->
         <div class="app-main__inner mb-5">
             <!-- Content Zone -->
+
+            <div class="container-fulid border p-2 bg-white mb-2">
+                <a href="<?=base_url('document/list_generel')?>"><button class="btn btn-secondary"><i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;กลับ</button></a>
+                <a href="<?= base_url('document/edit_gl_doc/').$get_view_docs->gl_doc_code?>"><input style="display:none;" type="button" name="btn_edit_gl" id="btn_edit_gl" class="btn btn-info" value="แก้ไข"/></a>
+            </div><br>
+
+
             <div class="container-fulid border p-4 bg-white">
                 <!-- Main Section -->
 
 
-                <h2 style="text-align:center;">Form ขอใช้งานเอกสารภายใน</h2><br>
+                <h2 style="text-align:center;">Form ขอใช้งานเอกสารภายใน</h2><label style="float:right;"><b>สถานะ :</b>&nbsp;<?=$get_view_docs->gl_doc_status;?></label><br>
+                <input hidden type="text" name="check_gl_status" id="check_gl_status" value="<?=$get_view_docs->gl_doc_status;?>"/>
                 <!-- <form action="<?=base_url('document/save_gl_doc')?>" method="post" name="" enctype="multipart/form-data"> -->
 
                     <div class="form-row">
@@ -89,7 +97,7 @@ $get_view_docs = $get_view_doc->row();
                     <!-- <input type="submit" value="บันทึกข้อมูล" name="btnAdd_gldoc" class="btn btn-primary"> -->
                 <!-- </form> -->
 
-
+<div id="gl_doc_approve">
                 <hr>
                 <h2 style="text-align:center;">สำหรับ Document Control</h2><br>
                 <form action="<?=base_url('document/save_gl_doc2/').$get_view_docs->gl_doc_code;?>" method="post" name="" id="">
@@ -143,3 +151,4 @@ $get_view_docs = $get_view_doc->row();
                     </div>
                     <input type="submit" value="บันทึก" name="btn_save2" id="btn_save2" class="btn btn-primary">
                 </form>
+                </div>

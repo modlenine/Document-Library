@@ -30,14 +30,26 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
         <div class="app-main__inner mb-5">
             <!-- Content Zone -->
 
-
+            <div class="container-fulid border p-2 bg-white mb-2">
+                <a href="<?=base_url('document/list_dar')?>"><button class="btn btn-secondary"><i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;กลับ</button></a>
+                <a href="<?= base_url('document/edit_dar/') ?><?= $getF->dc_data_darcode; ?>"><input style="display:none;" type="button" name="btn_edit" id="btn_edit" class="btn btn-info" value="แก้ไข"/></a>
+            </div><br>
 
             <div class="container-fulid border p-4 bg-white">
                 <!-- Main Section -->
                 <h5 style="font-size:12px;text-align:right;"><?= label('form_code', $this); ?></h5>
-                <h5 style="font-size:12px;text-align:right;"><b>Status :</b>&nbsp;<?= $getF->dc_data_status; ?>
+                <div class="row">
+                    <div class="col-md-6">
+                    
+                    </div>
+                    <div class="col-md-6">
+                    <h5 style="font-size:12px;text-align:right;"><b>Status :</b>&nbsp;<?= $getF->dc_data_status; ?>
             <input hidden type="text" name="check_data_status" id="check_data_status" value="<?= $getF->dc_data_status; ?>">
             </h5>
+                    </div>
+                </div>
+                
+            
                 <h2 style="text-align:center;"><?= label("dar_title_th", $this); ?></h2>
                 <h3 style="text-align:center;"><?= label("dar_title_en", $this); ?></h3>
                 <h4 style="text-align:center;"><?= label("dar_no", $this); ?><?= $getF->dc_data_darcode; ?></h4>

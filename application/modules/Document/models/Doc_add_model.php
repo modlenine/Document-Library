@@ -21,11 +21,122 @@ class Doc_add_model extends CI_Model
 
 
 
+    public function save_editdar($darcode)
+    {
+
+        $get_doc_code = $this->input->post('check_edit_doccode');
+        $dc_data_sub_type = $this->input->post('dc_data_sub_type');
+        $get_dar_code = $this->input->post('check_edit_darcode');
+
+        if (isset($_POST['btnEditDar'])) { //Check button submit
+
+            if ($_FILES['dc_data_file']['tmp_name'] != "") {
+                $date = date("H-i-s"); //ดึงวันที่และเวลามาก่อน
+                $file_name = $_FILES['dc_data_file']['name'];
+                $file_name_cut = str_replace(" ", "", $file_name);
+                $file_name_date = substr_replace(".", $get_doc_code . "-" . $date . ".pdf", 0);
+                $file_size = $_FILES['dc_data_file']['size'];
+                $file_tmp = $_FILES['dc_data_file']['tmp_name'];
+                $file_type = $_FILES['dc_data_file']['type'];
+
+                move_uploaded_file($file_tmp, "asset/document_files/" . $file_name_date);
+                $filelocation = "asset/document_files/";
+
+
+                print_r($file_name);
+                echo "<br>" . "Copy/Upload Complete" . "<br>";
+            } else {
+                $file_name_date = $this->input->post('check_edit_data_file');
+            }
+
+
+
+
+
+            $armain = array(
+
+                "dc_data_date" => $this->input->post("dc_data_date"),
+                "dc_data_dept" => $this->input->post("dc_data_dept"),
+                "dc_data_docname" => $this->input->post("dc_data_docname"),
+                "dc_data_date_start" => $this->input->post("dc_data_date_start"),
+                "dc_data_store" => $this->input->post("dc_data_store"),
+                "dc_data_store_type" => $this->input->post("dc_data_store_type"),
+                "dc_data_reson_detail" => $this->input->post("dc_data_reson_detail"),
+                "dc_data_file" => $file_name_date
+
+            );
+
+
+            $this->db->where("related_dept_darcode", $get_dar_code);
+            $this->db->delete("dc_related_dept_use");
+            // Loop insert related department
+            $related_dept_code = $this->input->post("related_dept_code");
+            foreach ($related_dept_code as $related_dept_codes) {
+                $arrelated = array(
+                    "related_dept_doccode" => $get_doc_code,
+                    "related_dept_darcode" => $get_dar_code,
+                    "related_dept_code" => $related_dept_codes,
+                    "related_dept_status" => "active"
+                );
+                $this->db->insert("dc_related_dept_use", $arrelated);
+            }
+            // Loop insert related department
+
+
+            $this->db->where("dc_type_use_darcode", $get_dar_code);
+            $this->db->delete("dc_type_use");
+            // Loop insert System Category
+            $sys_cat = $this->input->post("dc_data_type");
+            foreach ($sys_cat as $sys_cats) {
+                $arsys_cat = array(
+                    "dc_type_use_doccode" => $get_doc_code,
+                    "dc_type_use_darcode" => $get_dar_code,
+                    "dc_type_use_code" => $sys_cats,
+                    "dc_type_use_status" => "active"
+                );
+                $this->db->insert("dc_type_use", $arsys_cat);
+            }
+            // Loop insert System Category
+
+
+            if ($this->input->post('li_hashtag') == "") {
+                echo "ไม่มีการแก้ไข Hashtag";
+                
+            }else{
+                $this->db->where("li_hashtag_doc_code", $get_doc_code);
+                $this->db->delete("library_hashtag");
+                //Hash tag
+                $li_get_hashtag = $this->input->post("li_hashtag");
+                foreach ($li_get_hashtag as $lgd) {
+                    $ar_li_hashtag = array(
+                        "li_hashtag_doc_code" => $get_doc_code,
+                        "li_hashtag_name" => $lgd
+                    );
+                    $this->db->insert("library_hashtag", $ar_li_hashtag);
+                }
+            }
+        } //Check button submit
+        $result = $this->db->where("dc_data_darcode", $darcode);
+        $result = $this->db->update("dc_datamain", $armain);
+        if (!$result) {
+            echo "<script>";
+            echo "alert('บันทึกข้อมูลไม่สำเร็จ')";
+            echo "window.history.back(-1)";
+            echo "</script>";
+        } else {
+            echo "<script>";
+            echo "alert('บันทึกข้อมูลสำเร็จ')";
+            echo "</script>";
+            // header("refresh:10; url=".base_url()."document");
+
+        }
+    }
+
+
+
     public function save_sec1()
     {
-        if(isset($_POST['btnUser_submit'])){
 
-        
         $get_darcode = $this->doc_get_model->get_dar_code();
         $get_doc_code = $this->doc_get_model->get_doc_code();
         $dc_data_sub_type = $this->input->post('dc_data_sub_type');
@@ -208,7 +319,7 @@ class Doc_add_model extends CI_Model
         // $mail->send();
         //************************************ZONE***SEND****EMAIL*************************************//
 
-    }
+
     }
 
 
@@ -217,122 +328,121 @@ class Doc_add_model extends CI_Model
 
     public function save_sec2($darcode)
     {
-        if(isset($_POST['btnSave_sec2'])){
-
-        
-        if ($this->input->post("dc_data_result_reson_status") == 1) {
-
-            $ar_save_sec2 = array(
-                "dc_data_result_reson_status" => $this->input->post('dc_data_result_reson_status'),
-                "dc_data_result_reson_detail" => $this->input->post('dc_data_result_reson_detail'),
-                "dc_data_approve_mgr" => $this->input->post('dc_data_approve_mgr'),
-                "dc_data_date_approve_mgr" => date("Y-m-d"),
-                "dc_data_status" => "Manager Approved"
-            );
-
-            $this->db->where("dc_data_darcode", $darcode);
-            $result_sec2 = $this->db->update("dc_datamain", $ar_save_sec2);
-            if ($result_sec2) {
-                echo "<script>";
-                echo "alert('บันทึกข้อมูลสำเร็จ')";
-                echo "</script>";
-            } else {
-                echo "<script>";
-                echo "alert('บันทึกข้อมูลไม่สำเร็จสำเร็จ')";
-                echo "</script>";
-                exit();
-            }
-        } else {
-
-            
-            if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04' && get_data_reson($darcode)->dc_data_reson != 'r-03') {
-                echo "ไม่เท่ากับ r-02";
-                $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
-                $del_hashtag = $this->db->delete('library_hashtag');
-                if ($del_hashtag) {
-                    echo "ลบแฮชแท็กสำเร็จ";
-                } else {
-                    echo "ลบแฮชแท็กไม่สำเร็จ";
-                }
-            }else{
-                echo get_data_reson($darcode)->dc_data_reson."<br>";
-            }
+        if (isset($_POST['btnSave_sec2'])) {
 
 
+            if ($this->input->post("dc_data_result_reson_status") == 1) {
 
-
-            $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
-            $checknumrow = $checkolddar->num_rows();
-            if ($checknumrow > 0) {
-                $getolddar = $checkolddar->row();
-                $clear_padding = array(
-                    "lib_main_modify_status" => ""
+                $ar_save_sec2 = array(
+                    "dc_data_result_reson_status" => $this->input->post('dc_data_result_reson_status'),
+                    "dc_data_result_reson_detail" => $this->input->post('dc_data_result_reson_detail'),
+                    "dc_data_approve_mgr" => $this->input->post('dc_data_approve_mgr'),
+                    "dc_data_date_approve_mgr" => date("Y-m-d"),
+                    "dc_data_status" => "Manager Approved"
                 );
-                $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
-                $this->db->update("library_main", $clear_padding);
-            }
 
-
-
-            $ar_mgr_notapprove = array(
-                "dc_data_result_reson_status" => $this->input->post('dc_data_result_reson_status'),
-                "dc_data_result_reson_detail" => $this->input->post('dc_data_result_reson_detail'),
-                "dc_data_approve_mgr" => $this->input->post('dc_data_approve_mgr'),
-                "dc_data_date_approve_mgr" => date("Y-m-d"),
-                "dc_data_status" => "Manager Not Approve",
-                "dc_data_edit" => 0
-
-            );
-            $this->db->where("dc_data_darcode", $darcode);
-            $rs_notapp = $this->db->update("dc_datamain", $ar_mgr_notapprove);
-            if ($rs_notapp) {
-                echo "อัพเดตข้อมูลสำเร็จ<br>";
+                $this->db->where("dc_data_darcode", $darcode);
+                $result_sec2 = $this->db->update("dc_datamain", $ar_save_sec2);
+                if ($result_sec2) {
+                    echo "<script>";
+                    echo "alert('บันทึกข้อมูลสำเร็จ')";
+                    echo "</script>";
+                } else {
+                    echo "<script>";
+                    echo "alert('บันทึกข้อมูลไม่สำเร็จสำเร็จ')";
+                    echo "</script>";
+                    exit();
+                }
             } else {
-                echo "อัพเดตข้อมูลไม่สำเร็จ";
-            }
 
 
-
-
-
-
-            $query_related_dept = $this->db->query("SELECT * FROM dc_related_dept_use WHERE related_dept_darcode='$darcode' ");
-            if ($query_related_dept) {
-                foreach ($query_related_dept->result_array() as $rs) {
-                    $ar_related = array(
-                        "related_dept_status" => 'inactive'
-                    );
-                    $update_releted_dept = $this->db->where('related_dept_darcode', $darcode);
-                    $update_releted_dept = $this->db->update('dc_related_dept_use', $ar_related);
-                }
-                if ($update_releted_dept) {
-                    echo "ปรับสถานะสำเร็จ<br>";
+                if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04' && get_data_reson($darcode)->dc_data_reson != 'r-03') {
+                    echo "ไม่เท่ากับ r-02";
+                    $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
+                    $del_hashtag = $this->db->delete('library_hashtag');
+                    if ($del_hashtag) {
+                        echo "ลบแฮชแท็กสำเร็จ";
+                    } else {
+                        echo "ลบแฮชแท็กไม่สำเร็จ";
+                    }
                 } else {
-                    echo "ปรับสถานะไม่สำเร็จ";
+                    echo get_data_reson($darcode)->dc_data_reson . "<br>";
                 }
-            }
 
 
 
 
-            $query_type_use = $this->db->query("SELECT * FROM dc_type_use WHERE dc_type_use_darcode='$darcode' ");
-            if ($query_type_use) {
-                foreach ($query_type_use->result_array() as $rstu) {
-                    $ar_type_use = array(
-                        "dc_type_use_status" => "inactive"
+                $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
+                $checknumrow = $checkolddar->num_rows();
+                if ($checknumrow > 0) {
+                    $getolddar = $checkolddar->row();
+                    $clear_padding = array(
+                        "lib_main_modify_status" => ""
                     );
-                    $update_type_use = $this->db->where('dc_type_use_darcode', $darcode);
-                    $update_type_use = $this->db->update('dc_type_use', $ar_type_use);
+                    $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
+                    $this->db->update("library_main", $clear_padding);
                 }
-                if ($update_type_use) {
-                    echo "ปรับสถานะหมวดหมู่สำเร็จ<br>";
+
+
+
+                $ar_mgr_notapprove = array(
+                    "dc_data_result_reson_status" => $this->input->post('dc_data_result_reson_status'),
+                    "dc_data_result_reson_detail" => $this->input->post('dc_data_result_reson_detail'),
+                    "dc_data_approve_mgr" => $this->input->post('dc_data_approve_mgr'),
+                    "dc_data_date_approve_mgr" => date("Y-m-d"),
+                    "dc_data_status" => "Manager Not Approve",
+                    "dc_data_edit" => 0
+
+                );
+                $this->db->where("dc_data_darcode", $darcode);
+                $rs_notapp = $this->db->update("dc_datamain", $ar_mgr_notapprove);
+                if ($rs_notapp) {
+                    echo "อัพเดตข้อมูลสำเร็จ<br>";
                 } else {
-                    echo "ปรับสถานะหมวดหมู่ไม่สำเร็จ";
+                    echo "อัพเดตข้อมูลไม่สำเร็จ";
+                }
+
+
+
+
+
+
+                $query_related_dept = $this->db->query("SELECT * FROM dc_related_dept_use WHERE related_dept_darcode='$darcode' ");
+                if ($query_related_dept) {
+                    foreach ($query_related_dept->result_array() as $rs) {
+                        $ar_related = array(
+                            "related_dept_status" => 'inactive'
+                        );
+                        $update_releted_dept = $this->db->where('related_dept_darcode', $darcode);
+                        $update_releted_dept = $this->db->update('dc_related_dept_use', $ar_related);
+                    }
+                    if ($update_releted_dept) {
+                        echo "ปรับสถานะสำเร็จ<br>";
+                    } else {
+                        echo "ปรับสถานะไม่สำเร็จ";
+                    }
+                }
+
+
+
+
+                $query_type_use = $this->db->query("SELECT * FROM dc_type_use WHERE dc_type_use_darcode='$darcode' ");
+                if ($query_type_use) {
+                    foreach ($query_type_use->result_array() as $rstu) {
+                        $ar_type_use = array(
+                            "dc_type_use_status" => "inactive"
+                        );
+                        $update_type_use = $this->db->where('dc_type_use_darcode', $darcode);
+                        $update_type_use = $this->db->update('dc_type_use', $ar_type_use);
+                    }
+                    if ($update_type_use) {
+                        echo "ปรับสถานะหมวดหมู่สำเร็จ<br>";
+                    } else {
+                        echo "ปรับสถานะหมวดหมู่ไม่สำเร็จ";
+                    }
                 }
             }
         }
-    }
-
     }
 
 
@@ -341,24 +451,222 @@ class Doc_add_model extends CI_Model
 
     public function save_sec3($darcode)
     {
-        if(isset($_POST['btnSave_sec3'])){
+        if (isset($_POST['btnSave_sec3'])) {
 
-        
-        $get_doc_code = $this->doc_get_model->get_doc_code();
-        if ($this->input->post("dc_data_result_reson_status2") == 1) {
 
-            $ar_save_sec3 = array(
-                "dc_data_result_reson_status2" => $this->input->post('dc_data_result_reson_status2'),
-                "dc_data_result_reson_detail2" => $this->input->post('dc_data_result_reson_detail2'),
-                "dc_data_approve_qmr" => $this->input->post('dc_data_approve_qmr'),
-                "dc_data_date_approve_qmr" => date("Y-m-d"),
-                "dc_data_status" => "Qmr Approved"
+            $get_doc_code = $this->doc_get_model->get_doc_code();
+            if ($this->input->post("dc_data_result_reson_status2") == 1) {
+
+                $ar_save_sec3 = array(
+                    "dc_data_result_reson_status2" => $this->input->post('dc_data_result_reson_status2'),
+                    "dc_data_result_reson_detail2" => $this->input->post('dc_data_result_reson_detail2'),
+                    "dc_data_approve_qmr" => $this->input->post('dc_data_approve_qmr'),
+                    "dc_data_date_approve_qmr" => date("Y-m-d"),
+                    "dc_data_status" => "Qmr Approved"
+                );
+
+                $this->db->where("dc_data_darcode", $darcode);
+                $result_sec3 = $this->db->update("dc_datamain", $ar_save_sec3);
+
+                if ($result_sec3) {
+                    echo "<script>";
+                    echo "alert('บันทึกข้อมูลสำเร็จ')";
+                    echo "</script>";
+                } else {
+                    echo "<script>";
+                    echo "alert('บันทึกข้อมูลไม่สำเร็จ')";
+                    echo "</script>";
+                    exit();
+                }
+            } else {
+
+                if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04' && get_data_reson($darcode)->dc_data_reson != 'r-03') {
+                    echo "ไม่เท่ากับ r-02";
+                    $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
+                    $del_hashtag = $this->db->delete('library_hashtag');
+                    if ($del_hashtag) {
+                        echo "ลบแฮชแท็กสำเร็จ";
+                    } else {
+                        echo "ลบแฮชแท็กไม่สำเร็จ";
+                    }
+                } else {
+                    echo get_data_reson($darcode)->dc_data_reson . "<br>";
+                }
+
+
+                $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
+                $checknumrow = $checkolddar->num_rows();
+                if ($checknumrow > 0) {
+                    $getolddar = $checkolddar->row();
+                    $clear_padding = array(
+                        "lib_main_modify_status" => ""
+                    );
+                    $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
+                    $this->db->update("library_main", $clear_padding);
+                }
+
+
+
+                $ar_qmr_notapprove = array(
+                    "dc_data_result_reson_status2" => $this->input->post('dc_data_result_reson_status2'),
+                    "dc_data_result_reson_detail2" => $this->input->post('dc_data_result_reson_detail2'),
+                    "dc_data_approve_qmr" => $this->input->post('dc_data_approve_qmr'),
+                    "dc_data_date_approve_qmr" => date("Y-m-d"),
+                    "dc_data_status" => "Qmr Not Approve",
+                    "dc_data_edit" => 0
+
+                );
+                $this->db->where("dc_data_darcode", $darcode);
+                $rs_notapp = $this->db->update("dc_datamain", $ar_qmr_notapprove);
+                if ($rs_notapp) {
+                    echo "อัพเดตข้อมูลสำเร็จ<br>";
+                } else {
+                    echo "อัพเดตข้อมูลไม่สำเร็จ";
+                }
+
+
+
+
+
+
+                $query_related_dept = $this->db->query("SELECT * FROM dc_related_dept_use WHERE related_dept_darcode='$darcode' ");
+                if ($query_related_dept) {
+                    foreach ($query_related_dept->result_array() as $rs) {
+                        $ar_related = array(
+                            "related_dept_status" => 'inactive'
+                        );
+                        $update_releted_dept = $this->db->where('related_dept_darcode', $darcode);
+                        $update_releted_dept = $this->db->update('dc_related_dept_use', $ar_related);
+                    }
+                    if ($update_releted_dept) {
+                        echo "ปรับสถานะสำเร็จ<br>";
+                    } else {
+                        echo "ปรับสถานะไม่สำเร็จ";
+                    }
+                }
+
+
+
+
+                $query_type_use = $this->db->query("SELECT * FROM dc_type_use WHERE dc_type_use_darcode='$darcode' ");
+                if ($query_type_use) {
+                    foreach ($query_type_use->result_array() as $rstu) {
+                        $ar_type_use = array(
+                            "dc_type_use_status" => "inactive"
+                        );
+                        $update_type_use = $this->db->where('dc_type_use_darcode', $darcode);
+                        $update_type_use = $this->db->update('dc_type_use', $ar_type_use);
+                    }
+                    if ($update_type_use) {
+                        echo "ปรับสถานะหมวดหมู่สำเร็จ<br>";
+                    } else {
+                        echo "ปรับสถานะหมวดหมู่ไม่สำเร็จ";
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+    public function save_sec4($darcode)
+    {
+        if (isset($_POST['btnOpsave'])) {
+
+
+            // Get document code
+            $get_doccode = $this->db->query("SELECT dc_data_doccode , dc_data_file FROM dc_datamain WHERE dc_data_darcode='$darcode' ");
+            $get_doccodes = $get_doccode->row();
+            $get_doc_code = substr($get_doccodes->dc_data_file, 0, -4);
+
+            // For Master file
+
+            $file_name = $_FILES['document_master']['name'];
+            $file_name_cut = str_replace(" ", "", $file_name);
+            $file_name_master = substr_replace(".", $get_doc_code . "-master" . ".pdf", 0);
+            $file_size = $_FILES['document_master']['size'];
+            $file_tmp = $_FILES['document_master']['tmp_name'];
+            $file_type = $_FILES['document_master']['type'];
+
+            move_uploaded_file($file_tmp, "asset/master/" . $file_name_master);
+            $filelocation_master = "asset/master/";
+
+
+            print_r($file_name);
+            echo "<br>" . "Copy/Upload Complete" . "<br>";
+
+
+
+            $file_name = $_FILES['document_copy']['name'];
+            $file_name_cut = str_replace(" ", "", $file_name);
+            $file_name_copy = substr_replace(".", $get_doc_code . "-copy" . ".pdf", 0);
+            $file_size = $_FILES['document_copy']['size'];
+            $file_tmp = $_FILES['document_copy']['tmp_name'];
+            $file_type = $_FILES['document_copy']['type'];
+
+            move_uploaded_file($file_tmp, "asset/copy/" . $file_name_copy);
+            $filelocation_copy = "asset/copy/";
+
+
+            print_r($file_name);
+            echo "<br>" . "Copy/Upload Complete" . "<br>";
+
+            $status = "Complete";
+
+            $ar_save_sec4 = array(
+
+                "dc_data_method" => $this->input->post('dc_data_method'),
+                "dc_data_operation" => $this->input->post('dc_data_operation'),
+                "dc_data_date_operation" => date("Y-m-d"),
+                "dc_data_status" => $status
             );
 
             $this->db->where("dc_data_darcode", $darcode);
-            $result_sec3 = $this->db->update("dc_datamain", $ar_save_sec3);
+            $result_sec4 = $this->db->update("dc_datamain", $ar_save_sec4);
 
-            if ($result_sec3) {
+
+            $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
+            $checknumrow = $checkolddar->num_rows();
+            if ($checknumrow > 0) {
+                $getolddar = $checkolddar->row();
+                $inactive = array(
+                    "lib_main_status" => "inactive",
+                    "lib_main_modify_status" => ""
+                );
+                $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
+                $this->db->update("library_main", $inactive);
+            }
+
+
+            foreach ($checkolddar->result_array() as $get_od) {
+                $inactive_related_dept_use = array(
+                    "related_dept_status" => "inactive"
+                );
+                $this->db->where("related_dept_darcode", $get_od['dc_data_old_dar']);
+                $this->db->update("dc_related_dept_use", $inactive_related_dept_use);
+            }
+
+            foreach ($checkolddar->result_array() as $get_ods) {
+                $inactive_type_use = array(
+                    "dc_type_use_status" => "inactive"
+                );
+                $this->db->where("dc_type_use_darcode", $get_ods['dc_data_old_dar']);
+                $this->db->update("dc_type_use", $inactive_type_use);
+            }
+
+
+            $ar_lib_save = array(
+                "lib_main_doccode" => $get_doccodes->dc_data_doccode,
+                "lib_main_darcode" => $darcode,
+                "lib_main_doccode_master" => $file_name_master,
+                "lib_main_doccode_copy" => $file_name_copy,
+                "lib_main_file_location_master" => $filelocation_master,
+                "lib_main_file_location_copy" => $filelocation_copy,
+                "lib_main_status" => "active"
+            );
+            $result = $this->db->insert("library_main", $ar_lib_save);
+            if ($result) {
                 echo "<script>";
                 echo "alert('บันทึกข้อมูลสำเร็จ')";
                 echo "</script>";
@@ -368,206 +676,7 @@ class Doc_add_model extends CI_Model
                 echo "</script>";
                 exit();
             }
-        } else {
-
-            if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04' && get_data_reson($darcode)->dc_data_reson != 'r-03') {
-                echo "ไม่เท่ากับ r-02";
-                $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
-                $del_hashtag = $this->db->delete('library_hashtag');
-                if ($del_hashtag) {
-                    echo "ลบแฮชแท็กสำเร็จ";
-                } else {
-                    echo "ลบแฮชแท็กไม่สำเร็จ";
-                }
-            }else{
-                echo get_data_reson($darcode)->dc_data_reson."<br>";
-            }
-
-
-            $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
-            $checknumrow = $checkolddar->num_rows();
-            if ($checknumrow > 0) {
-                $getolddar = $checkolddar->row();
-                $clear_padding = array(
-                    "lib_main_modify_status" => ""
-                );
-                $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
-                $this->db->update("library_main", $clear_padding);
-            }
-
-
-
-            $ar_qmr_notapprove = array(
-                "dc_data_result_reson_status2" => $this->input->post('dc_data_result_reson_status2'),
-                "dc_data_result_reson_detail2" => $this->input->post('dc_data_result_reson_detail2'),
-                "dc_data_approve_qmr" => $this->input->post('dc_data_approve_qmr'),
-                "dc_data_date_approve_qmr" => date("Y-m-d"),
-                "dc_data_status" => "Qmr Not Approve",
-                "dc_data_edit" => 0
-
-            );
-            $this->db->where("dc_data_darcode", $darcode);
-            $rs_notapp = $this->db->update("dc_datamain", $ar_qmr_notapprove);
-            if ($rs_notapp) {
-                echo "อัพเดตข้อมูลสำเร็จ<br>";
-            } else {
-                echo "อัพเดตข้อมูลไม่สำเร็จ";
-            }
-
-
-
-
-
-
-            $query_related_dept = $this->db->query("SELECT * FROM dc_related_dept_use WHERE related_dept_darcode='$darcode' ");
-            if ($query_related_dept) {
-                foreach ($query_related_dept->result_array() as $rs) {
-                    $ar_related = array(
-                        "related_dept_status" => 'inactive'
-                    );
-                    $update_releted_dept = $this->db->where('related_dept_darcode', $darcode);
-                    $update_releted_dept = $this->db->update('dc_related_dept_use', $ar_related);
-                }
-                if ($update_releted_dept) {
-                    echo "ปรับสถานะสำเร็จ<br>";
-                } else {
-                    echo "ปรับสถานะไม่สำเร็จ";
-                }
-            }
-
-
-
-
-            $query_type_use = $this->db->query("SELECT * FROM dc_type_use WHERE dc_type_use_darcode='$darcode' ");
-            if ($query_type_use) {
-                foreach ($query_type_use->result_array() as $rstu) {
-                    $ar_type_use = array(
-                        "dc_type_use_status" => "inactive"
-                    );
-                    $update_type_use = $this->db->where('dc_type_use_darcode', $darcode);
-                    $update_type_use = $this->db->update('dc_type_use', $ar_type_use);
-                }
-                if ($update_type_use) {
-                    echo "ปรับสถานะหมวดหมู่สำเร็จ<br>";
-                } else {
-                    echo "ปรับสถานะหมวดหมู่ไม่สำเร็จ";
-                }
-            }
         }
-    }
-
-    }
-
-
-
-
-    public function save_sec4($darcode)
-    {
-        if(isset($_POST['btnOpsave'])){
-
-        
-        // Get document code
-        $get_doccode = $this->db->query("SELECT dc_data_doccode , dc_data_file FROM dc_datamain WHERE dc_data_darcode='$darcode' ");
-        $get_doccodes = $get_doccode->row();
-        $get_doc_code = substr($get_doccodes->dc_data_file, 0, -4);
-
-        // For Master file
-
-        $file_name = $_FILES['document_master']['name'];
-        $file_name_cut = str_replace(" ", "", $file_name);
-        $file_name_master = substr_replace(".", $get_doc_code . "-master" . ".pdf", 0);
-        $file_size = $_FILES['document_master']['size'];
-        $file_tmp = $_FILES['document_master']['tmp_name'];
-        $file_type = $_FILES['document_master']['type'];
-
-        move_uploaded_file($file_tmp, "asset/master/" . $file_name_master);
-        $filelocation_master = "asset/master/";
-
-
-        print_r($file_name);
-        echo "<br>" . "Copy/Upload Complete" . "<br>";
-
-
-
-        $file_name = $_FILES['document_copy']['name'];
-        $file_name_cut = str_replace(" ", "", $file_name);
-        $file_name_copy = substr_replace(".", $get_doc_code . "-copy" . ".pdf", 0);
-        $file_size = $_FILES['document_copy']['size'];
-        $file_tmp = $_FILES['document_copy']['tmp_name'];
-        $file_type = $_FILES['document_copy']['type'];
-
-        move_uploaded_file($file_tmp, "asset/copy/" . $file_name_copy);
-        $filelocation_copy = "asset/copy/";
-
-
-        print_r($file_name);
-        echo "<br>" . "Copy/Upload Complete" . "<br>";
-
-        $status = "Complete";
-
-        $ar_save_sec4 = array(
-
-            "dc_data_method" => $this->input->post('dc_data_method'),
-            "dc_data_operation" => $this->input->post('dc_data_operation'),
-            "dc_data_date_operation" => date("Y-m-d"),
-            "dc_data_status" => $status
-        );
-
-        $this->db->where("dc_data_darcode", $darcode);
-        $result_sec4 = $this->db->update("dc_datamain", $ar_save_sec4);
-
-
-        $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
-        $checknumrow = $checkolddar->num_rows();
-        if ($checknumrow > 0) {
-            $getolddar = $checkolddar->row();
-            $inactive = array(
-                "lib_main_status" => "inactive",
-                "lib_main_modify_status" => ""
-            );
-            $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
-            $this->db->update("library_main", $inactive);
-        }
-
-
-        foreach($checkolddar->result_array() as $get_od){
-            $inactive_related_dept_use = array(
-                "related_dept_status" => "inactive"
-            );
-            $this->db->where("related_dept_darcode",$get_od['dc_data_old_dar']);
-            $this->db->update("dc_related_dept_use",$inactive_related_dept_use);
-        }
-
-        foreach($checkolddar->result_array() as $get_ods){
-            $inactive_type_use = array(
-                "dc_type_use_status" => "inactive"
-            );
-            $this->db->where("dc_type_use_darcode",$get_ods['dc_data_old_dar']);
-            $this->db->update("dc_type_use",$inactive_type_use);
-        }
-
-
-        $ar_lib_save = array(
-            "lib_main_doccode" => $get_doccodes->dc_data_doccode,
-            "lib_main_darcode" => $darcode,
-            "lib_main_doccode_master" => $file_name_master,
-            "lib_main_doccode_copy" => $file_name_copy,
-            "lib_main_file_location_master" => $filelocation_master,
-            "lib_main_file_location_copy" => $filelocation_copy,
-            "lib_main_status" => "active"
-        );
-        $result = $this->db->insert("library_main", $ar_lib_save);
-        if ($result) {
-            echo "<script>";
-            echo "alert('บันทึกข้อมูลสำเร็จ')";
-            echo "</script>";
-        } else {
-            echo "<script>";
-            echo "alert('บันทึกข้อมูลไม่สำเร็จ')";
-            echo "</script>";
-            exit();
-        }
-    }
     }
 
 
@@ -576,70 +685,69 @@ class Doc_add_model extends CI_Model
 
     public function save_sec4deptedit($darcode)
     {
-        if(isset($_POST['btnOpsave'])){
-
-        
-        // Get document code
-        $get_doccode = $this->db->query("SELECT dc_data_doccode , dc_data_file FROM dc_datamain WHERE dc_data_darcode='$darcode' ");
-        $get_doccodes = $get_doccode->row();
-        $get_doc_code = substr($get_doccodes->dc_data_file, 0, -4);
-
-        $status = "Complete";
-
-        $ar_save_sec4 = array(
-
-            "dc_data_method" => $this->input->post('dc_data_method'),
-            "dc_data_operation" => $this->input->post('dc_data_operation'),
-            "dc_data_date_operation" => date("Y-m-d"),
-            "dc_data_status" => $status
-        );
-        $this->db->where("dc_data_darcode", $darcode);
-        $result_sec4 = $this->db->update("dc_datamain", $ar_save_sec4);
+        if (isset($_POST['btnOpsave'])) {
 
 
-        $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
-        $checknumrow = $checkolddar->num_rows();
-        if ($checknumrow > 0) {
-            $getolddar = $checkolddar->row();
-            $inactive = array(
-                "lib_main_status" => "inactive",
-                "lib_main_modify_status" => ""
+            // Get document code
+            $get_doccode = $this->db->query("SELECT dc_data_doccode , dc_data_file FROM dc_datamain WHERE dc_data_darcode='$darcode' ");
+            $get_doccodes = $get_doccode->row();
+            $get_doc_code = substr($get_doccodes->dc_data_file, 0, -4);
+
+            $status = "Complete";
+
+            $ar_save_sec4 = array(
+
+                "dc_data_method" => $this->input->post('dc_data_method'),
+                "dc_data_operation" => $this->input->post('dc_data_operation'),
+                "dc_data_date_operation" => date("Y-m-d"),
+                "dc_data_status" => $status
             );
-            $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
-            $this->db->update("library_main", $inactive);
-        }
+            $this->db->where("dc_data_darcode", $darcode);
+            $result_sec4 = $this->db->update("dc_datamain", $ar_save_sec4);
 
-        foreach($checkolddar->result_array() as $get_od){
-            $inactive_related_dept_use = array(
-                "related_dept_status" => "inactive"
+
+            $checkolddar = $this->db->query("SELECT dc_data_old_dar FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
+            $checknumrow = $checkolddar->num_rows();
+            if ($checknumrow > 0) {
+                $getolddar = $checkolddar->row();
+                $inactive = array(
+                    "lib_main_status" => "inactive",
+                    "lib_main_modify_status" => ""
+                );
+                $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
+                $this->db->update("library_main", $inactive);
+            }
+
+            foreach ($checkolddar->result_array() as $get_od) {
+                $inactive_related_dept_use = array(
+                    "related_dept_status" => "inactive"
+                );
+                $this->db->where("related_dept_darcode", $get_od['dc_data_old_dar']);
+                $this->db->update("dc_related_dept_use", $inactive_related_dept_use);
+            }
+
+            foreach ($checkolddar->result_array() as $get_ods) {
+                $inactive_type_use = array(
+                    "dc_type_use_status" => "inactive"
+                );
+                $this->db->where("dc_type_use_darcode", $get_ods['dc_data_old_dar']);
+                $this->db->update("dc_type_use", $inactive_type_use);
+            }
+
+            //Get old data for add to new data
+            $query = $this->db->query("SELECT * FROM library_main WHERE lib_main_darcode='$getolddar->dc_data_old_dar' ");
+            $get_data_old = $query->row();
+            $ar_lib_save = array(
+                "lib_main_doccode" => $get_doccodes->dc_data_doccode,
+                "lib_main_darcode" => $darcode,
+                "lib_main_doccode_master" => $get_data_old->lib_main_doccode_master,
+                "lib_main_doccode_copy" => $get_data_old->lib_main_doccode_copy,
+                "lib_main_file_location_master" => $get_data_old->lib_main_file_location_master,
+                "lib_main_file_location_copy" => $get_data_old->lib_main_file_location_copy,
+                "lib_main_status" => "active"
             );
-            $this->db->where("related_dept_darcode",$get_od['dc_data_old_dar']);
-            $this->db->update("dc_related_dept_use",$inactive_related_dept_use);
+            $this->db->insert("library_main", $ar_lib_save);
         }
-
-        foreach($checkolddar->result_array() as $get_ods){
-            $inactive_type_use = array(
-                "dc_type_use_status" => "inactive"
-            );
-            $this->db->where("dc_type_use_darcode",$get_ods['dc_data_old_dar']);
-            $this->db->update("dc_type_use",$inactive_type_use);
-        }
-
-//Get old data for add to new data
-$query = $this->db->query("SELECT * FROM library_main WHERE lib_main_darcode='$getolddar->dc_data_old_dar' ");
-$get_data_old = $query->row();
-        $ar_lib_save = array(
-            "lib_main_doccode" => $get_doccodes->dc_data_doccode,
-            "lib_main_darcode" => $darcode,
-            "lib_main_doccode_master" => $get_data_old->lib_main_doccode_master,
-            "lib_main_doccode_copy" => $get_data_old->lib_main_doccode_copy,
-            "lib_main_file_location_master" => $get_data_old->lib_main_file_location_master,
-            "lib_main_file_location_copy" => $get_data_old->lib_main_file_location_copy,
-            "lib_main_status" => "active"
-        );
-        $this->db->insert("library_main", $ar_lib_save);
-    }
-
     }
 
 
@@ -886,18 +994,18 @@ $get_data_old = $query->row();
         // Loop insert related department
 
 
-         // Loop insert System Category
-         $sys_cat = $this->input->post("dc_data_type");
-         foreach ($sys_cat as $sys_cats) {
-             $arsys_cat = array(
-                 "dc_type_use_doccode" => $this->input->post("dc_data_doccode"),
-                 "dc_type_use_darcode" => $get_darcode,
-                 "dc_type_use_code" => $sys_cats,
-                 "dc_type_use_status" => "active"
-             );
-             $this->db->insert("dc_type_use", $arsys_cat);
-         }
-         // Loop insert System Category
+        // Loop insert System Category
+        $sys_cat = $this->input->post("dc_data_type");
+        foreach ($sys_cat as $sys_cats) {
+            $arsys_cat = array(
+                "dc_type_use_doccode" => $this->input->post("dc_data_doccode"),
+                "dc_type_use_darcode" => $get_darcode,
+                "dc_type_use_code" => $sys_cats,
+                "dc_type_use_status" => "active"
+            );
+            $this->db->insert("dc_type_use", $arsys_cat);
+        }
+        // Loop insert System Category
 
 
         //Change status on library main table
@@ -972,18 +1080,18 @@ $get_data_old = $query->row();
         // Loop insert related department
 
 
-         // Loop insert System Category
-         $sys_cat = $this->input->post("dc_data_type");
-         foreach ($sys_cat as $sys_cats) {
-             $arsys_cat = array(
-                 "dc_type_use_doccode" => $this->input->post("dc_data_doccode"),
-                 "dc_type_use_darcode" => $get_darcode,
-                 "dc_type_use_code" => $sys_cats,
-                 "dc_type_use_status" => "active"
-             );
-             $this->db->insert("dc_type_use", $arsys_cat);
-         }
-         // Loop insert System Category
+        // Loop insert System Category
+        $sys_cat = $this->input->post("dc_data_type");
+        foreach ($sys_cat as $sys_cats) {
+            $arsys_cat = array(
+                "dc_type_use_doccode" => $this->input->post("dc_data_doccode"),
+                "dc_type_use_darcode" => $get_darcode,
+                "dc_type_use_code" => $sys_cats,
+                "dc_type_use_status" => "active"
+            );
+            $this->db->insert("dc_type_use", $arsys_cat);
+        }
+        // Loop insert System Category
 
 
         //Change status on library main table
@@ -1011,108 +1119,107 @@ $get_data_old = $query->row();
 
     public function save_sec4cancel($darcode)
     {
-        if(isset($_POST['btnOpsave'])){
-
-        
-         // Get document code
-         $get_doccode = $this->db->query("SELECT dc_data_doccode , dc_data_file FROM dc_datamain WHERE dc_data_darcode='$darcode' ");
-         $get_doccodes = $get_doccode->row();
-         $get_doc_code = substr($get_doccodes->dc_data_file, 0, -4);
- 
-         // For Master file
- 
-         $file_name = $_FILES['document_master']['name'];
-         $file_name_cut = str_replace(" ", "", $file_name);
-         $file_name_master = substr_replace(".", $get_doc_code . "-master-cancel" . ".pdf", 0);
-         $file_size = $_FILES['document_master']['size'];
-         $file_tmp = $_FILES['document_master']['tmp_name'];
-         $file_type = $_FILES['document_master']['type'];
- 
-         move_uploaded_file($file_tmp, "asset/master/" . $file_name_master);
-         $filelocation_master = "asset/master/";
- 
- 
-         print_r($file_name);
-         echo "<br>" . "Copy/Upload Complete" . "<br>";
- 
- 
-         $status = "Complete";
- 
-         $ar_save_sec4 = array(
- 
-             "dc_data_method" => $this->input->post('dc_data_method'),
-             "dc_data_operation" => $this->input->post('dc_data_operation'),
-             "dc_data_date_operation" => date("Y-m-d"),
-             "dc_data_status" => $status
-         );
- 
-         $this->db->where("dc_data_darcode", $darcode);
-         $result_sec4 = $this->db->update("dc_datamain", $ar_save_sec4);
+        if (isset($_POST['btnOpsave'])) {
 
 
+            // Get document code
+            $get_doccode = $this->db->query("SELECT dc_data_doccode , dc_data_file FROM dc_datamain WHERE dc_data_darcode='$darcode' ");
+            $get_doccodes = $get_doccode->row();
+            $get_doc_code = substr($get_doccodes->dc_data_file, 0, -4);
 
-         $checkolddar = $this->db->query("SELECT dc_data_old_dar , dc_data_darcode FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
-        $checknumrow = $checkolddar->num_rows();
-        if ($checknumrow > 0) {
-            $getolddar = $checkolddar->row();
-            $inactive = array(
-                "lib_main_status" => "inactive",
-                "lib_main_modify_status" => ""
+            // For Master file
+
+            $file_name = $_FILES['document_master']['name'];
+            $file_name_cut = str_replace(" ", "", $file_name);
+            $file_name_master = substr_replace(".", $get_doc_code . "-master-cancel" . ".pdf", 0);
+            $file_size = $_FILES['document_master']['size'];
+            $file_tmp = $_FILES['document_master']['tmp_name'];
+            $file_type = $_FILES['document_master']['type'];
+
+            move_uploaded_file($file_tmp, "asset/master/" . $file_name_master);
+            $filelocation_master = "asset/master/";
+
+
+            print_r($file_name);
+            echo "<br>" . "Copy/Upload Complete" . "<br>";
+
+
+            $status = "Complete";
+
+            $ar_save_sec4 = array(
+
+                "dc_data_method" => $this->input->post('dc_data_method'),
+                "dc_data_operation" => $this->input->post('dc_data_operation'),
+                "dc_data_date_operation" => date("Y-m-d"),
+                "dc_data_status" => $status
             );
-            $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
-            $this->db->update("library_main", $inactive);
-        }
+
+            $this->db->where("dc_data_darcode", $darcode);
+            $result_sec4 = $this->db->update("dc_datamain", $ar_save_sec4);
 
 
-        foreach($checkolddar->result_array() as $get_od){
-            $inactive_related_dept_use = array(
-                "related_dept_status" => "inactive"
+
+            $checkolddar = $this->db->query("SELECT dc_data_old_dar , dc_data_darcode FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
+            $checknumrow = $checkolddar->num_rows();
+            if ($checknumrow > 0) {
+                $getolddar = $checkolddar->row();
+                $inactive = array(
+                    "lib_main_status" => "inactive",
+                    "lib_main_modify_status" => ""
+                );
+                $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
+                $this->db->update("library_main", $inactive);
+            }
+
+
+            foreach ($checkolddar->result_array() as $get_od) {
+                $inactive_related_dept_use = array(
+                    "related_dept_status" => "inactive"
+                );
+                $this->db->where("related_dept_darcode", $get_od['dc_data_old_dar']);
+                $this->db->update("dc_related_dept_use", $inactive_related_dept_use);
+            }
+
+
+            foreach ($checkolddar->result_array() as $get_d) {
+                $inactive_related_dept = array(
+                    "related_dept_status" => "inactive"
+                );
+                $this->db->where("related_dept_darcode", $get_d['dc_data_darcode']);
+                $this->db->update("dc_related_dept_use", $inactive_related_dept);
+            }
+
+
+
+            foreach ($checkolddar->result_array() as $get_ods) {
+                $inactive_type_use = array(
+                    "dc_type_use_status" => "inactive"
+                );
+                $this->db->where("dc_type_use_darcode", $get_ods['dc_data_old_dar']);
+                $this->db->update("dc_type_use", $inactive_type_use);
+            }
+
+
+            foreach ($checkolddar->result_array() as $get_ds) {
+                $inactive_type_use = array(
+                    "dc_type_use_status" => "inactive"
+                );
+                $this->db->where("dc_type_use_darcode", $get_ds['dc_data_darcode']);
+                $this->db->update("dc_type_use", $inactive_type_use);
+            }
+
+
+            $ar_lib_save = array(
+                "lib_main_doccode" => $get_doccodes->dc_data_doccode,
+                "lib_main_darcode" => $darcode,
+                "lib_main_doccode_master" => $file_name_master,
+                "lib_main_doccode_copy" => "",
+                "lib_main_file_location_master" => $filelocation_master,
+                "lib_main_file_location_copy" => "",
+                "lib_main_status" => "inactive"
             );
-            $this->db->where("related_dept_darcode",$get_od['dc_data_old_dar']);
-            $this->db->update("dc_related_dept_use",$inactive_related_dept_use);
+            $this->db->insert("library_main", $ar_lib_save);
         }
-        
-
-        foreach($checkolddar->result_array() as $get_d){
-            $inactive_related_dept = array(
-                "related_dept_status" => "inactive"
-            );
-            $this->db->where("related_dept_darcode",$get_d['dc_data_darcode']);
-            $this->db->update("dc_related_dept_use",$inactive_related_dept);
-        }
-
-
-
-        foreach($checkolddar->result_array() as $get_ods){
-            $inactive_type_use = array(
-                "dc_type_use_status" => "inactive"
-            );
-            $this->db->where("dc_type_use_darcode",$get_ods['dc_data_old_dar']);
-            $this->db->update("dc_type_use",$inactive_type_use);
-        }
-
-
-        foreach($checkolddar->result_array() as $get_ds){
-            $inactive_type_use = array(
-                "dc_type_use_status" => "inactive"
-            );
-            $this->db->where("dc_type_use_darcode",$get_ds['dc_data_darcode']);
-            $this->db->update("dc_type_use",$inactive_type_use);
-        }
-
-
-        $ar_lib_save = array(
-            "lib_main_doccode" => $get_doccodes->dc_data_doccode,
-            "lib_main_darcode" => $darcode,
-            "lib_main_doccode_master" => $file_name_master,
-            "lib_main_doccode_copy" => "",
-            "lib_main_file_location_master" => $filelocation_master,
-            "lib_main_file_location_copy" => "",
-            "lib_main_status" => "inactive"
-        );
-        $this->db->insert("library_main", $ar_lib_save);
-    }
-        
     }
 
 
@@ -1279,6 +1386,75 @@ $get_data_old = $query->row();
             }
         }
     }
+
+
+
+    public function save_edit_gl_doc($gl_doc_code)
+    {
+        
+        if($_FILES['gl_doc_file']['tmp_name'] == ""){
+            $file_name_cuts = $this->input->post("check_gl_file");
+        }else{
+            $file_name = $_FILES['gl_doc_file']['name'];
+        $file_name_cut = str_replace(" ", "", $file_name);
+        $file_name_cuts = substr_replace(".", $gl_doc_code . ".pdf", 0);
+        $file_size = $_FILES['gl_doc_file']['size'];
+        $file_tmp = $_FILES['gl_doc_file']['tmp_name'];
+        $file_type = $_FILES['gl_doc_file']['type'];
+
+        move_uploaded_file($file_tmp, "asset/general_document/" . $file_name_cuts);
+        $filelocation = "asset/general_document/";
+
+
+        print_r($file_name);
+        echo "<br>" . "Copy/Upload Complete" . "<br>";
+        }
+
+        
+
+        if (isset($_POST['btnEdit_gldoc'])) {
+
+
+
+            $add_doc = array(
+
+                "gl_doc_name" => $this->input->post("gl_doc_name"),
+                "gl_doc_folder_number" => $this->input->post("gl_doc_folder_number"),
+                "gl_doc_detail" => $this->input->post("gl_doc_detail"),
+                "gl_doc_file" => $file_name_cuts
+            );
+
+
+            // $hashtags = $this->input->post("gl_doc_hashtag");
+            // foreach ($hashtags as $hashtags_btn) {
+            //     $ar_hashtag = array(
+            //         "gl_ht_doc_code" => $get_doccode,
+            //         "gl_ht_name" => $hashtags_btn
+            //     );
+
+            //     $this->db->insert("gl_hashtag", $ar_hashtag);
+            // }
+
+            $result = $this->db->where("gl_doc_code",$gl_doc_code);
+            $result = $this->db->update("gl_document", $add_doc);
+            if (!$result) {
+                echo "<script>";
+                echo "alert('บันทึกข้อมูลไม่สำเร็จ')";
+                echo "window.history.back(-1)";
+                echo "</script>";
+            } else {
+                echo "<script>";
+                echo "alert('บันทึกข้อมูลสำเร็จ')";
+                echo "</script>";
+                
+            }
+        }
+
+
+
+    }
+
+
 
 
     public function save_gl_doc()

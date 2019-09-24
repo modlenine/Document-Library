@@ -250,7 +250,7 @@ if(isset($_POST['btn_search_hashtag'])){
 
                                         var t = $('#rs_search_gl').DataTable({
                                             "columnDefs": [{
-                                                "searchable": false,
+                                                "searching": false,
                                                 "orderable": false,
                                                 "targets": 0
                                             }],
@@ -348,7 +348,7 @@ if(isset($_POST['btn_search_hashtag'])){
                                                 $('#result').html(data);
                                                 var tt = $('#rs_search_iso_live').DataTable({
                                                     "columnDefs": [{
-                                                        "searchable": false,
+                                                        "searching": false,
                                                         "orderable": false,
                                                         "targets": 0
                                                     }],
@@ -384,7 +384,7 @@ if(isset($_POST['btn_search_hashtag'])){
                                                     $('#result').html(data);
                                                     var tt = $('#rs_search_iso_live').DataTable({
                                                         "columnDefs": [{
-                                                            "searchable": false,
+                                                            "searching": false,
                                                             "orderable": false,
                                                             "targets": 0
                                                         }],
@@ -414,7 +414,7 @@ if(isset($_POST['btn_search_hashtag'])){
                                                     $('#result').html(data);
                                                     var tt = $('#rs_search_iso_live').DataTable({
                                                         "columnDefs": [{
-                                                            "searchable": false,
+                                                            "searching": false,
                                                             "orderable": false,
                                                             "targets": 0
                                                         }],
@@ -444,7 +444,7 @@ if(isset($_POST['btn_search_hashtag'])){
                                                     $('#result').html(data);
                                                     var tt = $('#rs_search_iso_live').DataTable({
                                                         "columnDefs": [{
-                                                            "searchable": false,
+                                                            "searching": false,
                                                             "orderable": false,
                                                             "targets": 0
                                                         }],
@@ -478,7 +478,7 @@ if(isset($_POST['btn_search_hashtag'])){
                                                     $('#result').html(data);
                                                     var tt = $('#rs_search_iso_live').DataTable({
                                                         "columnDefs": [{
-                                                            "searchable": false,
+                                                            "searching": false,
                                                             "orderable": false,
                                                             "targets": 0
                                                         }],

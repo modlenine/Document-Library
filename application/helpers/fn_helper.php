@@ -390,7 +390,7 @@ function search_by_doccode($related_code,$doccode)
     WHERE
     library_main.lib_main_status = 'active' AND dc_related_dept_use.related_dept_code ='$related_code' AND dc_datamain.dc_data_doccode LIKE '%$doccode%'
     GROUP BY
-    library_main.lib_main_doccode ORDER BY lib_main_id ASC");
+    library_main.lib_main_doccode ORDER BY lib_main_id DESC");
 }
 
 
@@ -690,6 +690,23 @@ function get_related_use($darcode)
         dc_related_dept
         INNER JOIN dc_related_dept_use ON dc_related_dept.related_code = dc_related_dept_use.related_dept_code
         WHERE related_dept_darcode='$darcode' ");
+}
+
+
+function count_darfile()
+{
+    $obj = new myfn();
+    $query = $obj->get_ci()->db->query("SELECT dc_data_status FROM dc_datamain WHERE dc_data_status='Open' ");
+    $count = $query->num_rows();
+    return $count;
+}
+
+function count_glfile()
+{
+    $obj = new myfn();
+    $query = $obj->get_ci()->db->query("SELECT gl_doc_status FROM gl_document WHERE gl_doc_status='Open' ");
+    $count = $query->num_rows();
+    return $count;
 }
 
 

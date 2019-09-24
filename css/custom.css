@@ -56,5 +56,9 @@ th {
     margin: 0 auto;
 }
 
+.dataTables_filter{
+    display:none !important;
+}
+
 
 /* graph */

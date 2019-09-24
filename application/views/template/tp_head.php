@@ -184,6 +184,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 <input hidden type="text" name="check_username" id="check_username" value="<?= $getuserCon?>">
                                 <input hidden type="text" name="check_new_deptcode" id="check_new_deptcode" value="<?=$deptcode?>">
                                 <!-- Check Section -->
+                                
                             </div>
 
 
@@ -285,7 +286,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 <a href="<?= base_url(); ?>" class="">
                                     <!-- <i class="metismenu-icon pe-7s-rocket"></i> -->
                                     <i class="metismenu-icon fas fa-chart-line"></i>
-                                    Dashboard Example 1
+                                    Dashboard
                                 </a>
                             </li>
 
@@ -365,20 +366,21 @@ error_reporting(E_ALL & ~E_NOTICE);
                             <li class="<?= $doc_list ?>">
                                 <a href="#">
                                     <i class="metismenu-icon fas fa-folder"></i>
-                                    รายการคำร้อง
+                                    รายการคำร้อง&nbsp;<span class="badge badge-pill badge-success"><?=count_darfile()?></span>
+                                    &nbsp;<span class="badge badge-pill badge-warning"><?=count_glfile()?></span>
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                 </a>
                                 <ul>
                                     <li>
                                         <a class="navleft <?= $doc_list_iso ?>" href="<?= base_url("document/list_dar") ?>">
                                             <i class="metismenu-icon">
-                                            </i>รายการคำร้องเอกสาร ISO
+                                            </i>รายการคำร้องเอกสาร ISO&nbsp;<span class="badge badge-pill badge-success"><?=count_darfile()?></span>
                                         </a>
                                     </li>
                                     <li>
                                         <a class="navleft <?= $doc_list_gl ?>" href="<?= base_url("document/list_generel"); ?>">
                                             <i class="metismenu-icon">
-                                            </i>รายการคำร้องเอกสารทั่วไป
+                                            </i>รายการคำร้องเอกสารทั่วไป&nbsp;<span class="badge badge-pill badge-warning"><?=count_glfile()?></span>
                                         </a>
                                     </li>
 

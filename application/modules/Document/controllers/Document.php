@@ -161,6 +161,15 @@ class Document extends MX_Controller
     }
 
 
+    public function save_editdar($darcode)
+    {
+        check_login();
+        $this->doc_add_model->save_editdar($darcode);
+        // $this->doc_add_model->save_sec1();
+        header("refresh:0; url=" . base_url('document/list_dar'));
+    }
+
+
     public function save_sec1()
     {
         check_login();
@@ -396,6 +405,30 @@ class Document extends MX_Controller
     }
 
 
+    public function edit_dar($darcode)
+    {
+        check_login();
+        $data['get_fulldata'] = $this->doc_get_model->get_fulldata($darcode);//Get Main data
+        $data['get_doctype_use'] = $this->doc_get_model->get_doctype_use($darcode);
+        $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
+        $data['get_doc_sub_type'] = $this->doc_get_model->get_doc_sub_type();
+        $data['get_reason'] = $this->doc_get_model->get_reason();
+        $data['get_dept'] = $this->doc_get_model->get_dept();
+        $data['get_related_dept'] = $this->doc_get_model->get_related_dept();
+        $data['get_law'] = $this->doc_get_model->get_law();
+        $data['get_sds'] = $this->doc_get_model->get_sds();
+        $data['username'] = $this->doc_get_model->convertName($_SESSION['Fname'], $_SESSION['Lname']);
+        $data['get_sds_use'] = $this->doc_get_model->get_sds_use($darcode);
+        $data['get_law_use'] = $this->doc_get_model->get_law_use($darcode);
+        $data['get_related_use'] = $this->doc_get_model->get_related_use($darcode);
+        // $data['get_doc_file'] = $this->doc_get_model->get_doc_file($doccode);
+
+        get_head();
+        get_contents("editdata",$data);
+        get_footer();
+    }
+
+
     public function save_sec1change($doccode)
     {
         $this->doc_get_model->check_null_change();
@@ -411,6 +444,24 @@ class Document extends MX_Controller
         get_content("general_doc/add_gl_doc");
         get_footer();
     }
+
+
+    public function edit_gl_doc($gl_doc_code)
+    {
+        check_login();
+        $data['get_view_doc'] = $this->doc_get_model->get_view_doc($gl_doc_code);
+        get_head();
+        get_contents("general_doc/edit_gl_doc",$data);
+        get_footer();
+    }
+
+    public function save_edit_gl_doc($gl_doc_code)
+    {
+        $this->doc_add_model->save_edit_gl_doc($gl_doc_code);
+        header("refresh:0; url=" . base_url() . "document/list_generel");
+    }
+
+
 
     public function save_gl_doc()
     {
