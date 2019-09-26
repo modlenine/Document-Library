@@ -1,20 +1,15 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Pdf_model extends CI_Model {
-public function __construct()
+class Pdf_model extends CI_Model
 {
-	parent::__construct();
-	//Do your magic here
-}
+	public function __construct()
+	{
+		parent::__construct();
+		//Do your magic here
+		// require_once('TCPDF/tcpdf.php');
+	}
 
-
-
-
-
-
-
-	
 
 }
 

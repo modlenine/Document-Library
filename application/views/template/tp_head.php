@@ -369,7 +369,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 <a href="#">
                                     <i class="metismenu-icon fas fa-folder"></i>
                                     รายการคำร้อง&nbsp;<span class="badge badge-pill badge-success"><?=count_darfile()?></span>
-                                    &nbsp;<span class="badge badge-pill badge-warning"><?=count_glfile()?></span>
+                                <span class="badge badge-pill badge-warning"><?=count_glfile()?></span>
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                 </a>
                                 <ul>

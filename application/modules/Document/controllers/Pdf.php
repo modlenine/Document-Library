@@ -7,18 +7,21 @@ class Pdf extends MX_Controller {
 	{
 		parent::__construct();
 		//Do your magic here
+		// $this->load->model("pdf_model");
+		// require_once('TCPDF/tcpdf.php');
 		
 	}
 
 	public function index()
 	{
-		$this->load->library('my_pdf');
-		$this->load->view('pdf');
+		
 	}
 
-	public function test()
+	public function print_dar()
 	{
-		echo realpath('../dc2/asset/document_files/Powerpoint2010.pdf');
+		$data['darcode'] = $this->input->post('darcode');
+		$this->load->library("TCPDF/tcpdf");
+		$this->load->view("print_dar",$data);
 	}
 
 

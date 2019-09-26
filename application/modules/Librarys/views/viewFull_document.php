@@ -98,7 +98,7 @@ $get_file1s = $get_file2->row();
                                             if ($get_file2s['lib_main_status'] == "inactive") {
                                                 ?>
                                             <div class="col-md-6">
-                                                <label for=""><b>ไฟล์เอกสาร : </b></label>&nbsp;<?= $get_file2s['lib_main_doccode_copy']; ?>
+                                                <label for=""><b>ไฟล์เอกสาร : </b></label>&nbsp;<a target="_blank" href="<?= base_url() ?><?= $get_file2s['lib_main_file_location_copy']; ?><?= $get_file2s['lib_main_doccode_copy']; ?>"><b><i class="fas fa-file-pdf" style="color:#CC0000;"></i>&nbsp;&nbsp;<?= $get_file2s['lib_main_doccode_copy']; ?></b></a>
                                             </div>
                                         <?php   } else { ?>
                                             <div class="col-md-6">
@@ -152,15 +152,6 @@ $get_file1s = $get_file2->row();
                                             } ?>
                                         </div>
                                     </div>
-
-
-
-
-
-
-
-
-
 
 
 
