@@ -28,7 +28,7 @@
                 <h4 style="text-align:center;"><?= label("dar_no", $this); ?></h4>
                 <hr>
 
-                <form action="save_sec1" method="POST" name="form1" id="form1" enctype="multipart/form-data">
+                <form action="save_sec1" method="POST" name="form1" id="form1" enctype="multipart/form-data" >
                     <!-- Form Section 1 -->
 
                     <div class="form-row">
@@ -287,9 +287,11 @@
                         </div>
                     </div>
 
+                    
+
                     <div class="form-row">
                         <div class="form-group col-md-6 mt-2">
-                            <input type="text" name="li_hashtag[]" id="li_hashtag" class="form-control" placeholder="กรุณาระบุ Hashtag เช่น #คู่มือการใช้งาน" required maxlength="40" />
+                            <input type="text" name="li_hashtag[]" id="li_hashtag" class="form-control" placeholder="กรุณาระบุ Hashtag เช่น #คู่มือการใช้งาน" required maxlength="40" onblur="check();"/>
                             <label id="characterLeft"></label><br>
                             <button type="button" name="dar_addmore" id="dar_addmore" class="btn btn-primary mt-2 dar_addmore"><i class="fas fa-hashtag"></i>&nbsp;เพิ่ม Hashtag</button>
                         </div>
@@ -301,7 +303,6 @@
                 </form><!-- Form Section 1 -->
                 <hr>
                 <!-- หน่วยงานที่เกี่ยวข้อง -->
-
 
 
 

@@ -37,31 +37,117 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <a href="<?=base_url('librarys/view_by_dept')?>"><button class="btn btn-primary btn-block" style="font-size:20px;padding:15px;">ค้นหาเอกสาร ISO</button></a>
+                        <a href="<?= base_url('librarys/view_by_dept') ?>"><button class="btn btn-primary btn-block" style="font-size:20px;padding:15px;">ค้นหาเอกสาร ISO</button></a>
                     </div>
                     <div class="col-md-6">
-                        <a href="<?=base_url('librarys/document_center')?>"><button class="btn btn-primary btn-block" style="font-size:20px;padding:15px;">ค้นหาเอกสารทั่วไป</button></a>
+                        <a href="<?= base_url('librarys/document_center') ?>"><button class="btn btn-primary btn-block" style="font-size:20px;padding:15px;">ค้นหาเอกสารทั่วไป</button></a>
                     </div>
                 </div><br><br>
                 <hr>
 
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 form-group">
                         <div class="card">
                             <div class="card-body">
-                            <h1>ประกาศ</h1>
-                                This is some text within a card body.
+                                <h1>ประกาศ</h1>
+                                <p>ข่าวสาร1</p>
+                                <p>ข่าวสาร1</p>
+                                <p>ข่าวสาร1</p>
+                                <p>ข่าวสาร1</p>
+                                <p>ข่าวสาร1</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
 
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <div class="card mb-3">
+                            <div class="card-header text-white bg-primary">เอกสาร ISO แนะนำ</div>
+                            <div class="card-body">
+                             
+                            <table id="user_docpin" class="table table-striped table-bordered dt-responsive" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>รหัสเอกสาร</th>
+                                    <th>ชื่อเอกสาร</th>
+                                    <th>วันที่ร้องขอ</th>
+                                    <th>เอกสารของแผนก</th>
 
-            </div>
-        </div>
+                                </tr>
+                            </thead>
 
-</body>
+                            <tbody>
 
-</html>
+                                <?php $i = 1;
+                                foreach (getIsoDocPin()->result_array() as $get_doc_lists) {
+                                    if ($get_doc_lists['lib_main_status'] == "active") {
+                                        $color_status = " style='color:green' ";
+                                    } else {
+                                        $color_status = " style='color:red' ";
+                                    }
+
+                                    ?>
+                                    <tr>
+                                        <th scope="row"><?= $i ?></th>
+                                        <td><a href="<?= base_url('staff/view_full_data/') ?><?= $get_doc_lists['lib_main_doccode'] ?>"><i class="fas fa-thumbtack"></i>&nbsp;&nbsp;<i class="fas fa-file-pdf" style="color:#CC0000;"></i>&nbsp;&nbsp;<?= $get_doc_lists['dc_data_doccode_display'] ?></a></td>
+                                        <td><?= $get_doc_lists['dc_data_docname'] ?></td>
+                                        <?php
+                                            if ($get_doc_lists['lib_main_pin_status'] != "") {
+                                                $markpin = ' / ';
+                                            } else {
+                                                $markpin = '';
+                                            }
+
+                                            if ($get_doc_lists['lib_main_pin_status'] == "pin") {
+                                                $upin = 'display:block;';
+                                                $pin = 'display:none;';
+                                            } else {
+                                                $pin = 'display:block;';
+                                                $upin = 'display:none;';
+                                            }
+                                            ?>
+                                        <td><?= con_date($get_doc_lists['dc_data_date']) ?></td>
+                                        <td><?= $get_doc_lists['dc_dept_main_name'] ?></td>
+
+                                    </tr>
+                                <?php $i++; } ?>
+                            </tbody>
+                        </table>
+                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <script type="text/javascript">
+                    $(document).ready(function() {
+
+                        var t = $('#user_docpin').DataTable({
+                            "columnDefs": [{
+                                "searchable": false,
+                                "orderable": false,
+                                "targets": 0
+                            }],
+                            "order": [
+                                [3, 'desc']
+                            ]
+                        });
+
+                        t.on('order.dt search.dt', function() {
+                            t.column(0, {
+                                search: 'applied',
+                                order: 'applied'
+                            }).nodes().each(function(cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        }).draw();
+
+
+
+                    });
+                </script>

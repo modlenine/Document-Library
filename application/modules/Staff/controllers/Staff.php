@@ -169,6 +169,27 @@ public function delete_user($userid)
 }
 
 
+public function manage_dashboard()
+{
+    get_head();
+    get_content("dashboard/index");
+    get_footer();
+}
+
+
+public function pin_isodoc($lib_main_id)
+{
+    pinIsoDoc($lib_main_id);
+    header("refresh:0; url=".base_url('staff/manage_dashboard/'));
+}
+
+public function unpin_isodoc($lib_main_id)
+{
+    unpinIsoDoc($lib_main_id);
+    header("refresh:0; url=".base_url('staff/manage_dashboard/'));
+}
+
+
 
 
 

@@ -462,13 +462,24 @@ error_reporting(E_ALL & ~E_NOTICE);
                                         </a>
                                     </li>
                                     <li>
-                                        <hr>
-                                    </li>
-                                    <li>
                                         <a class="navleft <?= $view_user ?>" href="<?= base_url('staff/view_user') ?>">
                                             <i class="metismenu-icon"></i>
                                             จัดการผู้ใช้งาน
                                         </a>
+                                    </li>
+                                    <li>
+                                        <a class="navleft <?= $view_user ?>" href="#">
+                                            <i class="metismenu-icon"></i>
+                                            จัดการ DashBoard
+                                        </a>
+                                        <ul>
+                                            <li>
+                                            <a class="navleft <?= $view_user ?>" href="<?= base_url('staff/manage_dashboard') ?>">
+                                            <i class="metismenu-icon"></i>
+                                            ปักหมุดเอกสาร ISO
+                                        </a>
+                                            </li>
+                                        </ul>
                                     </li>
                                 </ul>
                             </li>

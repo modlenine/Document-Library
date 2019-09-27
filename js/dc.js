@@ -641,6 +641,9 @@ if($('#check_gl_status').val() == "Approved" || $('#check_gl_status').val() == "
 
 
 
+
+
+
 });
 // Ready function
 
