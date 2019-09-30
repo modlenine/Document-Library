@@ -163,6 +163,7 @@ class Login_model extends CI_Model{
       "dc_user_ecode" => $this->input->post("dc_user_ecode"),
       "dc_user_DeptCode" => $this->input->post("dc_user_DeptCode"),
       "dc_user_memberemail" => $this->input->post("dc_user_memberemail"),
+      "dc_user_data_user" => $this->input->post("conUsername"),
       "dc_user_group" => 0,
       "dc_user_status" => "active",
       "dc_user_new_dept_code" => $this->input->post("verify_dept")

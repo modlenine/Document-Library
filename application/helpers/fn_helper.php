@@ -711,7 +711,20 @@ function count_glfile()
 
 
 
+function checkHashtag($hashtags)
+{
+    return preg_match('/^#{1}+([ก-เa-zA-Z0-9_]+)$/',$hashtags);
+}
 
+
+
+
+//Email function 
+function get_email_user($query_where)
+{
+    $obj=new myfn();
+    return $obj->get_ci()->db->query("SELECT dc_user_memberemail FROM dc_user WHERE $query_where ");
+}
 
 
 

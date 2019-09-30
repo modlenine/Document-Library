@@ -7,7 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Verify User</title>
 </head>
-<?php $getuser = $this->login_model->getuser();?>
+<?php 
+$getuser = $this->login_model->getuser();
+$getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname);
+?>
 <body>
 
     <div class="app-main__outer">
@@ -106,6 +109,14 @@ foreach($get_dept->result_array() as $get_depts){
                                         </select>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input hidden type="text" name="conUsername" id="conUsername" value="<?=$getuserCon?>">
+                                        </div>
+                                    </div>
+
+
                             </div>
                             <!-- Body -->
 

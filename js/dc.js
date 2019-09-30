@@ -634,6 +634,18 @@ if($('#check_gl_status').val() == "Approved" || $('#check_gl_status').val() == "
 }
 
 
+// var rex = /[a-z]/;
+// var str = $('#li_hashtag').val();
+// $('#li_hashtag').blur(function(){
+
+//     if(!check_is_username(str)){
+// alert('false');
+//     }else{
+//         alert('true');
+//     }
+    
+
+// });
 
 
 
@@ -648,7 +660,9 @@ if($('#check_gl_status').val() == "Approved" || $('#check_gl_status').val() == "
 // Ready function
 
 
-
+// function check_is_username(str){
+//     return /[a]{1}/.test(str);
+// }
 
 
 

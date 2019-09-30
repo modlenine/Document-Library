@@ -393,7 +393,7 @@ public function get_last_dar($doccode)
                 echo "</script>";
                 exit();
             }else {
-                echo "ข้อมูลถูกต้องครบถ้วน";
+                
             }
 
             // เสร็จสิ้นขั้นตอนการตรวจสอบค่าว่าง
@@ -1005,6 +1005,25 @@ public function get_last_dar($doccode)
         FROM
         gl_document
         INNER JOIN gl_folder ON gl_folder.gl_folder_number = gl_document.gl_doc_folder_number WHERE gl_doc_code='$gl_doc_code' ");
+    }
+
+
+    public function checkHashtagFormat()
+    {
+
+        $lihashtag = $this->input->post("li_hashtag");
+        foreach ($lihashtag as $lgd) {
+            if(checkHashtag($lgd)){
+                echo "true";
+            }else{
+                echo "<script>";
+                    echo "alert('รูปแบบ Hashtag ไม่ถูกต้อง');";
+                    echo "window.history.back(-1)";
+                    echo "</script>";
+                    exit();
+            }
+        }
+
     }
 
 

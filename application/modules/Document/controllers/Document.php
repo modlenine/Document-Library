@@ -174,8 +174,9 @@ class Document extends MX_Controller
     {
         check_login();
         $this->doc_get_model->checkNull_add();
+        $this->doc_get_model->checkHashtagFormat();
         $this->doc_add_model->save_sec1();
-        // $this->doc_add_model->save_sec1();
+
         header("refresh:0; url=" . base_url('document/list_dar'));
     }
 
@@ -291,10 +292,13 @@ class Document extends MX_Controller
 
     public function test()
     {
-        echo "<style>\n";
-        echo "@import url('https://fonts.googleapis.com/css?family=Sarabun&display=swap');";
-        echo "</style>\n";
-        echo "<span style='font-family: \"Sarabun\", sans-serif !important;'>ทดสอบ Font</span>";
+        
+        if(checkHashtag('#test'))
+        {
+            echo "true";
+        }else{
+            echo "false";
+        }
     }
 
 

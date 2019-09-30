@@ -300,9 +300,15 @@ class Doc_add_model extends CI_Model
         $mail->From = "document_system@saleecolour.com";
         $mail->FromName = "Document System";
 
-        $mail->AddAddress("chainarong_k@saleecolour.com");
-        // $mail->AddCC("");
-        // $mail->AddCC("");
+        $get_user_email = get_email_user("dc_user_group in (1,2)");
+        foreach($get_user_email->result_array() as $gue){
+            $mail->AddAddress($gue['dc_user_memberemail']);
+        }
+        // $mail->AddAddress("chainarong_k@saleecolour.com");
+        $mail->AddCC("chainarong_k@saleecolour.com");
+        $get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
+        $gue_cc = $get_usercc_email->row();
+        $mail->AddCC($gue_cc->dc_user_memberemail);
 
         // $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
         $mail->WordWrap = 50;                                 // set word wrap to 50 characters
