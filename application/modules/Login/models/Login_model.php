@@ -15,10 +15,17 @@ class Login_model extends CI_Model{
   }
 
 
+  public function validate($username,$password)
+  {
+    $user = mysqli_real_escape_string($this->escape_string() , $username);
+    $pass = mysqli_real_escape_string($this->escape_string() , $password);
+    $checkuser = $this->db2->query(sprintf("SELECT * FROM member WHERE username = '%s' and password = '%s'  ", $user, $pass));
+      return $checkuser->num_rows();
+  }
+
+
   public function check_login(){
 // เข้ารหัส input
-      $username = mysqli_escape_string($this->escape_string(), isset($_POST['username']) ? ($_POST['username']) : '');
-      $password = mysqli_escape_string($this->escape_string(), isset($_POST['password']) ? ($_POST['password']) : '');
 
       $user = mysqli_real_escape_string($this->escape_string() , $_POST['username']);
       $pass = mysqli_real_escape_string($this->escape_string() , ($_POST['password']));
@@ -31,16 +38,11 @@ class Login_model extends CI_Model{
       $checkdata = $checkuser->num_rows();
 
       if ($checkdata == 0) {
-          echo '<script language="javascript">';
-          echo 'alert("Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง")';
-          echo '</script>';
-
-          header("refresh:0; url=".base_url()."login_page");
+        echo $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert" style="font-size:15px;text-align: center;">Username or Password is Wrong</div>');
+        redirect('login');
           die();
       } else {
-          echo "<script>";
-          echo "alert('เข้าสู่ระบบสำเร็จ กำลังพาท่านเข้าสู่โปรแกรม')";
-          echo "</script>";
+        
 
           foreach ($checkuser->result_array() as $r) {
               $_SESSION['username'] = $r['username'];
@@ -57,17 +59,9 @@ class Login_model extends CI_Model{
 
               $check = check_new_user($r['username']);
               if($check < 1){
-
+                echo $this->session->set_flashdata('msg_succss','<div class="alert alert-success" role="alert" style="font-size:15px;text-align: center;">Login Success</div>');
                 header("refresh:0; url=".base_url('login/verify_user/'));
                 
-
-
-
-
-                // $uri = isset($_SESSION['RedirectKe']) ? $_SESSION['RedirectKe']: '/dc2/document/';
-                //    // กำหนดค่าให้กรณีที่ไม่ได้มีการกดเข้าไปหน้าใดๆก่อน
-                //   //  header('location:'.$uri);
-                //    header("refresh:0; url=".$uri);
               }else{
                 
                 $uri = isset($_SESSION['RedirectKe']) ? $_SESSION['RedirectKe']: '/dc2/document/';
@@ -77,20 +71,6 @@ class Login_model extends CI_Model{
                 
               }
 
-              //   if($r['posi']==75){
-              //     //  echo "<h3 style='color:green;text-align:center;'>" . "Welcome &nbsp;" . $r['Fname'] . "&nbsp;Permission : Admin" . "</h3>";
-              //      $uri = isset($_SESSION['RedirectKe']) ? $_SESSION['RedirectKe']: '/dc2/document/';
-              //      // กำหนดค่าให้กรณีที่ไม่ได้มีการกดเข้าไปหน้าใดๆก่อน
-              //     //  header('location:'.$uri);
-              //      header("refresh:0; url=".$uri);
-              // }else{
-              //   // echo "<h3 style='color:green;text-align:center;'>" . "Welcome &nbsp;" . $r['Fname'] . "&nbsp;Permission : User" . "</h3>";
-              //     $uri = isset($_SESSION['RedirectKe']) ? $_SESSION['RedirectKe']: '/dc2/document/';
-              //     // header('location:'.$uri);
-              //     header("refresh:0; url=".$uri);
-              // }
-
-              
               session_write_close();
 
           }
@@ -109,7 +89,7 @@ class Login_model extends CI_Model{
           $_SESSION['RedirectKe'] = $_SERVER['REQUEST_URI'];
 
           echo "<h1 style='text-align:center;margin-top:50px;'>กรุณา Login เข้าสู่ระบบ</h1>";
-          header("refresh:1; url=".base_url()."login_page");
+          header("refresh:1; url=".base_url()."login");
           die();
       }
   }
@@ -137,7 +117,7 @@ class Login_model extends CI_Model{
   public function logout(){
       session_destroy();
       $this->session->unset_userdata('referrer_url');
-      header("refresh:0; url=".base_url()."login_page");
+      header("refresh:0; url=".base_url()."login");
   }
 
   public function getuser(){

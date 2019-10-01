@@ -15,9 +15,27 @@ class Login extends MX_Controller{
   public function index()
   {
     if (isset($_SESSION['username']) == "") {
-      header("refresh:0; url=".base_url()."login_page");
+      $this->load->view("index");
     }else{
       header("refresh:0; url=".base_url()."document/");
+    }
+    
+
+  }
+
+
+  public function validate_login()
+  {
+    $username = $this->input->post('username',true);
+    $password = ($this->input->post('password',true));
+    $validate = $this->login_model->validate($username,$password);
+
+    if($validate > 0)
+    {
+
+    }else{
+      echo $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert" style="font-size:15px;text-align: center;">Username or Password is Wrong</div>');
+        redirect('login');
     }
 
   }

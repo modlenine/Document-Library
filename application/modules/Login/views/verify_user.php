@@ -21,6 +21,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
                 <!-- Main Section -->
 
                 <div class="row">
+                <?php echo $this->session->flashdata('msg_success');?>
                     <div class="col-md-12" style="text-align:center;">
                     <h3>กรุณายืนยันตัวตนเพื่อเข้าใช้งานโปรแกรม</h3><br>
                             <button class="btn btn-primary btn-lg" style="font-size:25px;" data-toggle="modal" data-target="#verify_user_modal" >
