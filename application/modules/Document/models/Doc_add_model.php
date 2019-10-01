@@ -300,15 +300,15 @@ class Doc_add_model extends CI_Model
         $mail->From = "document_system@saleecolour.com";
         $mail->FromName = "Document System";
 
-        $get_user_email = get_email_user("dc_user_group in (1,2)");
+        $get_user_email = get_email_user("dc_user_group in (1,2,5)");
         foreach($get_user_email->result_array() as $gue){
             $mail->AddAddress($gue['dc_user_memberemail']);
         }
         // $mail->AddAddress("chainarong_k@saleecolour.com");
         $mail->AddCC("chainarong_k@saleecolour.com");
-        // $get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
-        // $gue_cc = $get_usercc_email->row();
-        // $mail->AddCC($gue_cc->dc_user_memberemail);
+        $get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
+        $gue_cc = $get_usercc_email->row();
+        $mail->AddCC($gue_cc->dc_user_memberemail);
 
         // $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
         $mail->WordWrap = 50;                                 // set word wrap to 50 characters
@@ -317,7 +317,7 @@ class Doc_add_model extends CI_Model
         $mail->IsHTML(true);                                  // set email format to HTML
         $mail->Subject = $subject;
         $mail->Body = $body;
-        // $mail->send();
+        $mail->send();
         //************************************ZONE***SEND****EMAIL*************************************//
 
 
@@ -441,6 +441,107 @@ class Doc_add_model extends CI_Model
                     }
                 }
             }
+
+
+//Email Zone
+$calldata_email = $this->doc_get_model->get_fulldata($darcode);
+$calldata_emails = $calldata_email->row();
+
+//************************************ZONE***SEND****EMAIL*************************************//
+
+$subject = "New ใบคำร้องเกี่ยวกับเอกสาร ( DAR ) Status: ผลการอนุมัติจาก ผู้จัดการ";
+
+$body = "<h3 style='font-size:26px;'>พบใบคำร้องเกี่ยวกับเอกสาร ( DAR ) ใหม่ !</h3>";
+$body .="<h4>Status: ผลการอนุมัติจาก ผู้จัดการ</h4>";
+
+$body .= "<strong style='font-size:20px;'>เลขที่ใบ DAR :</strong>&nbsp;" . $calldata_emails->dc_data_darcode . "&nbsp;&nbsp;&nbsp;";
+$body .= "<strong style='font-size:20px;'>ระบบที่เกี่ยวข้อง :</strong>&nbsp;";
+
+$ra_typeuse = $this->doc_get_model->get_doctype_use($darcode);
+foreach ($ra_typeuse->result_array() as $rst) {
+    $body .= $rst['dc_type_name'] . "&nbsp;,&nbsp;";
+}
+
+$body .= "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>ประเภทเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_sub_type_name . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>วันที่ร้องขอ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ผู้ร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_user . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>แผนก :</strong></span>&nbsp;" . $calldata_emails->dc_dept_main_name . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ชื่อเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_docname . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>รหัสเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_doccode_display . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ครั้งที่แก้ไข :</strong></span>&nbsp;" . $calldata_emails->dc_data_edit . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>วันที่เริ่มใช้ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date_start) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ระยะเวลาในการจัดเก็บ :</strong></span>&nbsp;" . $calldata_emails->dc_data_store . "&nbsp;" . $calldata_emails->dc_data_store_type . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_reason_name . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>รายละเอียด เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_reson_detail . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>หน่วยงานที่เกี่ยวข้อง :</strong></span>&nbsp;";
+$ra_related_dept = $this->doc_get_model->get_related_use($darcode);
+foreach ($ra_related_dept->result_array() as $rrd) {
+    $body .= $rrd['related_dept_name'] . "&nbsp;,&nbsp;";
+}
+$body .= "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>ไฟล์เอกสาร :</strong></span>&nbsp;" . "<a href='" . base_url() . $calldata_emails->dc_data_file_location . $calldata_emails->dc_data_file . "'>" . $calldata_emails->dc_data_file . "</a><br><br>";
+
+if($calldata_emails->dc_data_result_reson_status == 1){
+    $reson1_status = "อนุมัติ";
+}else{
+    $reson1_status = "ไม่อนุมัติ";
+}
+$body .= "<span style='font-size:20px;'><strong>ผลการร้องขอ จาก ผู้จัดการ :&nbsp;&nbsp;</strong></span>".$reson1_status."<br>";
+$body .="<span style='font-size:20px;'><strong>รายละเอียดการอนุมัติ : &nbsp;</strong></span>".$calldata_emails->dc_data_result_reson_detail."<br>";
+$body .="<span style='font-size:20px;'><strong>วันที่อนุมัติ : &nbsp;&nbsp;</strong></span><span>".con_date($calldata_emails->dc_data_date_approve_mgr)."&nbsp;&nbsp;</span><span style='font-size:20px;'><strong>ชื่อผู้อนุมัติ :&nbsp;&nbsp;</strong></span><span>".$calldata_emails->dc_data_approve_mgr."</span><br><br>";
+
+
+
+$body .= "<strong>Link Program :</strong>&nbsp;" . "<a href='" . base_url('document/viewfull/') . $calldata_emails->dc_data_darcode . "'>ตรวจสอบเอกสารได้ที่นี่</a>";
+$body .= "</html>\n";
+
+$mail = new PHPMailer();
+$mail->IsSMTP();
+$mail->CharSet = "utf-8";  // ในส่วนนี้ ถ้าระบบเราใช้ tis-620 หรือ windows-874 สามารถแก้ไขเปลี่ยนได้
+$mail->SMTPDebug = 1;                                      // set mailer to use SMTP
+$mail->Host = "mail.saleecolour.com";  // specify main and backup server
+//        $mail->Host = "smtp.gmail.com";
+$mail->Port = 587; // พอร์ท
+//        $mail->SMTPSecure = 'tls';
+$mail->SMTPAuth = true;     // turn on SMTP authentication
+$mail->Username = "document_system@saleecolour.com";  // SMTP username
+//websystem@saleecolour.com
+//        $mail->Username = "chainarong039@gmail.com";
+$mail->Password = "document*1234"; // SMTP password
+//Ae8686#
+//        $mail->Password = "ShctBkk1";
+
+$mail->From = "document_system@saleecolour.com";
+$mail->FromName = "Document System";
+
+$get_user_email = get_email_user("dc_user_group in (1,2,6)");
+foreach($get_user_email->result_array() as $gue){
+    $mail->AddAddress($gue['dc_user_memberemail']);
+}
+// $mail->AddAddress("chainarong_k@saleecolour.com");
+$mail->AddCC("chainarong_k@saleecolour.com");
+$get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
+$gue_cc = $get_usercc_email->row();
+$mail->AddCC($gue_cc->dc_user_memberemail);
+
+// $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
+$mail->WordWrap = 50;                                 // set word wrap to 50 characters
+// $mail->AddAttachment("/var/tmp/file.tar.gz");         // add attachments
+// $mail->AddAttachment("/tmp/image.jpg", "new.jpg");    // optional name
+$mail->IsHTML(true);                                  // set email format to HTML
+$mail->Subject = $subject;
+$mail->Body = $body;
+$mail->send();
+//************************************ZONE***SEND****EMAIL*************************************//
+
+
+
         }
     }
 
@@ -561,6 +662,117 @@ class Doc_add_model extends CI_Model
                     }
                 }
             }
+
+//Email Zone
+$calldata_email = $this->doc_get_model->get_fulldata($darcode);
+$calldata_emails = $calldata_email->row();
+
+//************************************ZONE***SEND****EMAIL*************************************//
+
+$subject = "New ใบคำร้องเกี่ยวกับเอกสาร (DAR) Status: ผลการอนุมัติจาก QMR";
+
+$body = "<h3 style='font-size:26px;'>พบใบคำร้องเกี่ยวกับเอกสาร ( DAR ) ใหม่ !</h3>";
+$body .="<h4>Status: ผลการอนุมัติจาก QMR</h4>";
+
+$body .= "<strong style='font-size:20px;'>เลขที่ใบ DAR :</strong>&nbsp;" . $calldata_emails->dc_data_darcode . "&nbsp;&nbsp;&nbsp;";
+$body .= "<strong style='font-size:20px;'>ระบบที่เกี่ยวข้อง :</strong>&nbsp;";
+
+$ra_typeuse = $this->doc_get_model->get_doctype_use($darcode);
+foreach ($ra_typeuse->result_array() as $rst) {
+    $body .= $rst['dc_type_name'] . "&nbsp;,&nbsp;";
+}
+
+$body .= "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>ประเภทเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_sub_type_name . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>วันที่ร้องขอ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ผู้ร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_user . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>แผนก :</strong></span>&nbsp;" . $calldata_emails->dc_dept_main_name . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ชื่อเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_docname . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>รหัสเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_doccode_display . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ครั้งที่แก้ไข :</strong></span>&nbsp;" . $calldata_emails->dc_data_edit . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>วันที่เริ่มใช้ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date_start) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ระยะเวลาในการจัดเก็บ :</strong></span>&nbsp;" . $calldata_emails->dc_data_store . "&nbsp;" . $calldata_emails->dc_data_store_type . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_reason_name . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>รายละเอียด เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_reson_detail . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>หน่วยงานที่เกี่ยวข้อง :</strong></span>&nbsp;";
+$ra_related_dept = $this->doc_get_model->get_related_use($darcode);
+foreach ($ra_related_dept->result_array() as $rrd) {
+    $body .= $rrd['related_dept_name'] . "&nbsp;,&nbsp;";
+}
+$body .= "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>ไฟล์เอกสาร :</strong></span>&nbsp;" . "<a href='" . base_url() . $calldata_emails->dc_data_file_location . $calldata_emails->dc_data_file . "'>" . $calldata_emails->dc_data_file . "</a><br><br>";
+
+if($calldata_emails->dc_data_result_reson_status == 1){
+    $reson1_status = "อนุมัติ";
+}else{
+    $reson1_status = "ไม่อนุมัติ";
+}
+$body .= "<span style='font-size:20px;'><strong>ผลการร้องขอ จาก ผู้จัดการ :&nbsp;&nbsp;</strong></span>".$reson1_status."<br>";
+$body .="<span style='font-size:20px;'><strong>รายละเอียดการอนุมัติ : &nbsp;</strong></span>".$calldata_emails->dc_data_result_reson_detail."<br>";
+$body .="<span style='font-size:20px;'><strong>วันที่อนุมัติ : &nbsp;&nbsp;</strong></span><span>".con_date($calldata_emails->dc_data_date_approve_mgr)."&nbsp;&nbsp;</span><span style='font-size:20px;'><strong>ชื่อผู้อนุมัติ :&nbsp;&nbsp;</strong></span><span>".$calldata_emails->dc_data_approve_mgr."</span><br><br>";
+
+
+
+if($calldata_emails->dc_data_result_reson_status2 == 1){
+    $reson2_status = "อนุมัติ";
+}else{
+    $reson2_status = "ไม่อนุมัติ";
+}
+$body .= "<span style='font-size:20px;'><strong>ผลการร้องขอ จาก QMR :&nbsp;&nbsp;</strong></span>".$reson2_status."<br>";
+$body .="<span style='font-size:20px;'><strong>รายละเอียดการอนุมัติ : &nbsp;</strong></span>".$calldata_emails->dc_data_result_reson_detail2."<br>";
+$body .="<span style='font-size:20px;'><strong>วันที่อนุมัติ : &nbsp;&nbsp;</strong></span><span>".con_date($calldata_emails->dc_data_date_approve_qmr)."&nbsp;&nbsp;</span><span style='font-size:20px;'><strong>ชื่อผู้อนุมัติ :&nbsp;&nbsp;</strong></span><span>".$calldata_emails->dc_data_approve_qmr."</span><br><br>";
+
+
+
+$body .= "<strong>Link Program :</strong>&nbsp;" . "<a href='" . base_url('document/viewfull/') . $calldata_emails->dc_data_darcode . "'>ตรวจสอบเอกสารได้ที่นี่</a>";
+$body .= "</html>\n";
+
+$mail = new PHPMailer();
+$mail->IsSMTP();
+$mail->CharSet = "utf-8";  // ในส่วนนี้ ถ้าระบบเราใช้ tis-620 หรือ windows-874 สามารถแก้ไขเปลี่ยนได้
+$mail->SMTPDebug = 1;                                      // set mailer to use SMTP
+$mail->Host = "mail.saleecolour.com";  // specify main and backup server
+//        $mail->Host = "smtp.gmail.com";
+$mail->Port = 587; // พอร์ท
+//        $mail->SMTPSecure = 'tls';
+$mail->SMTPAuth = true;     // turn on SMTP authentication
+$mail->Username = "document_system@saleecolour.com";  // SMTP username
+//websystem@saleecolour.com
+//        $mail->Username = "chainarong039@gmail.com";
+$mail->Password = "document*1234"; // SMTP password
+//Ae8686#
+//        $mail->Password = "ShctBkk1";
+
+$mail->From = "document_system@saleecolour.com";
+$mail->FromName = "Document System";
+
+$get_user_email = get_email_user("dc_user_group in (1,2)");
+foreach($get_user_email->result_array() as $gue){
+    $mail->AddAddress($gue['dc_user_memberemail']);
+}
+// $mail->AddAddress("chainarong_k@saleecolour.com");
+$mail->AddCC("chainarong_k@saleecolour.com");
+$get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
+$gue_cc = $get_usercc_email->row();
+$mail->AddCC($gue_cc->dc_user_memberemail);
+
+// $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
+$mail->WordWrap = 50;                                 // set word wrap to 50 characters
+// $mail->AddAttachment("/var/tmp/file.tar.gz");         // add attachments
+// $mail->AddAttachment("/tmp/image.jpg", "new.jpg");    // optional name
+$mail->IsHTML(true);                                  // set email format to HTML
+$mail->Subject = $subject;
+$mail->Body = $body;
+$mail->send();
+//************************************ZONE***SEND****EMAIL*************************************//
+
+
+
         }
     }
 
@@ -662,11 +874,6 @@ class Doc_add_model extends CI_Model
                 $this->db->update("library_hashtag",$ar_update_hashtag_status);
             }
 
-
-
-
-
-
             $ar_lib_save = array(
                 "lib_main_doccode" => $get_doccodes->dc_data_doccode,
                 "lib_main_darcode" => $darcode,
@@ -685,6 +892,122 @@ class Doc_add_model extends CI_Model
                 echo "</script>";
                 exit();
             }
+
+
+//Email Zone
+$calldata_email = $this->doc_get_model->get_fulldata($darcode);
+$calldata_emails = $calldata_email->row();
+
+//************************************ZONE***SEND****EMAIL*************************************//
+
+$subject = "New ใบคำร้องเกี่ยวกับเอกสาร(DAR) Status: ผลการดำเนินการของ DCC";
+
+$body = "<h3 style='font-size:26px;'>พบใบคำร้องเกี่ยวกับเอกสาร ( DAR ) ใหม่ !</h3>";
+$body .="<h4>Status: ผลการดำเนินการของ DCC</h4>";
+
+$body .= "<strong style='font-size:20px;'>เลขที่ใบ DAR :</strong>&nbsp;" . $calldata_emails->dc_data_darcode . "&nbsp;&nbsp;&nbsp;";
+$body .= "<strong style='font-size:20px;'>ระบบที่เกี่ยวข้อง :</strong>&nbsp;";
+
+$ra_typeuse = $this->doc_get_model->get_doctype_use($darcode);
+foreach ($ra_typeuse->result_array() as $rst) {
+    $body .= $rst['dc_type_name'] . "&nbsp;,&nbsp;";
+}
+
+$body .= "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>ประเภทเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_sub_type_name . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>วันที่ร้องขอ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ผู้ร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_user . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>แผนก :</strong></span>&nbsp;" . $calldata_emails->dc_dept_main_name . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ชื่อเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_docname . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>รหัสเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_doccode_display . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ครั้งที่แก้ไข :</strong></span>&nbsp;" . $calldata_emails->dc_data_edit . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>วันที่เริ่มใช้ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date_start) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ระยะเวลาในการจัดเก็บ :</strong></span>&nbsp;" . $calldata_emails->dc_data_store . "&nbsp;" . $calldata_emails->dc_data_store_type . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_reason_name . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>รายละเอียด เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_reson_detail . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>หน่วยงานที่เกี่ยวข้อง :</strong></span>&nbsp;";
+$ra_related_dept = $this->doc_get_model->get_related_use($darcode);
+foreach ($ra_related_dept->result_array() as $rrd) {
+    $body .= $rrd['related_dept_name'] . "&nbsp;,&nbsp;";
+}
+$body .= "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>ไฟล์เอกสาร :</strong></span>&nbsp;" . "<a href='" . base_url() . $calldata_emails->dc_data_file_location . $calldata_emails->dc_data_file . "'>" . $calldata_emails->dc_data_file . "</a><br><br>";
+
+if($calldata_emails->dc_data_result_reson_status == 1){
+    $reson1_status = "อนุมัติ";
+}else{
+    $reson1_status = "ไม่อนุมัติ";
+}
+$body .= "<span style='font-size:20px;'><strong>ผลการร้องขอ จาก ผู้จัดการ :&nbsp;&nbsp;</strong></span>".$reson1_status."<br>";
+$body .="<span style='font-size:20px;'><strong>รายละเอียดการอนุมัติ : &nbsp;</strong></span>".$calldata_emails->dc_data_result_reson_detail."<br>";
+$body .="<span style='font-size:20px;'><strong>วันที่อนุมัติ : &nbsp;&nbsp;</strong></span><span>".con_date($calldata_emails->dc_data_date_approve_mgr)."&nbsp;&nbsp;</span><span style='font-size:20px;'><strong>ชื่อผู้อนุมัติ :&nbsp;&nbsp;</strong></span><span>".$calldata_emails->dc_data_approve_mgr."</span><br><br>";
+
+
+
+if($calldata_emails->dc_data_result_reson_status2 == 1){
+    $reson2_status = "อนุมัติ";
+}else{
+    $reson2_status = "ไม่อนุมัติ";
+}
+$body .= "<span style='font-size:20px;'><strong>ผลการร้องขอ จาก QMR :&nbsp;&nbsp;</strong></span>".$reson2_status."<br>";
+$body .="<span style='font-size:20px;'><strong>รายละเอียดการอนุมัติ : &nbsp;</strong></span>".$calldata_emails->dc_data_result_reson_detail2."<br>";
+$body .="<span style='font-size:20px;'><strong>วันที่อนุมัติ : &nbsp;&nbsp;</strong></span><span>".con_date($calldata_emails->dc_data_date_approve_qmr)."&nbsp;&nbsp;</span><span style='font-size:20px;'><strong>ชื่อผู้อนุมัติ :&nbsp;&nbsp;</strong></span><span>".$calldata_emails->dc_data_approve_qmr."</span><br><br>";
+
+
+$body .="<span style='font-size:20px;'><strong>สำหรับผู้ควบคุมเอกสาร : &nbsp;</strong></span><span>".$calldata_emails->dc_data_method."</span><br>";
+$body .="<span style='font-size:20px;'><strong>วันที่ดำเนินการ : &nbsp;&nbsp;</strong></span><span>".con_date($calldata_emails->dc_data_date_operation)."&nbsp;&nbsp;</span><span style='font-size:20px;'><strong>ชื่อผู้ดำเนินการ :&nbsp;&nbsp;</strong></span><span>".$calldata_emails->dc_data_operation."</span><br><br>";
+
+
+$body .= "<strong>Link Program :</strong>&nbsp;" . "<a href='" . base_url('document/viewfull/') . $calldata_emails->dc_data_darcode . "'>ตรวจสอบเอกสารได้ที่นี่</a>";
+$body .= "</html>\n";
+
+$mail = new PHPMailer();
+$mail->IsSMTP();
+$mail->CharSet = "utf-8";  // ในส่วนนี้ ถ้าระบบเราใช้ tis-620 หรือ windows-874 สามารถแก้ไขเปลี่ยนได้
+$mail->SMTPDebug = 1;                                      // set mailer to use SMTP
+$mail->Host = "mail.saleecolour.com";  // specify main and backup server
+//        $mail->Host = "smtp.gmail.com";
+$mail->Port = 587; // พอร์ท
+//        $mail->SMTPSecure = 'tls';
+$mail->SMTPAuth = true;     // turn on SMTP authentication
+$mail->Username = "document_system@saleecolour.com";  // SMTP username
+//websystem@saleecolour.com
+//        $mail->Username = "chainarong039@gmail.com";
+$mail->Password = "document*1234"; // SMTP password
+//Ae8686#
+//        $mail->Password = "ShctBkk1";
+
+$mail->From = "document_system@saleecolour.com";
+$mail->FromName = "Document System";
+
+$get_user_email = get_email_user("dc_user_group in (1,2)");
+foreach($get_user_email->result_array() as $gue){
+    $mail->AddAddress($gue['dc_user_memberemail']);
+}
+// $mail->AddAddress("chainarong_k@saleecolour.com");
+$mail->AddCC("chainarong_k@saleecolour.com");
+$get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
+$gue_cc = $get_usercc_email->row();
+$mail->AddCC($gue_cc->dc_user_memberemail);
+
+// $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
+$mail->WordWrap = 50;                                 // set word wrap to 50 characters
+// $mail->AddAttachment("/var/tmp/file.tar.gz");         // add attachments
+// $mail->AddAttachment("/tmp/image.jpg", "new.jpg");    // optional name
+$mail->IsHTML(true);                                  // set email format to HTML
+$mail->Subject = $subject;
+$mail->Body = $body;
+$mail->send();
+//************************************ZONE***SEND****EMAIL*************************************//
+
+
+
+
         }
     }
 
@@ -756,6 +1079,122 @@ class Doc_add_model extends CI_Model
                 "lib_main_status" => "active"
             );
             $this->db->insert("library_main", $ar_lib_save);
+
+
+
+//Email Zone
+$calldata_email = $this->doc_get_model->get_fulldata($darcode);
+$calldata_emails = $calldata_email->row();
+
+//************************************ZONE***SEND****EMAIL*************************************//
+
+$subject = "New ใบคำร้องเกี่ยวกับเอกสาร(DAR) Status: ผลการดำเนินการของ DCC";
+
+$body = "<h3 style='font-size:26px;'>พบใบคำร้องเกี่ยวกับเอกสาร ( DAR ) ใหม่ !</h3>";
+$body .="<h4>Status: ผลการดำเนินการของ DCC</h4>";
+
+$body .= "<strong style='font-size:20px;'>เลขที่ใบ DAR :</strong>&nbsp;" . $calldata_emails->dc_data_darcode . "&nbsp;&nbsp;&nbsp;";
+$body .= "<strong style='font-size:20px;'>ระบบที่เกี่ยวข้อง :</strong>&nbsp;";
+
+$ra_typeuse = $this->doc_get_model->get_doctype_use($darcode);
+foreach ($ra_typeuse->result_array() as $rst) {
+    $body .= $rst['dc_type_name'] . "&nbsp;,&nbsp;";
+}
+
+$body .= "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>ประเภทเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_sub_type_name . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>วันที่ร้องขอ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ผู้ร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_user . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>แผนก :</strong></span>&nbsp;" . $calldata_emails->dc_dept_main_name . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ชื่อเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_docname . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>รหัสเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_doccode_display . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ครั้งที่แก้ไข :</strong></span>&nbsp;" . $calldata_emails->dc_data_edit . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>วันที่เริ่มใช้ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date_start) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ระยะเวลาในการจัดเก็บ :</strong></span>&nbsp;" . $calldata_emails->dc_data_store . "&nbsp;" . $calldata_emails->dc_data_store_type . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_reason_name . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>รายละเอียด เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_reson_detail . "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>หน่วยงานที่เกี่ยวข้อง :</strong></span>&nbsp;";
+$ra_related_dept = $this->doc_get_model->get_related_use($darcode);
+foreach ($ra_related_dept->result_array() as $rrd) {
+    $body .= $rrd['related_dept_name'] . "&nbsp;,&nbsp;";
+}
+$body .= "<br>";
+
+$body .= "<span style='font-size:20px;'><strong>ไฟล์เอกสาร :</strong></span>&nbsp;" . "<a href='" . base_url() . $calldata_emails->dc_data_file_location . $calldata_emails->dc_data_file . "'>" . $calldata_emails->dc_data_file . "</a><br><br>";
+
+if($calldata_emails->dc_data_result_reson_status == 1){
+    $reson1_status = "อนุมัติ";
+}else{
+    $reson1_status = "ไม่อนุมัติ";
+}
+$body .= "<span style='font-size:20px;'><strong>ผลการร้องขอ จาก ผู้จัดการ :&nbsp;&nbsp;</strong></span>".$reson1_status."<br>";
+$body .="<span style='font-size:20px;'><strong>รายละเอียดการอนุมัติ : &nbsp;</strong></span>".$calldata_emails->dc_data_result_reson_detail."<br>";
+$body .="<span style='font-size:20px;'><strong>วันที่อนุมัติ : &nbsp;&nbsp;</strong></span><span>".con_date($calldata_emails->dc_data_date_approve_mgr)."&nbsp;&nbsp;</span><span style='font-size:20px;'><strong>ชื่อผู้อนุมัติ :&nbsp;&nbsp;</strong></span><span>".$calldata_emails->dc_data_approve_mgr."</span><br><br>";
+
+
+
+if($calldata_emails->dc_data_result_reson_status2 == 1){
+    $reson2_status = "อนุมัติ";
+}else{
+    $reson2_status = "ไม่อนุมัติ";
+}
+$body .= "<span style='font-size:20px;'><strong>ผลการร้องขอ จาก QMR :&nbsp;&nbsp;</strong></span>".$reson2_status."<br>";
+$body .="<span style='font-size:20px;'><strong>รายละเอียดการอนุมัติ : &nbsp;</strong></span>".$calldata_emails->dc_data_result_reson_detail2."<br>";
+$body .="<span style='font-size:20px;'><strong>วันที่อนุมัติ : &nbsp;&nbsp;</strong></span><span>".con_date($calldata_emails->dc_data_date_approve_qmr)."&nbsp;&nbsp;</span><span style='font-size:20px;'><strong>ชื่อผู้อนุมัติ :&nbsp;&nbsp;</strong></span><span>".$calldata_emails->dc_data_approve_qmr."</span><br><br>";
+
+
+$body .="<span style='font-size:20px;'><strong>สำหรับผู้ควบคุมเอกสาร : &nbsp;</strong></span><span>".$calldata_emails->dc_data_method."</span><br>";
+$body .="<span style='font-size:20px;'><strong>วันที่ดำเนินการ : &nbsp;&nbsp;</strong></span><span>".con_date($calldata_emails->dc_data_date_operation)."&nbsp;&nbsp;</span><span style='font-size:20px;'><strong>ชื่อผู้ดำเนินการ :&nbsp;&nbsp;</strong></span><span>".$calldata_emails->dc_data_operation."</span><br><br>";
+
+
+$body .= "<strong>Link Program :</strong>&nbsp;" . "<a href='" . base_url('document/viewfull/') . $calldata_emails->dc_data_darcode . "'>ตรวจสอบเอกสารได้ที่นี่</a>";
+$body .= "</html>\n";
+
+$mail = new PHPMailer();
+$mail->IsSMTP();
+$mail->CharSet = "utf-8";  // ในส่วนนี้ ถ้าระบบเราใช้ tis-620 หรือ windows-874 สามารถแก้ไขเปลี่ยนได้
+$mail->SMTPDebug = 1;                                      // set mailer to use SMTP
+$mail->Host = "mail.saleecolour.com";  // specify main and backup server
+//        $mail->Host = "smtp.gmail.com";
+$mail->Port = 587; // พอร์ท
+//        $mail->SMTPSecure = 'tls';
+$mail->SMTPAuth = true;     // turn on SMTP authentication
+$mail->Username = "document_system@saleecolour.com";  // SMTP username
+//websystem@saleecolour.com
+//        $mail->Username = "chainarong039@gmail.com";
+$mail->Password = "document*1234"; // SMTP password
+//Ae8686#
+//        $mail->Password = "ShctBkk1";
+
+$mail->From = "document_system@saleecolour.com";
+$mail->FromName = "Document System";
+
+$get_user_email = get_email_user("dc_user_group in (1,2)");
+foreach($get_user_email->result_array() as $gue){
+    $mail->AddAddress($gue['dc_user_memberemail']);
+}
+// $mail->AddAddress("chainarong_k@saleecolour.com");
+$mail->AddCC("chainarong_k@saleecolour.com");
+$get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
+$gue_cc = $get_usercc_email->row();
+$mail->AddCC($gue_cc->dc_user_memberemail);
+
+// $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
+$mail->WordWrap = 50;                                 // set word wrap to 50 characters
+// $mail->AddAttachment("/var/tmp/file.tar.gz");         // add attachments
+// $mail->AddAttachment("/tmp/image.jpg", "new.jpg");    // optional name
+$mail->IsHTML(true);                                  // set email format to HTML
+$mail->Subject = $subject;
+$mail->Body = $body;
+$mail->send();
+//************************************ZONE***SEND****EMAIL*************************************//
+
+
+
         }
     }
 
@@ -943,6 +1382,93 @@ class Doc_add_model extends CI_Model
                 echo "บันทึกข้อมูลสำเร็จ";
 
             }
+
+
+            $calldata_email = $this->doc_get_model->get_fulldata($get_darcode);
+        $calldata_emails = $calldata_email->row();
+
+        //************************************ZONE***SEND****EMAIL*************************************//
+
+        $subject = "New ใบคำร้องเกี่ยวกับเอกสาร ( DAR )";
+
+        $body = "<h3 style='font-size:26px;'>พบใบคำร้องเกี่ยวกับเอกสาร ( DAR ) ใหม่ !</h3>";
+        $body .= "<strong style='font-size:20px;'>เลขที่ใบ DAR :</strong>&nbsp;" . $calldata_emails->dc_data_darcode . "&nbsp;&nbsp;&nbsp;";
+        $body .= "<strong style='font-size:20px;'>ระบบที่เกี่ยวข้อง :</strong>&nbsp;";
+
+        $ra_typeuse = $this->doc_get_model->get_doctype_use($get_darcode);
+        foreach ($ra_typeuse->result_array() as $rst) {
+            $body .= $rst['dc_type_name'] . "&nbsp;,&nbsp;";
+        }
+
+        $body .= "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>ประเภทเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_sub_type_name . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>วันที่ร้องขอ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ผู้ร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_user . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>แผนก :</strong></span>&nbsp;" . $calldata_emails->dc_dept_main_name . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ชื่อเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_docname . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>รหัสเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_doccode_display . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ครั้งที่แก้ไข :</strong></span>&nbsp;" . $calldata_emails->dc_data_edit . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>วันที่เริ่มใช้ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date_start) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ระยะเวลาในการจัดเก็บ :</strong></span>&nbsp;" . $calldata_emails->dc_data_store . "&nbsp;" . $calldata_emails->dc_data_store_type . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_reason_name . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>รายละเอียด เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_reson_detail . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>หน่วยงานที่เกี่ยวข้อง :</strong></span>&nbsp;";
+        $ra_related_dept = $this->doc_get_model->get_related_use($get_darcode);
+        foreach ($ra_related_dept->result_array() as $rrd) {
+            $body .= $rrd['related_dept_name'] . "&nbsp;,&nbsp;";
+        }
+        $body .= "<br><br>";
+
+        $body .= "<span style='font-size:20px;'><strong>ไฟล์เอกสาร :</strong></span>&nbsp;" . "<a href='" . base_url() . $calldata_emails->dc_data_file_location . $calldata_emails->dc_data_file . "'>" . $calldata_emails->dc_data_file . "</a><br>";
+
+        $body .= "<strong>Link Program :</strong>&nbsp;" . "<a href='" . base_url('document/viewfull/') . $calldata_emails->dc_data_darcode . "'>ตรวจสอบเอกสารได้ที่นี่</a>";
+        $body .= "</html>\n";
+
+        $mail = new PHPMailer();
+        $mail->IsSMTP();
+        $mail->CharSet = "utf-8";  // ในส่วนนี้ ถ้าระบบเราใช้ tis-620 หรือ windows-874 สามารถแก้ไขเปลี่ยนได้
+        $mail->SMTPDebug = 1;                                      // set mailer to use SMTP
+        $mail->Host = "mail.saleecolour.com";  // specify main and backup server
+        //        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587; // พอร์ท
+        //        $mail->SMTPSecure = 'tls';
+        $mail->SMTPAuth = true;     // turn on SMTP authentication
+        $mail->Username = "document_system@saleecolour.com";  // SMTP username
+        //websystem@saleecolour.com
+        //        $mail->Username = "chainarong039@gmail.com";
+        $mail->Password = "document*1234"; // SMTP password
+        //Ae8686#
+        //        $mail->Password = "ShctBkk1";
+
+        $mail->From = "document_system@saleecolour.com";
+        $mail->FromName = "Document System";
+
+        $get_user_email = get_email_user("dc_user_group in (1,2,5)");
+        foreach($get_user_email->result_array() as $gue){
+            $mail->AddAddress($gue['dc_user_memberemail']);
+        }
+        // $mail->AddAddress("chainarong_k@saleecolour.com");
+        $mail->AddCC("chainarong_k@saleecolour.com");
+        $get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
+        $gue_cc = $get_usercc_email->row();
+        $mail->AddCC($gue_cc->dc_user_memberemail);
+
+        // $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
+        $mail->WordWrap = 50;                                 // set word wrap to 50 characters
+        // $mail->AddAttachment("/var/tmp/file.tar.gz");         // add attachments
+        // $mail->AddAttachment("/tmp/image.jpg", "new.jpg");    // optional name
+        $mail->IsHTML(true);                                  // set email format to HTML
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+        $mail->send();
+        //************************************ZONE***SEND****EMAIL*************************************//
+
+
+
         }
     }
 
@@ -1033,7 +1559,96 @@ class Doc_add_model extends CI_Model
         } else {
             echo "บันทึกข้อมูลสำเร็จ";
         }
+
+
+        $calldata_email = $this->doc_get_model->get_fulldata($get_darcode);
+        $calldata_emails = $calldata_email->row();
+
+        //************************************ZONE***SEND****EMAIL*************************************//
+
+        $subject = "New ใบคำร้องเกี่ยวกับเอกสาร ( DAR )";
+
+        $body = "<h3 style='font-size:26px;'>พบใบคำร้องเกี่ยวกับเอกสาร ( DAR ) ใหม่ !</h3>";
+        $body .= "<strong style='font-size:20px;'>เลขที่ใบ DAR :</strong>&nbsp;" . $calldata_emails->dc_data_darcode . "&nbsp;&nbsp;&nbsp;";
+        $body .= "<strong style='font-size:20px;'>ระบบที่เกี่ยวข้อง :</strong>&nbsp;";
+
+        $ra_typeuse = $this->doc_get_model->get_doctype_use($get_darcode);
+        foreach ($ra_typeuse->result_array() as $rst) {
+            $body .= $rst['dc_type_name'] . "&nbsp;,&nbsp;";
+        }
+
+        $body .= "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>ประเภทเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_sub_type_name . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>วันที่ร้องขอ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ผู้ร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_user . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>แผนก :</strong></span>&nbsp;" . $calldata_emails->dc_dept_main_name . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ชื่อเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_docname . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>รหัสเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_doccode_display . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ครั้งที่แก้ไข :</strong></span>&nbsp;" . $calldata_emails->dc_data_edit . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>วันที่เริ่มใช้ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date_start) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ระยะเวลาในการจัดเก็บ :</strong></span>&nbsp;" . $calldata_emails->dc_data_store . "&nbsp;" . $calldata_emails->dc_data_store_type . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_reason_name . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>รายละเอียด เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_reson_detail . "<br>";
+
+        $body .= "<span style='font-size:20px;'><strong>หน่วยงานที่เกี่ยวข้อง :</strong></span>&nbsp;";
+        $ra_related_dept = $this->doc_get_model->get_related_use($get_darcode);
+        foreach ($ra_related_dept->result_array() as $rrd) {
+            $body .= $rrd['related_dept_name'] . "&nbsp;,&nbsp;";
+        }
+        $body .= "<br><br>";
+
+        $body .= "<span style='font-size:20px;'><strong>ไฟล์เอกสาร :</strong></span>&nbsp;" . "<a href='" . base_url() . $calldata_emails->dc_data_file_location . $calldata_emails->dc_data_file . "'>" . $calldata_emails->dc_data_file . "</a><br>";
+
+        $body .= "<strong>Link Program :</strong>&nbsp;" . "<a href='" . base_url('document/viewfull/') . $calldata_emails->dc_data_darcode . "'>ตรวจสอบเอกสารได้ที่นี่</a>";
+        $body .= "</html>\n";
+
+        $mail = new PHPMailer();
+        $mail->IsSMTP();
+        $mail->CharSet = "utf-8";  // ในส่วนนี้ ถ้าระบบเราใช้ tis-620 หรือ windows-874 สามารถแก้ไขเปลี่ยนได้
+        $mail->SMTPDebug = 1;                                      // set mailer to use SMTP
+        $mail->Host = "mail.saleecolour.com";  // specify main and backup server
+        //        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587; // พอร์ท
+        //        $mail->SMTPSecure = 'tls';
+        $mail->SMTPAuth = true;     // turn on SMTP authentication
+        $mail->Username = "document_system@saleecolour.com";  // SMTP username
+        //websystem@saleecolour.com
+        //        $mail->Username = "chainarong039@gmail.com";
+        $mail->Password = "document*1234"; // SMTP password
+        //Ae8686#
+        //        $mail->Password = "ShctBkk1";
+
+        $mail->From = "document_system@saleecolour.com";
+        $mail->FromName = "Document System";
+
+        $get_user_email = get_email_user("dc_user_group in (1,2,5)");
+        foreach($get_user_email->result_array() as $gue){
+            $mail->AddAddress($gue['dc_user_memberemail']);
+        }
+        // $mail->AddAddress("chainarong_k@saleecolour.com");
+        $mail->AddCC("chainarong_k@saleecolour.com");
+        $get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
+        $gue_cc = $get_usercc_email->row();
+        $mail->AddCC($gue_cc->dc_user_memberemail);
+
+        // $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
+        $mail->WordWrap = 50;                                 // set word wrap to 50 characters
+        // $mail->AddAttachment("/var/tmp/file.tar.gz");         // add attachments
+        // $mail->AddAttachment("/tmp/image.jpg", "new.jpg");    // optional name
+        $mail->IsHTML(true);                                  // set email format to HTML
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+        $mail->send();
+        //************************************ZONE***SEND****EMAIL*************************************//
+
+
+
     }
+
+
 
 
     public function save_cancel($darcode)
@@ -1388,6 +2003,93 @@ class Doc_add_model extends CI_Model
                 // header("refresh:10; url=".base_url()."document");
 
             }
+
+
+            $calldata_email = $this->doc_get_model->get_fulldata($get_darcode);
+            $calldata_emails = $calldata_email->row();
+    
+            //************************************ZONE***SEND****EMAIL*************************************//
+    
+            $subject = "New ใบคำร้องเกี่ยวกับเอกสาร ( DAR )";
+    
+            $body = "<h3 style='font-size:26px;'>พบใบคำร้องเกี่ยวกับเอกสาร ( DAR ) ใหม่ !</h3>";
+            $body .= "<strong style='font-size:20px;'>เลขที่ใบ DAR :</strong>&nbsp;" . $calldata_emails->dc_data_darcode . "&nbsp;&nbsp;&nbsp;";
+            $body .= "<strong style='font-size:20px;'>ระบบที่เกี่ยวข้อง :</strong>&nbsp;";
+    
+            $ra_typeuse = $this->doc_get_model->get_doctype_use($get_darcode);
+            foreach ($ra_typeuse->result_array() as $rst) {
+                $body .= $rst['dc_type_name'] . "&nbsp;,&nbsp;";
+            }
+    
+            $body .= "<br>";
+    
+            $body .= "<span style='font-size:20px;'><strong>ประเภทเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_sub_type_name . "<br>";
+    
+            $body .= "<span style='font-size:20px;'><strong>วันที่ร้องขอ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ผู้ร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_user . "<br>";
+    
+            $body .= "<span style='font-size:20px;'><strong>แผนก :</strong></span>&nbsp;" . $calldata_emails->dc_dept_main_name . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ชื่อเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_docname . "<br>";
+    
+            $body .= "<span style='font-size:20px;'><strong>รหัสเอกสาร :</strong></span>&nbsp;" . $calldata_emails->dc_data_doccode_display . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ครั้งที่แก้ไข :</strong></span>&nbsp;" . $calldata_emails->dc_data_edit . "<br>";
+    
+            $body .= "<span style='font-size:20px;'><strong>วันที่เริ่มใช้ :</strong></span>&nbsp;" . con_date($calldata_emails->dc_data_date_start) . "&nbsp;&nbsp;&nbsp;<span style='font-size:20px;'><strong>ระยะเวลาในการจัดเก็บ :</strong></span>&nbsp;" . $calldata_emails->dc_data_store . "&nbsp;" . $calldata_emails->dc_data_store_type . "<br>";
+    
+            $body .= "<span style='font-size:20px;'><strong>เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_reason_name . "<br>";
+    
+            $body .= "<span style='font-size:20px;'><strong>รายละเอียด เหตุผลในการร้องขอ :</strong></span>&nbsp;" . $calldata_emails->dc_data_reson_detail . "<br>";
+    
+            $body .= "<span style='font-size:20px;'><strong>หน่วยงานที่เกี่ยวข้อง :</strong></span>&nbsp;";
+            $ra_related_dept = $this->doc_get_model->get_related_use($get_darcode);
+            foreach ($ra_related_dept->result_array() as $rrd) {
+                $body .= $rrd['related_dept_name'] . "&nbsp;,&nbsp;";
+            }
+            $body .= "<br><br>";
+    
+            $body .= "<span style='font-size:20px;'><strong>ไฟล์เอกสาร :</strong></span>&nbsp;" . "<a href='" . base_url() . $calldata_emails->dc_data_file_location . $calldata_emails->dc_data_file . "'>" . $calldata_emails->dc_data_file . "</a><br>";
+    
+            $body .= "<strong>Link Program :</strong>&nbsp;" . "<a href='" . base_url('document/viewfull/') . $calldata_emails->dc_data_darcode . "'>ตรวจสอบเอกสารได้ที่นี่</a>";
+            $body .= "</html>\n";
+    
+            $mail = new PHPMailer();
+            $mail->IsSMTP();
+            $mail->CharSet = "utf-8";  // ในส่วนนี้ ถ้าระบบเราใช้ tis-620 หรือ windows-874 สามารถแก้ไขเปลี่ยนได้
+            $mail->SMTPDebug = 1;                                      // set mailer to use SMTP
+            $mail->Host = "mail.saleecolour.com";  // specify main and backup server
+            //        $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587; // พอร์ท
+            //        $mail->SMTPSecure = 'tls';
+            $mail->SMTPAuth = true;     // turn on SMTP authentication
+            $mail->Username = "document_system@saleecolour.com";  // SMTP username
+            //websystem@saleecolour.com
+            //        $mail->Username = "chainarong039@gmail.com";
+            $mail->Password = "document*1234"; // SMTP password
+            //Ae8686#
+            //        $mail->Password = "ShctBkk1";
+    
+            $mail->From = "document_system@saleecolour.com";
+            $mail->FromName = "Document System";
+    
+            $get_user_email = get_email_user("dc_user_group in (1,2,5)");
+            foreach($get_user_email->result_array() as $gue){
+                $mail->AddAddress($gue['dc_user_memberemail']);
+            }
+            // $mail->AddAddress("chainarong_k@saleecolour.com");
+            $mail->AddCC("chainarong_k@saleecolour.com");
+            $get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
+            $gue_cc = $get_usercc_email->row();
+            $mail->AddCC($gue_cc->dc_user_memberemail);
+    
+            // $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
+            $mail->WordWrap = 50;                                 // set word wrap to 50 characters
+            // $mail->AddAttachment("/var/tmp/file.tar.gz");         // add attachments
+            // $mail->AddAttachment("/tmp/image.jpg", "new.jpg");    // optional name
+            $mail->IsHTML(true);                                  // set email format to HTML
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+            $mail->send();
+            //************************************ZONE***SEND****EMAIL*************************************//
+
+
+
         }
     }
 

@@ -102,7 +102,6 @@ INNER JOIN dc_reason_request ON dc_reason_request.dc_reason_code = dc_datamain.d
         dc_datamain.dc_data_sub_type,
         dc_datamain.dc_data_sub_type_law,
         dc_datamain.dc_data_sub_type_sds,
-        dc_datamain.dc_data_date_m,
         dc_datamain.dc_data_date,
         dc_datamain.dc_data_user,
         dc_datamain.dc_data_dept,
@@ -217,18 +216,19 @@ public function get_last_dar($doccode)
 
     public function get_doctype_use($darcode)
     {
-        $callDoccode = $this->get_fulldata($darcode);
-        foreach($callDoccode->result_array() as $callDoccodes){
-            $doccode = $callDoccodes['dc_data_doccode'];
-        }
+        // $callDoccode = $this->get_fulldata($darcode);
+        // foreach($callDoccode->result_array() as $callDoccodes){
+        //     $doccode = $callDoccodes['dc_data_doccode'];
+        // }
         $result = $this->db->query("SELECT
         dc_type_use.dc_type_use_doccode,
+        dc_type_use.dc_type_use_darcode,
         dc_type_use.dc_type_use_code,
         dc_type.dc_type_name
         FROM
         dc_type_use
         INNER JOIN dc_type ON dc_type.dc_type_code = dc_type_use.dc_type_use_code
-        WHERE dc_type_use.dc_type_use_doccode='$doccode'
+        WHERE dc_type_use.dc_type_use_darcode='$darcode'
         ");
 
         return $result;
@@ -237,10 +237,10 @@ public function get_last_dar($doccode)
 
     public function get_related_use($darcode)
     {
-        $callDoccode = $this->get_fulldata($darcode);
-        foreach($callDoccode->result_array() as $callDoccodes){
-            $doccode = $callDoccodes['dc_data_doccode'];
-        }
+        // $callDoccode = $this->get_fulldata($darcode);
+        // foreach($callDoccode->result_array() as $callDoccodes){
+        //     $doccode = $callDoccodes['dc_data_doccode'];
+        // }
 
         return $this->db->query("SELECT
         dc_related_dept.related_id,

@@ -51,7 +51,6 @@ function getFullData($darcode)
     dc_datamain.dc_data_sub_type,
     dc_datamain.dc_data_sub_type_law,
     dc_datamain.dc_data_sub_type_sds,
-    dc_datamain.dc_data_date_m,
     dc_datamain.dc_data_date,
     dc_datamain.dc_data_user,
     dc_datamain.dc_data_dept,

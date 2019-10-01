@@ -9,7 +9,7 @@
 </head>
 
 <?php
-// $get_file1s = $get_file2->row();
+$get_file1s = $viewpdf->row();
 
 ?>
 
@@ -87,11 +87,11 @@
                                             if ($get_file2s['lib_main_status'] == "inactive") {
                                                 ?>
                                             <div class="col-md-6">
-                                                <label for=""><b>ไฟล์เอกสาร : </b></label>&nbsp;<?= $get_file2s['lib_main_doccode_copy']; ?>
+                                                <label for=""><b>ไฟล์เอกสาร : </b></label>&nbsp;<a target="_blank" href="<?= base_url() ?><?= $get_file2s['lib_main_file_location_master']; ?><?= $get_file2s['lib_main_doccode_master']; ?>"><b><i class="fas fa-file-pdf" style="color:#CC0000;"></i>&nbsp;&nbsp;<?= $get_file2s['lib_main_doccode_master']; ?></b></a>
                                             </div>
                                         <?php   } else { ?>
                                             <div class="col-md-6">
-                                                <label for=""><b>ไฟล์เอกสาร : </b></label>&nbsp;<a target="_blank" href="<?= base_url() ?><?= $get_file2s['lib_main_file_location_copy']; ?><?= $get_file2s['lib_main_doccode_copy']; ?>"><b><i class="fas fa-file-pdf" style="color:#CC0000;"></i>&nbsp;&nbsp;<?= $get_file2s['lib_main_doccode_copy']; ?></b></a>
+                                                <label for=""><b>ไฟล์เอกสาร : </b></label>&nbsp;<a target="_blank" href="<?= base_url() ?><?= $get_file2s['lib_main_file_location_master']; ?><?= $get_file2s['lib_main_doccode_master']; ?>"><b><i class="fas fa-file-pdf" style="color:#CC0000;"></i>&nbsp;&nbsp;<?= $get_file2s['lib_main_doccode_master']; ?></b></a>
                                             </div>
                                         <?php    }
                                             ?>
@@ -163,10 +163,10 @@
                             <div class="card-body text-primary table-responsive">
                                 <div class="row">
                                     <div class="col-md-12">
-<label for=""><a target="_blank" href="<?= base_url() ?><?= $get_file2s['lib_main_file_location_copy']; ?><?= $get_file2s['lib_main_doccode_copy']; ?>"><i class="fas fa-search-plus" style="font-size:18px;"></i>&nbsp;&nbsp;ดูไฟล์ฉบับเต็ม</a></label>
+<label for=""><a target="_blank" href="<?= base_url() ?><?= $get_file1s->lib_main_file_location_master; ?><?= $get_file1s->lib_main_doccode_master; ?>"><i class="fas fa-search-plus" style="font-size:18px;"></i>&nbsp;&nbsp;ดูไฟล์ฉบับเต็ม</a></label>
                                     </div>
                                     <div class="col-md-12">
-                                        <embed src="<?= base_url().$get_file2s['lib_main_file_location_copy'].$get_file2s['lib_main_doccode_copy'] ?>" type="application/pdf" width="100%" height="400px" />
+                                        <embed src="<?= base_url().$get_file1s->lib_main_file_location_master.$get_file1s->lib_main_doccode_master?>" type="application/pdf" width="100%" height="400px" />
                                     </div>
                                 </div>
 

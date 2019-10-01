@@ -38,7 +38,6 @@ class Get_staff_model extends CI_Model{
             dc_datamain.dc_data_sub_type,
             dc_datamain.dc_data_sub_type_law,
             dc_datamain.dc_data_sub_type_sds,
-            dc_datamain.dc_data_date_m,
             dc_datamain.dc_data_date,
             dc_datamain.dc_data_user,
             dc_datamain.dc_data_dept,
@@ -77,6 +76,33 @@ class Get_staff_model extends CI_Model{
             INNER JOIN dc_reason_request ON dc_reason_request.dc_reason_code = dc_datamain.dc_data_reson
             INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
             WHERE lib_main_doccode = '$doccode' ORDER BY dc_data_id DESC ");
+    }
+
+    public function viewpdf($doccode)
+    {
+        return $this->db->query("SELECT
+        library_main.lib_main_id,
+        library_main.lib_main_darcode,
+        library_main.lib_main_doccode,
+        library_main.lib_main_doccode_master,
+        library_main.lib_main_doccode_copy,
+        library_main.lib_main_file_location_master,
+        library_main.lib_main_file_location_copy,
+        library_main.lib_main_status,
+        dc_datamain.dc_data_id,
+        dc_datamain.dc_data_darcode,
+        dc_datamain.dc_data_type,
+        dc_datamain.dc_data_sub_type,
+        dc_datamain.dc_data_sub_type_law,
+        dc_datamain.dc_data_sub_type_sds,
+        dc_reason_request.dc_reason_name,
+        dc_sub_type.dc_sub_type_name
+        FROM
+        library_main
+        INNER JOIN dc_datamain ON dc_datamain.dc_data_darcode = library_main.lib_main_darcode
+        INNER JOIN dc_reason_request ON dc_reason_request.dc_reason_code = dc_datamain.dc_data_reson
+        INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
+        WHERE lib_main_doccode = '$doccode' && lib_main_status='active' ORDER BY dc_data_id DESC ");
     }
 
     public function save_dept()

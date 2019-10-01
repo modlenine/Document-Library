@@ -45,6 +45,7 @@ class Staff extends MX_Controller{
         check_login();
         check_permis();
         $data['view_full_data'] = $this->get_staff_model->view_full_data($doccode);
+        $data['viewpdf'] = $this->get_staff_model->viewpdf($doccode);
 
         get_head();
         get_contents("view_full_data",$data);
