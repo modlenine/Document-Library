@@ -26,6 +26,7 @@ function check_new_user($username)
 }
 
 
+
 function verify_user()
 {
     $obj = new mylogin();

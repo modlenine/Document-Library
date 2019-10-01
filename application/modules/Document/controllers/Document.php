@@ -19,11 +19,20 @@ class Document extends MX_Controller
 
     public function index()
     {
+        redirect('document/dashboard');
+    }
+
+
+    public function dashboard()
+    {
         check_login();
+        checkuser_activate();
         get_head();
         get_content("index");
         get_footer();
     }
+
+
 
     public function checkdate()
     {
@@ -45,6 +54,7 @@ class Document extends MX_Controller
     public function add_dar()
     {
         check_login();
+        checkuser_activate();
         $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
         $data['get_doc_sub_type'] = $this->doc_get_model->get_doc_sub_type();
         $data['get_reason'] = $this->doc_get_model->get_reason();
@@ -63,6 +73,7 @@ class Document extends MX_Controller
     public function list_dar()
     {
         check_login();
+        checkuser_activate();
         $data['get_list'] = $this->doc_get_model->get_list();
 
         get_head();
@@ -73,6 +84,7 @@ class Document extends MX_Controller
     public function list_generel()
     {
         check_login();
+        checkuser_activate();
         $data['get_list_gl'] = $this->doc_get_model->get_list_gl();
 
         get_head();
@@ -84,6 +96,7 @@ class Document extends MX_Controller
     public function load_list()
     {
         check_login();
+        checkuser_activate();
         $this->doc_get_model->get_list();
     }
 
@@ -91,6 +104,7 @@ class Document extends MX_Controller
     public function viewfull($darcode)
     {
         check_login();
+        checkuser_activate();
         $data['get_fulldata'] = $this->doc_get_model->get_fulldata($darcode);//Get Main data
         $data['get_doctype_use'] = $this->doc_get_model->get_doctype_use($darcode);
         $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
@@ -115,6 +129,7 @@ class Document extends MX_Controller
     public function view_deptEdit($darcode)
     {
         check_login();
+        checkuser_activate();
         $data['get_fulldata'] = $this->doc_get_model->get_fulldata($darcode);//Get Main data
         $data['get_doctype_use'] = $this->doc_get_model->get_doctype_use($darcode);
         $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
@@ -140,6 +155,7 @@ class Document extends MX_Controller
     public function view_cancel_document($darcode)
     {
         check_login();
+        checkuser_activate();
         $data['get_fulldata'] = $this->doc_get_model->get_fulldata($darcode);//Get Main data
         $data['get_doctype_use'] = $this->doc_get_model->get_doctype_use($darcode);
         $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
@@ -164,7 +180,10 @@ class Document extends MX_Controller
     public function save_editdar($darcode)
     {
         check_login();
+        checkuser_activate();
+        $this->doc_get_model->checkHashtagFormat();
         $this->doc_add_model->save_editdar($darcode);
+        
         // $this->doc_add_model->save_sec1();
         header("refresh:0; url=" . base_url('document/list_dar'));
     }
@@ -173,6 +192,7 @@ class Document extends MX_Controller
     public function save_sec1()
     {
         check_login();
+        checkuser_activate();
         $this->doc_get_model->checkNull_add();
         $this->doc_get_model->checkHashtagFormat();
         $this->doc_add_model->save_sec1();
@@ -183,6 +203,7 @@ class Document extends MX_Controller
     public function save_sec2($darcode)
     {
         check_login();
+        checkuser_activate();
         $this->doc_get_model->check_manager_Zone();
         $this->doc_add_model->save_sec2($darcode);
         header("refresh:0; url=" . base_url('document/list_dar/'));
@@ -192,6 +213,7 @@ class Document extends MX_Controller
     public function save_sec3($darcode)
     {
         check_login();
+        checkuser_activate();
         $this->doc_get_model->check_qmr_Zone();
         $this->doc_add_model->save_sec3($darcode);
         header("refresh:0; url=" . base_url('document/list_dar/'));
@@ -201,6 +223,7 @@ class Document extends MX_Controller
     public function save_sec4($darcode)
     {
         check_login();
+        checkuser_activate();
         $this->doc_get_model->check_doc_Zone();
         $this->doc_add_model->save_sec4($darcode);
         header("refresh:0; url=" . base_url('document/list_dar/'));
@@ -209,6 +232,7 @@ class Document extends MX_Controller
     public function save_sec4deptedit($darcode)
     {
         check_login();
+        checkuser_activate();
         $this->doc_add_model->save_sec4deptedit($darcode);
         header("refresh:0; url=" . base_url('document/list_dar/'));
     }
@@ -217,6 +241,7 @@ class Document extends MX_Controller
     public function save_sec4cancel($darcode)
     {
         check_login();
+        checkuser_activate();
         $this->doc_add_model->save_sec4cancel($darcode);
         header("refresh:0; url=" . base_url('document/list_dar/'));
     }
@@ -226,6 +251,7 @@ class Document extends MX_Controller
     public function create_master($doccode)
     {
         check_login();
+        checkuser_activate();
         // $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
         $data['get_fulldata'] = $this->doc_get_model->get_fulldata($doccode);
         $data['get_doctype_use'] = $this->doc_get_model->get_doctype_use($doccode);
@@ -251,6 +277,7 @@ class Document extends MX_Controller
     public function create_copy($doccode)
     {
         check_login();
+        checkuser_activate();
         // $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
         $data['get_fulldata'] = $this->doc_get_model->get_fulldata($doccode);
         $data['get_doctype_use'] = $this->doc_get_model->get_doctype_use($doccode);
@@ -276,16 +303,22 @@ class Document extends MX_Controller
 
     public function up_status1($doccode)
     {
+        check_login();
+        checkuser_activate();
         $this->doc_add_model->up_status1($doccode);
     }
 
     public function up_status2($doccode)
     {
+        check_login();
+        checkuser_activate();
         $this->doc_add_model->up_status2($doccode);
     }
 
     public function thkpage()
     {
+        check_login();
+        checkuser_activate();
         $this->load->view("template/tp_headcode");
         $this->load->view("template/thankyou_page");
     }
@@ -305,7 +338,7 @@ class Document extends MX_Controller
     public function edit_document($doccode)
     {
         check_login();
-
+        checkuser_activate();
         $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
         $data['get_doc_sub_type'] = $this->doc_get_model->get_doc_sub_type();
         $data['get_reason'] = $this->doc_get_model->get_reason();
@@ -323,6 +356,8 @@ class Document extends MX_Controller
 
     public function save_sec1_edit($doccode)
     {
+        check_login();
+        checkuser_activate();
         $this->doc_get_model->check_null_change();
         $this->doc_add_model->save_sec1_edit($doccode);
         header("refresh:0; url=" . base_url('document/list_dar'));
@@ -333,7 +368,7 @@ class Document extends MX_Controller
     public function edit_dept($doccode)
     {
         check_login();
-
+        checkuser_activate();
         $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
         $data['get_doc_sub_type'] = $this->doc_get_model->get_doc_sub_type();
         $data['get_reason'] = $this->doc_get_model->get_reason();
@@ -352,6 +387,8 @@ class Document extends MX_Controller
 
     public function save_edit_dept($doccode)
     {
+        check_login();
+        checkuser_activate();
         $this->doc_add_model->save_sec1_copy($doccode);
         header("refresh:0; url=" . base_url() . "document/list_dar");
     }
@@ -361,6 +398,7 @@ class Document extends MX_Controller
     public function cancel_document($doccode)
     {
         check_login();
+        checkuser_activate();
 
         $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
         $data['get_doc_sub_type'] = $this->doc_get_model->get_doc_sub_type();
@@ -381,7 +419,8 @@ class Document extends MX_Controller
 
     public function save_cancel($doccode)
     {
-        
+        check_login();
+        checkuser_activate();
         $this->doc_add_model->save_cancel($doccode);
         header("refresh:0; url=" . base_url('document/list_dar'));
     }
@@ -391,7 +430,7 @@ class Document extends MX_Controller
     public function change_document($doccode)
     {
         check_login();
-
+        checkuser_activate();
         $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
         $data['get_doc_sub_type'] = $this->doc_get_model->get_doc_sub_type();
         $data['get_reason'] = $this->doc_get_model->get_reason();
@@ -412,6 +451,7 @@ class Document extends MX_Controller
     public function edit_dar($darcode)
     {
         check_login();
+        checkuser_activate();
         $data['get_fulldata'] = $this->doc_get_model->get_fulldata($darcode);//Get Main data
         $data['get_doctype_use'] = $this->doc_get_model->get_doctype_use($darcode);
         $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
@@ -435,6 +475,8 @@ class Document extends MX_Controller
 
     public function save_sec1change($doccode)
     {
+        check_login();
+        checkuser_activate();
         $this->doc_get_model->check_null_change();
         $this->doc_add_model->save_sec1change($doccode);
         header("refresh:0; url=" . base_url('document/list_dar'));
@@ -444,6 +486,7 @@ class Document extends MX_Controller
     public function add_gl_doc()
     {
         check_login();
+        checkuser_activate();
         get_head();
         get_content("general_doc/add_gl_doc");
         get_footer();
@@ -453,6 +496,7 @@ class Document extends MX_Controller
     public function edit_gl_doc($gl_doc_code)
     {
         check_login();
+        checkuser_activate();
         $data['get_view_doc'] = $this->doc_get_model->get_view_doc($gl_doc_code);
         get_head();
         get_contents("general_doc/edit_gl_doc",$data);
@@ -461,6 +505,8 @@ class Document extends MX_Controller
 
     public function save_edit_gl_doc($gl_doc_code)
     {
+        check_login();
+        checkuser_activate();
         $this->doc_add_model->save_edit_gl_doc($gl_doc_code);
         header("refresh:0; url=" . base_url() . "document/list_generel");
     }
@@ -469,12 +515,15 @@ class Document extends MX_Controller
 
     public function save_gl_doc()
     {
+        check_login();
+        checkuser_activate();
         $this->doc_add_model->save_gl_doc();
     }
 
     public function gl_view_doc($gl_doc_code)
     {
         check_login();
+        checkuser_activate();
         $data['get_view_doc'] = $this->doc_get_model->get_view_doc($gl_doc_code);
         get_head();
         get_contents("general_doc/view_gl_doc",$data);
@@ -484,6 +533,8 @@ class Document extends MX_Controller
 
     public function save_gl_doc2($gl_doc_code)
     {
+        check_login();
+        checkuser_activate();
         $this->doc_add_model->save_gl_doc2($gl_doc_code);
     }
 

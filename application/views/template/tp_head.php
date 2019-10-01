@@ -281,11 +281,22 @@ error_reporting(E_ALL & ~E_NOTICE);
                 <div class="scrollbar-sidebar">
                     <div class="app-sidebar__inner">
 
+                    <?php
+                            if ($this->uri->segment(2) == "dashboard") {
+                                $dashmain = ' mm-active';
+                                $dashli = 'mm-active';
+
+                            }else{
+                                $dashmain = '';
+                                $dashli = '';
+                            }
+
+                            ?>
 
                         <ul class="vertical-nav-menu">
                             <li class="app-sidebar__heading">Dashboards</li>
-                            <li>
-                                <a href="<?= base_url(); ?>" class="">
+                            <li class="<?=$dashmain?>">
+                                <a href="<?= base_url('document/dashboard'); ?>" class="<?=$dashli?>">
                                     <!-- <i class="metismenu-icon pe-7s-rocket"></i> -->
                                     <i class="metismenu-icon fas fa-chart-line"></i>
                                     Dashboard
@@ -443,8 +454,10 @@ error_reporting(E_ALL & ~E_NOTICE);
                             } else if($this->uri->segment(2) == "view_user"){
                                 $foradmin = 'mm-active';
                                 $view_user = 'mm-active';
-                                $manage_dept = '';
-                                
+                                $manage_dept = ''; 
+                            }else if ($this->uri->segment(2) == "manage_dashboard"){
+                                $manage_dash = 'mm-active';
+                                $manage_dashli = 'mm-active';
                             }
                             ?>
                             <li id="admin_section"class="app-sidebar__heading"></i>For Admin</li>
@@ -467,14 +480,14 @@ error_reporting(E_ALL & ~E_NOTICE);
                                             จัดการผู้ใช้งาน
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="navleft <?= $view_user ?>" href="#">
+                                    <li class="<?= $manage_dash ?>">
+                                        <a class="navleft" href="#">
                                             <i class="metismenu-icon"></i>
                                             จัดการ DashBoard
                                         </a>
                                         <ul>
                                             <li>
-                                            <a class="navleft <?= $view_user ?>" href="<?= base_url('staff/manage_dashboard') ?>">
+                                            <a class="navleft <?= $manage_dash ?>" href="<?= base_url('staff/manage_dashboard') ?>">
                                             <i class="metismenu-icon"></i>
                                             ปักหมุดเอกสาร ISO
                                         </a>
@@ -484,7 +497,18 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 </ul>
                             </li>
 
-                            <li id="admin_section" class="<?= $isolist ?>">
+                            <?php
+                            if ($this->uri->segment(2) == "admin_iso_list") {
+                                $isolistmain = 'mm-active';
+                                $isolistli = 'mm-active';
+                               
+                            }else {
+                                $isolistmain = '';
+                                $isolistli = '';
+                            }
+                            ?>
+
+                            <li id="admin_section" class="<?=$isolistmain?>">
                                 <a href="#">
                                     <i class="metismenu-icon fas fa-folder"></i>
                                     รายการเอกสาร
@@ -492,7 +516,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="<?= base_url('staff') ?>" class="<?= $isolist ?>">
+                                        <a href="<?= base_url('staff') ?>" class="<?=$isolistli?>">
                                             <i class="metismenu-icon"></i>
                                             ตู้เอกสาร ISO
                                         </a>

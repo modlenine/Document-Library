@@ -306,9 +306,9 @@ class Doc_add_model extends CI_Model
         }
         // $mail->AddAddress("chainarong_k@saleecolour.com");
         $mail->AddCC("chainarong_k@saleecolour.com");
-        $get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
-        $gue_cc = $get_usercc_email->row();
-        $mail->AddCC($gue_cc->dc_user_memberemail);
+        // $get_usercc_email = get_email_user("dc_user_data_user='$calldata_emails->dc_data_user' ");
+        // $gue_cc = $get_usercc_email->row();
+        // $mail->AddCC($gue_cc->dc_user_memberemail);
 
         // $mail->AddAddress("chainarong039@gmail.com");                  // name is optional
         $mail->WordWrap = 50;                                 // set word wrap to 50 characters

@@ -14,13 +14,18 @@ class Staff extends MX_Controller{
 
     public function index()
     {
+        redirect('staff/admin_iso_list');
+    }
+
+
+    public function admin_iso_list()
+    {
         check_login();
         check_permis();
         $data['get_doc_list'] = $this->get_staff_model->get_doc_list();
         get_head();
         get_contents("index",$data);
         get_footer();
-        
     }
 
 

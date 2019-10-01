@@ -66,6 +66,7 @@ function getIsoDocPin()
     library_main.lib_main_file_location_master,
     library_main.lib_main_file_location_copy,
     library_main.lib_main_pin_status,
+    library_main.lib_main_pin_order,
     dc_related_dept_use.related_dept_code,
     dc_related_dept.related_dept_name,
     dc_datamain.dc_data_sub_type,
@@ -94,7 +95,7 @@ function getIsoDocPin()
     WHERE
     library_main.lib_main_status = 'active' && library_main.lib_main_pin_status='pin'
     GROUP BY
-    library_main.lib_main_doccode ORDER BY lib_main_id ASC ");
+    library_main.lib_main_doccode ORDER BY lib_main_pin_order DESC ");
 }
 
 
@@ -110,8 +111,20 @@ function countPin()
 function pinIsoDoc($lib_main_id)
 {
     $obj = new staff_fn();
+    //check order pin
+    $checkorderpin = $obj->getci()->db->query("SELECT lib_main_pin_order FROM library_main ORDER BY lib_main_pin_order DESC LIMIT 1 ");
+    foreach($checkorderpin->result_array() as $rs){
+        if($rs['lib_main_pin_order'] == 0){
+            $orderpin = 1;
+        }else if($rs['lib_main_pin_order'] > 0){
+            $orderpin = $rs['lib_main_pin_order'];
+            $orderpin++;
+        }
+    }
+    
     $ar = array(
-        "lib_main_pin_status" => "pin"
+        "lib_main_pin_status" => "pin",
+        "lib_main_pin_order" => $orderpin
     );
 
     $result = $obj->getci()->db->where("lib_main_id",$lib_main_id);
@@ -135,7 +148,8 @@ function unpinIsoDoc($lib_main_id)
 {
     $obj = new staff_fn();
     $ar = array(
-        "lib_main_pin_status" => 0
+        "lib_main_pin_status" => 0 ,
+        "lib_main_pin_order" => 0
     );
 
     $result = $obj->getci()->db->where("lib_main_id",$lib_main_id);

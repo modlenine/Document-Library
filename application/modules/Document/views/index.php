@@ -46,26 +46,13 @@
                 <hr>
 
 
-                <div class="row">
-                    <div class="col-md-12 form-group">
-                        <div class="card">
-                            <div class="card-body">
-                                <h1>ประกาศ</h1>
-                                <p>ข่าวสาร1</p>
-                                <p>ข่าวสาร1</p>
-                                <p>ข่าวสาร1</p>
-                                <p>ข่าวสาร1</p>
-                                <p>ข่าวสาร1</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
 
 
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <div class="card mb-3">
-                            <div class="card-header text-white bg-primary">เอกสาร ISO แนะนำ</div>
+                            <div class="card-header text-white bg-success">เอกสาร ISO แนะนำ</div>
                             <div class="card-body">
                              
                             <table id="user_docpin" class="table table-striped table-bordered dt-responsive" style="width:100%">
@@ -132,10 +119,7 @@
                                 "searchable": false,
                                 "orderable": false,
                                 "targets": 0
-                            }],
-                            "order": [
-                                [3, 'desc']
-                            ]
+                            }]
                         });
 
                         t.on('order.dt search.dt', function() {

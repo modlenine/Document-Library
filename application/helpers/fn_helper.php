@@ -60,6 +60,22 @@ function check_login()//Check session login
     $obj->get_ci()->login_model->call_login();
 }
 
+
+function checkuser_activate()
+{
+    $obj = new myfn();
+    $query = $obj->get_ci()->db->query("SELECT dc_user_status FROM dc_user WHERE dc_user_username='".$_SESSION["username"]."' ");
+    $result = $query->num_rows();
+    if($result < 1){
+        $_SESSION['RedirectKe'] = $_SERVER['REQUEST_URI'];
+
+          echo "<h1 style='text-align:center;margin-top:50px;'>กรุณา Login เข้าสู่ระบบ</h1>";
+          header("refresh:1; url=".base_url()."login_page");
+          die();
+    }
+}
+
+
 function check_permis()
 {
     $obj = new myfn();

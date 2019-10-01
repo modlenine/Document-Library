@@ -53,22 +53,10 @@ class Login_model extends CI_Model{
               $_SESSION['memberemail'] = $r['memberemail'];
 
 
-              session_write_close();
+              
 
               $check = check_new_user($r['username']);
               if($check < 1){
-                // $ar_adduser = array(
-                //   "dc_user_username" => $r['username'],
-                //   "dc_user_password" => $r['password'],
-                //   "dc_user_Fname" => $r['Fname'],
-                //   "dc_user_Lname" => $r['Lname'],
-                //   "dc_user_Dept" => $r['Dept'],
-                //   "dc_user_ecode" => $r['ecode'],
-                //   "dc_user_DeptCode" => $r['DeptCode'],
-                //   "dc_user_memberemail" => $r['memberemail'],
-                //   "dc_user_group" => 0
-                // );
-                // $result = $this->db->insert("dc_user",$ar_adduser);
 
                 header("refresh:0; url=".base_url('login/verify_user/'));
                 
@@ -81,6 +69,7 @@ class Login_model extends CI_Model{
                 //   //  header('location:'.$uri);
                 //    header("refresh:0; url=".$uri);
               }else{
+                
                 $uri = isset($_SESSION['RedirectKe']) ? $_SESSION['RedirectKe']: '/dc2/document/';
                    // กำหนดค่าให้กรณีที่ไม่ได้มีการกดเข้าไปหน้าใดๆก่อน
                   //  header('location:'.$uri);
@@ -102,7 +91,7 @@ class Login_model extends CI_Model{
               // }
 
               
-
+              session_write_close();
 
           }
 
@@ -113,8 +102,10 @@ class Login_model extends CI_Model{
 
 
   public function call_login() {//*****Check Session******//
+
       if (isset($_SESSION['username']) == "") {
 
+        
           $_SESSION['RedirectKe'] = $_SERVER['REQUEST_URI'];
 
           echo "<h1 style='text-align:center;margin-top:50px;'>กรุณา Login เข้าสู่ระบบ</h1>";
@@ -122,6 +113,10 @@ class Login_model extends CI_Model{
           die();
       }
   }
+
+
+
+
 
   public function check_permis()
   {
