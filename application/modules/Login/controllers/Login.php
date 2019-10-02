@@ -24,22 +24,6 @@ class Login extends MX_Controller{
   }
 
 
-  public function validate_login()
-  {
-    $username = $this->input->post('username',true);
-    $password = ($this->input->post('password',true));
-    $validate = $this->login_model->validate($username,$password);
-
-    if($validate > 0)
-    {
-
-    }else{
-      echo $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert" style="font-size:15px;text-align: center;">Username or Password is Wrong</div>');
-        redirect('login');
-    }
-
-  }
-
 
   public function check_login(){
     $this->login_model->check_login();

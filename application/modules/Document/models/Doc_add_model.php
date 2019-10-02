@@ -317,7 +317,7 @@ class Doc_add_model extends CI_Model
         $mail->IsHTML(true);                                  // set email format to HTML
         $mail->Subject = $subject;
         $mail->Body = $body;
-        $mail->send();
+        // $mail->send();
         //************************************ZONE***SEND****EMAIL*************************************//
 
 
@@ -537,7 +537,7 @@ $mail->WordWrap = 50;                                 // set word wrap to 50 cha
 $mail->IsHTML(true);                                  // set email format to HTML
 $mail->Subject = $subject;
 $mail->Body = $body;
-$mail->send();
+// $mail->send();
 //************************************ZONE***SEND****EMAIL*************************************//
 
 
@@ -768,7 +768,7 @@ $mail->WordWrap = 50;                                 // set word wrap to 50 cha
 $mail->IsHTML(true);                                  // set email format to HTML
 $mail->Subject = $subject;
 $mail->Body = $body;
-$mail->send();
+// $mail->send();
 //************************************ZONE***SEND****EMAIL*************************************//
 
 
@@ -1002,7 +1002,7 @@ $mail->WordWrap = 50;                                 // set word wrap to 50 cha
 $mail->IsHTML(true);                                  // set email format to HTML
 $mail->Subject = $subject;
 $mail->Body = $body;
-$mail->send();
+// $mail->send();
 //************************************ZONE***SEND****EMAIL*************************************//
 
 
@@ -1044,7 +1044,9 @@ $mail->send();
                 $getolddar = $checkolddar->row();
                 $inactive = array(
                     "lib_main_status" => "inactive",
-                    "lib_main_modify_status" => ""
+                    "lib_main_modify_status" => "",
+                    "lib_main_pin_status" => 0,
+                    "lib_main_pin_order" => 0
                 );
                 $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
                 $this->db->update("library_main", $inactive);
@@ -1190,7 +1192,7 @@ $mail->WordWrap = 50;                                 // set word wrap to 50 cha
 $mail->IsHTML(true);                                  // set email format to HTML
 $mail->Subject = $subject;
 $mail->Body = $body;
-$mail->send();
+// $mail->send();
 //************************************ZONE***SEND****EMAIL*************************************//
 
 
@@ -1464,7 +1466,7 @@ $mail->send();
         $mail->IsHTML(true);                                  // set email format to HTML
         $mail->Subject = $subject;
         $mail->Body = $body;
-        $mail->send();
+        // $mail->send();
         //************************************ZONE***SEND****EMAIL*************************************//
 
 
@@ -1641,7 +1643,7 @@ $mail->send();
         $mail->IsHTML(true);                                  // set email format to HTML
         $mail->Subject = $subject;
         $mail->Body = $body;
-        $mail->send();
+        // $mail->send();
         //************************************ZONE***SEND****EMAIL*************************************//
 
 
@@ -1812,7 +1814,7 @@ $mail->send();
         $mail->IsHTML(true);                                  // set email format to HTML
         $mail->Subject = $subject;
         $mail->Body = $body;
-        $mail->send();
+        // $mail->send();
         //************************************ZONE***SEND****EMAIL*************************************//
 
 
@@ -2039,7 +2041,7 @@ $mail->WordWrap = 50;                                 // set word wrap to 50 cha
 $mail->IsHTML(true);                                  // set email format to HTML
 $mail->Subject = $subject;
 $mail->Body = $body;
-$mail->send();
+// $mail->send();
 //************************************ZONE***SEND****EMAIL*************************************//
 
 
@@ -2288,7 +2290,7 @@ $mail->send();
             $mail->IsHTML(true);                                  // set email format to HTML
             $mail->Subject = $subject;
             $mail->Body = $body;
-            $mail->send();
+            // $mail->send();
             //************************************ZONE***SEND****EMAIL*************************************//
 
 

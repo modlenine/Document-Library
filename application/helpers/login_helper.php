@@ -47,6 +47,13 @@ function get_dept_byuser($user_deptcode)
     return $result->row();
 }
 
+function check_permission_pinIso($related_code,$doccode)
+{
+    $obj = new mylogin();
+    load_login_model();
+    $obj->get_ci()->login_model->check_pin($related_code,$doccode);
+}
+
 
 
 

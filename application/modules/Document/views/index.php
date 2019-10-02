@@ -17,6 +17,14 @@
 
 </head>
 
+<?php
+$this->load->model("librarys/get_lib_model");
+$getuser = $this->get_lib_model->get_new_user();
+$get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code);
+$rsget = $get_deptlib->row();
+
+?>
+
 <body>
 
     <div class="app-main__outer">
@@ -80,7 +88,7 @@
                                     ?>
                                     <tr>
                                         <th scope="row"><?= $i ?></th>
-                                        <td><a href="<?= base_url('staff/view_full_data/') ?><?= $get_doc_lists['lib_main_doccode'] ?>"><i class="fas fa-thumbtack"></i>&nbsp;&nbsp;<i class="fas fa-file-pdf" style="color:#CC0000;"></i>&nbsp;&nbsp;<?= $get_doc_lists['dc_data_doccode_display'] ?></a></td>
+                                        <td><a href="<?= base_url('librarys/viewFull_document/').$get_doc_lists['dc_data_sub_type']."/".$rsget->related_code."/".$get_doc_lists['lib_main_doccode']?>"><i class="fas fa-thumbtack"></i>&nbsp;&nbsp;<i class="fas fa-file-pdf" style="color:#CC0000;"></i>&nbsp;&nbsp;<?= $get_doc_lists['dc_data_doccode_display'] ?></a></td>
                                         <td><?= $get_doc_lists['dc_data_docname'] ?></td>
                                         <?php
                                             if ($get_doc_lists['lib_main_pin_status'] != "") {

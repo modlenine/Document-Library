@@ -49,6 +49,7 @@ class Librarys extends MX_Controller {
     public function viewFull_document($subtype,$related_code,$doccode)
     {
         check_login();
+        check_permission_pinIso($related_code,$doccode);
         $data['get_file1'] = $this->get_lib_model->get_file1($subtype,$related_code);
         $data['get_file2'] = $this->get_lib_model->get_file2($subtype,$doccode);
         
@@ -269,6 +270,11 @@ public function fetch_iso_date()
 //For ajax live search docname
 
     
+
+public function view_pinIsoDoc()
+{
+
+}
 
 
 
