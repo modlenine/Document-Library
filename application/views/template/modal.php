@@ -153,7 +153,7 @@
                             <label for="">รหัสแผนก</label>
                             <input  type="text" name="get_deptcode_edit" id="get_deptcode_edit" class="form-control">
                         </div>
-                        <input type="text" name="get_userid_edit" id="get_userid_edit">
+                        <input hidden type="text" name="get_userid_edit" id="get_userid_edit">
                     </div>
             </div>
             <!-- Body -->

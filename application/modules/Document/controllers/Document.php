@@ -325,13 +325,8 @@ class Document extends MX_Controller
 
     public function test()
     {
-        
-        if(checkHashtag('#test'))
-        {
-            echo "true";
-        }else{
-            echo "false";
-        }
+        echo "<h1 style='text-align:center;font-size:40px;margin-top:150px;'>รอสักครู่ระบบกำลังพาท่านไปยังหน้าแบบทดสอบ</h1>";
+        header("refresh:1; url=https://forms.gle/V3wQvCyLFBUytm738");
     }
 
 
@@ -517,6 +512,7 @@ class Document extends MX_Controller
     {
         check_login();
         checkuser_activate();
+        $this->doc_get_model->checkHashtagFormat_gl();
         $this->doc_add_model->save_gl_doc();
     }
 

@@ -314,7 +314,7 @@ function search_by_date($related_code,$date_start,$data_end)
     dc_datamain.dc_data_date
     FROM
     library_main
-    INNER JOIN dc_related_dept_use ON dc_related_dept_use.related_dept_doccode = library_main.lib_main_doccode
+    INNER JOIN dc_related_dept_use ON dc_related_dept_use.related_dept_darcode = library_main.lib_main_darcode
     INNER JOIN dc_related_dept ON dc_related_dept.related_code = dc_related_dept_use.related_dept_code
     INNER JOIN dc_datamain ON dc_datamain.dc_data_darcode = library_main.lib_main_darcode
     INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
@@ -355,7 +355,7 @@ function search_by_docname($related_code,$docname)
     dc_datamain.dc_data_date
     FROM
     library_main
-    INNER JOIN dc_related_dept_use ON dc_related_dept_use.related_dept_doccode = library_main.lib_main_doccode
+    INNER JOIN dc_related_dept_use ON dc_related_dept_use.related_dept_darcode = library_main.lib_main_darcode
     INNER JOIN dc_related_dept ON dc_related_dept.related_code = dc_related_dept_use.related_dept_code
     INNER JOIN dc_datamain ON dc_datamain.dc_data_darcode = library_main.lib_main_darcode
     INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
@@ -397,7 +397,7 @@ function search_by_doccode($related_code,$doccode)
     dc_datamain.dc_data_date
     FROM
     library_main
-    INNER JOIN dc_related_dept_use ON dc_related_dept_use.related_dept_doccode = library_main.lib_main_doccode
+    INNER JOIN dc_related_dept_use ON dc_related_dept_use.related_dept_darcode = library_main.lib_main_darcode
     INNER JOIN dc_related_dept ON dc_related_dept.related_code = dc_related_dept_use.related_dept_code
     INNER JOIN dc_datamain ON dc_datamain.dc_data_darcode = library_main.lib_main_darcode
     INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
@@ -439,7 +439,7 @@ function search_by_darcode($related_code,$darcode)
     dc_datamain.dc_data_date
     FROM
     library_main
-    INNER JOIN dc_related_dept_use ON dc_related_dept_use.related_dept_doccode = library_main.lib_main_doccode
+    INNER JOIN dc_related_dept_use ON dc_related_dept_use.related_dept_darcode = library_main.lib_main_darcode
     INNER JOIN dc_related_dept ON dc_related_dept.related_code = dc_related_dept_use.related_dept_code
     INNER JOIN dc_datamain ON dc_datamain.dc_data_darcode = library_main.lib_main_darcode
     INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
@@ -480,7 +480,7 @@ function search_by_hashtag($related_code,$tag)
     dc_datamain.dc_data_date
     FROM
     library_main
-    INNER JOIN dc_related_dept_use ON dc_related_dept_use.related_dept_doccode = library_main.lib_main_doccode
+    INNER JOIN dc_related_dept_use ON dc_related_dept_use.related_dept_darcode = library_main.lib_main_darcode
     INNER JOIN dc_related_dept ON dc_related_dept.related_code = dc_related_dept_use.related_dept_code
     INNER JOIN dc_datamain ON dc_datamain.dc_data_darcode = library_main.lib_main_darcode
     INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type

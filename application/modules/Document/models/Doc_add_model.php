@@ -841,7 +841,9 @@ $mail->Body = $body;
                 $getolddar = $checkolddar->row();
                 $inactive = array(
                     "lib_main_status" => "inactive",
-                    "lib_main_modify_status" => ""
+                    "lib_main_modify_status" => "",
+                    "lib_main_pin_status" => 0,
+                    "lib_main_pin_order" => 0
                 );
                 $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
                 $this->db->update("library_main", $inactive);
@@ -1871,7 +1873,9 @@ $mail->Body = $body;
                 $getolddar = $checkolddar->row();
                 $inactive = array(
                     "lib_main_status" => "inactive",
-                    "lib_main_modify_status" => ""
+                    "lib_main_modify_status" => "",
+                    "lib_main_pin_status" => 0,
+                    "lib_main_pin_order" => 0
                 );
                 $this->db->where("lib_main_darcode", $getolddar->dc_data_old_dar);
                 $this->db->update("library_main", $inactive);

@@ -1027,6 +1027,23 @@ public function get_last_dar($doccode)
     }
 
 
+    public function checkHashtagFormat_gl()
+    {
+        $lihashtag = $this->input->post("gl_doc_hashtag");
+        foreach ($lihashtag as $lgd) {
+            if(checkHashtag($lgd)){
+                echo "true";
+            }else{
+                echo "<script>";
+                    echo "alert('รูปแบบ Hashtag ไม่ถูกต้อง');";
+                    echo "window.history.back(-1)";
+                    echo "</script>";
+                    exit();
+            }
+        }
+    }
+
+
 
 
 

@@ -96,5 +96,5 @@ $get_view_docs = $get_view_doc->row();
                     </div>
                     <input type="submit" value="บันทึกการแก้ไข" name="btnEdit_gldoc" class="btn btn-primary">
 
-                    <input type="text" name="check_gl_file" id="check_gl_file" value="<?=$get_view_docs->gl_doc_file?>" />
+                    <input hidden type="text" name="check_gl_file" id="check_gl_file" value="<?=$get_view_docs->gl_doc_file?>" />
                 </form>
