@@ -89,7 +89,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                 }
                                 ?>
 
-                                <label class="checkbox-inline col-sm-4 p-2"><input <?= $checked ?> type="radio" name="dc_data_sub_type" id="dc_data_sub_type" value="<?php echo $doc_sub_type['dc_sub_type_code']; ?>" onclick="return false">&nbsp;<?php echo $doc_sub_type['dc_sub_type_name']; ?></label>
+                                <label class="checkbox-inline col-sm-5 p-2"><input <?= $checked ?> type="radio" name="dc_data_sub_type" id="dc_data_sub_type" value="<?php echo $doc_sub_type['dc_sub_type_code']; ?>" onclick="return false">&nbsp;<?php echo $doc_sub_type['dc_sub_type_name']; ?></label>
 
                                 <!-- Get doc sub type loop -->
                             <?php }; ?>
@@ -130,7 +130,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
                         <div class="row mb-2">
                                 <!-- Date request -->
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label class="text-center"><?= label("date_request", $this); ?>&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>
@@ -140,10 +140,12 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                         </div>
                                     </div>
                                 </div>
+                        </div>
                                 <!-- Date request -->
 
                                 <!-- User Request -->
-                                <div class="col-md-6">
+                                <div class="row mb-2">
+                                <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("user_request", $this); ?></label>
@@ -162,7 +164,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
                             <div class="row mb-2">
                                 <!-- Department -->
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("department", $this); ?></label>
@@ -181,10 +183,12 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                                 <!-- Department -->
 
                                 <!-- Document name -->
-                                <div class="col-md-6">
+                                <div class="row mb-2">
+                                <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("doc_name", $this); ?></label>
@@ -201,7 +205,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
                             <div class="row mb-2">
                                 <!-- Doccode -->
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("doc_id", $this); ?></label>
@@ -211,11 +215,13 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                                 <!-- Doccode -->
 
 
                                 <!-- Doc Edit -->
-                                <div class="col-md-6">
+                                <div class="row mb-2">
+                                <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("doc_num_edit", $this); ?></label>
@@ -234,7 +240,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
                             <div class="row mb-2">
                                 <!-- Date Start -->
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("date_start_use", $this); ?>&nbsp;&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>

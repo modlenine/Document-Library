@@ -162,10 +162,10 @@ $get_file1s = $get_file2->row();
 
 
                                     <div class="row mb-2">
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <label for=""><b>ผู้ร้องขอ :</b></label>&nbsp;<?= $get_file2s['dc_data_user']; ?>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <?php
 if($get_file2s['lib_main_modify_status'] == ""){
     $show_status = $get_file2s['lib_main_status'];
