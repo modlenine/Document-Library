@@ -460,7 +460,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 $manage_dashli = 'mm-active';
                             }
                             ?>
-                            <li id="admin_section"class="app-sidebar__heading"></i>For Admin</li>
+                            <li id="admin_section" class="app-sidebar__heading"></i>For Admin</li>
                             <li id="admin_section" class="<?=$foradmin?>">
                                 <a href="#">
                                     <i class="metismenu-icon fas fa-user-shield"></i>

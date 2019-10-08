@@ -57,7 +57,12 @@
                             }
 
                            
+                            if($rslist['dc_data_status'] == "Creating DAR"){
+                                $linkpage = "add_dar2/";
+                            }else{
                                 $linkpage = "viewfull/";
+                            }
+                                
                             ?>
 
 

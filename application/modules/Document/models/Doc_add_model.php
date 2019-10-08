@@ -138,7 +138,7 @@ class Doc_add_model extends CI_Model
         $get_doc_code = $this->doc_get_model->get_doc_code();
         $dc_data_sub_type = $this->input->post('dc_data_sub_type');
 
-        if (isset($_POST['btnUser_submit'])) { //Check button submit
+        if (isset($_POST['saveSec1_1'])) { //Check button submit
             if ($dc_data_sub_type == "sds") {
                 $conDoccode = cut_doccode3($get_doc_code);
             } else if ($dc_data_sub_type == "l") {
@@ -146,22 +146,6 @@ class Doc_add_model extends CI_Model
             } else {
                 $conDoccode = cut_doccode1($get_doc_code);
             }
-
-            $date = date("H-i-s"); //ดึงวันที่และเวลามาก่อน
-            $file_name = $_FILES['dc_data_file']['name'];
-            $file_name_cut = str_replace(" ", "", $file_name);
-            $file_name_date = substr_replace(".", $get_doc_code . "-" . $date . ".pdf", 0);
-            $file_size = $_FILES['dc_data_file']['size'];
-            $file_tmp = $_FILES['dc_data_file']['tmp_name'];
-            $file_type = $_FILES['dc_data_file']['type'];
-
-            move_uploaded_file($file_tmp, "asset/document_files/" . $file_name_date);
-            $filelocation = "asset/document_files/";
-
-
-            print_r($file_name);
-            echo "<br>" . "Copy/Upload Complete" . "<br>";
-
 
 
 
@@ -182,9 +166,7 @@ class Doc_add_model extends CI_Model
                 "dc_data_store_type" => $this->input->post("dc_data_store_type"),
                 "dc_data_reson" => $this->input->post("dc_data_reson"),
                 "dc_data_reson_detail" => $this->input->post("dc_data_reson_detail"),
-                "dc_data_file" => $file_name_date,
-                "dc_data_file_location" => $filelocation,
-                "dc_data_status" => "Open"
+                "dc_data_status" => "Creating DAR"
             );
 
 
@@ -224,9 +206,81 @@ class Doc_add_model extends CI_Model
                 );
                 $this->db->insert("library_hashtag", $ar_li_hashtag);
             }
+
         } //Check button submit
 
         $result = $this->db->insert("dc_datamain", $armain);
+        if (!$result) {
+            echo "<script>";
+            echo "alert('บันทึกข้อมูลไม่สำเร็จ กรุณาตรวจสอบข้อมูลอีกครั้ง')";
+            echo "window.history.back(-1)";
+            echo "</script>";
+        } else {
+            echo "บันทึกข้อมูลสำเร็จ";
+            header("refresh:0; url=" . base_url('document/add_dar2/').$get_darcode);
+        }
+
+
+    }
+
+
+    public function save_sec1_2($darcode)
+    {
+        $get_darcode = $darcode;
+        $get_doc_code = $this->input->post("doccode");
+        // $dc_data_sub_type = $this->input->post('dc_data_sub_type');
+
+        if (isset($_POST['btnUser_submit'])) { //Check button submit
+            // if ($dc_data_sub_type == "sds") {
+            //     $conDoccode = cut_doccode3($get_doc_code);
+            // } else if ($dc_data_sub_type == "l") {
+            //     $conDoccode = cut_doccode2($get_doc_code);
+            // } else {
+            //     $conDoccode = cut_doccode1($get_doc_code);
+            // }
+
+            $date = date("H-i-s"); //ดึงวันที่และเวลามาก่อน
+            $file_name = $_FILES['dc_data_file']['name'];
+            $file_name_cut = str_replace(" ", "", $file_name);
+            $file_name_date = substr_replace(".", $get_doc_code . "-" . $date . ".pdf", 0);
+            $file_size = $_FILES['dc_data_file']['size'];
+            $file_tmp = $_FILES['dc_data_file']['tmp_name'];
+            $file_type = $_FILES['dc_data_file']['type'];
+
+            move_uploaded_file($file_tmp, "asset/document_files/" . $file_name_date);
+            $filelocation = "asset/document_files/";
+
+
+            print_r($file_name);
+            echo "<br>" . "Copy/Upload Complete" . "<br>";
+
+
+
+
+            $armain = array(
+                
+                "dc_data_file" => $file_name_date,
+                "dc_data_file_location" => $filelocation,
+                "dc_data_status" => "Open"
+            );
+
+
+
+            // $li_get_hashtag = $this->input->post("li_hashtag");
+            // foreach ($li_get_hashtag as $lgd) {
+            //     $ar_li_hashtag = array(
+            //         "li_hashtag_doc_code" => $get_doc_code,
+            //         "li_hashtag_name" => $lgd,
+            //         "li_hashtag_status" => "pending"
+            //     );
+            //     $this->db->insert("library_hashtag", $ar_li_hashtag);
+            // }
+
+
+            
+        } //Check button submit
+        $this->db->where("dc_data_darcode", $get_darcode);
+        $result = $this->db->update("dc_datamain", $armain);
         if (!$result) {
             echo "<script>";
             echo "alert('บันทึกข้อมูลไม่สำเร็จ กรุณาตรวจสอบข้อมูลอีกครั้ง')";
@@ -319,11 +373,40 @@ class Doc_add_model extends CI_Model
         $mail->Body = $body;
         // $mail->send();
         //************************************ZONE***SEND****EMAIL*************************************//
-
-
     }
 
 
+    //Cancel Sec1 Status Creating DAR
+    public function cancelSec1_deleteHashtag($doccode)
+    {
+        $this->db->where("li_hashtag_doc_code",$doccode);
+        $this->db->delete("library_hashtag");
+    }
+
+    public function cancelSec1_deleteRelatedDeptUse($darcode)
+    {
+        $this->db->where("related_dept_darcode",$darcode);
+        $this->db->delete("dc_related_dept_use");
+    }
+
+    public function cancelSec1_deleteTypeUse($darcode)
+    {
+        $this->db->where("dc_type_use_darcode",$darcode);
+        $this->db->delete("dc_type_use");
+    }
+
+    public function cancelSec1_deleteDoccode($darcode)
+    {
+        $ar_cancelSec1 = array(
+            "dc_data_doccode" => "user cancel",
+            "dc_data_doccode_display" => "user cancel",
+            "dc_data_status" => "User Cancel"
+        );
+        $this->db->where("dc_data_darcode",$darcode);
+        $this->db->update("dc_datamain",$ar_cancelSec1);
+    }
+
+//Cancel Sec1 Status Creating DAR
 
 
 

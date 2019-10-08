@@ -283,10 +283,34 @@
                         <?php }; ?>
 
                     </div>
-
+                    
                     <!-- Input text for other related dept-->
                     <div style="text-align:center;color:red;" class="mt-3 p-2 border"><?= label('memo2', $this); ?></div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mt-2">
+                            <input type="text" name="li_hashtag[]" id="li_hashtag" class="form-control" placeholder="กรุณาระบุ Hashtag เช่น #คู่มือการใช้งาน" required maxlength="40" onblur="check();"/>
+                            <label id="characterLeft"></label><br>
+                            <button type="button" name="dar_addmore" id="dar_addmore" class="btn btn-primary mt-2 dar_addmore"><i class="fas fa-hashtag"></i>&nbsp;เพิ่ม Hashtag</button>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                        <button type="submit" name="saveSec1_1" id="saveSec1_1" class="btn btn-primary">บันทึกข้อมูล</button>
+                        </div>
+                        
+                    </div>
+                    <hr>
+                    </form><!-- Form Section 1 -->
+
+
+
+
+
+                    <!-- <div id="savesec1_2" style="display:none">
                     <div class="form-row mt-2">
+                    <form action="" method="post">
                         <div class="form-group">
                             <label for=""><?= label("uploadfile", $this); ?></label>
                             <input type="file" name="dc_data_file" id="dc_data_file" class="form-control" accept=".pdf">
@@ -306,105 +330,8 @@
                     <div class="col-md-3 mt-2">
                         <input type="submit" name="btnUser_submit" id="btnUser_submit" value="<?= label('btnUser_submit', $this); ?>" class="btn btn-primary btn-block">
                     </div>
-                </form><!-- Form Section 1 -->
+                
                 <hr>
-                <!-- หน่วยงานที่เกี่ยวข้อง -->
-
-
-
-
-
-
-
-                <!-- ผลการร้องขอ Hide-->
-                <div id="add_dar_hide" style="display:none;">
-                    <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('managerapprove', $this) ?></h3>
-                    <form action="save_sec2" method="POST" name="">
-                        <div class="form-row">
-                            <div><label for=""><input disabled type="radio" name="result_request_status" id="result_request_status1" value="1">&nbsp;&nbsp;<?= label('result_status1', $this); ?></label></div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <div><label for=""><input disabled type="radio" name="result_request_status" id="result_request_status0" value="0">&nbsp;&nbsp;<?= label('result_status0', $this); ?></label></div>
-                            <textarea disabled name="text_result_request" id="text_result_request" cols="30" rows="5" class="form-control" placeholder="<?= label('text_result_request', $this); ?>"></textarea>
-                        </div>
-
-                        <div class="form-row mt-3">
-                            <div class="col-md-9 border p-5">
-                                <label style="color:red;"><?= label('memo3', $this); ?> :&nbsp;</label><label for=""><?= label('memo4', $this); ?></label>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for=""><?= label("approvers", $this); ?></label>
-                                    <input disabled type="text" class="form-control" name="" id="">
-                                    <input disabled type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec2">
-                                </div>
-                    </form>
-
-                </div>
-
-
-            </div>
-            <hr>
-            <!-- ผลการร้องขอ -->
-
-
-            <!-- ผลการร้องขอ -->
-            <h3 class="p2 mb-3"><?= label("request_stat", $this); ?>&nbsp;<?= label('qmrapprove', $this) ?></h3>
-            <form action="" method="POST" name="">
-                <div class="form-row">
-
-                    <div><label for=""><input disabled type="radio" name="dc_data_result_reson_status2" id="dc_data_result_reson_status1" value="1">&nbsp;&nbsp;<?= label('result_status1', $this); ?></label></div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div><label for=""><input disabled type="radio" name="dc_data_result_reson_status2" id="dc_data_result_reson_status0" value="0">&nbsp;&nbsp;<?= label('result_status0', $this); ?></label></div>
-
-                    <textarea disabled name="dc_data_result_reson_detail2" id="dc_data_result_reson_detail2" cols="30" rows="5" class="form-control" placeholder="<?= label('text_result_request', $this); ?>"></textarea>
-                </div>
-
-                <div class="form-row mt-3">
-                    <div class="col-md-9 border p-5">
-                        <label style="color:red;"><?= label('memo3', $this); ?> :&nbsp;</label><label for=""><?= label('memo4', $this); ?></label>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for=""><?= label("approvers", $this); ?></label>
-
-                            <input disabled type="text" class="form-control" name="dc_data_approve_qmr" id="dc_data_approve_qmr" value="">
-                            <input disabled type="submit" value="<?= label('save', $this); ?>" class="btn btn-primary mt-2" name="btnSave_sec3" id="btnSave_sec3">
-                        </div>
-            </form>
-            <!-- ผลการร้องขอ -->
-        </div>
-    </div>
-    <hr>
-    <!-- ผลการร้องขอ -->
-
-
-    <!-- สำหรับผู้ควบคุมเอกสาร -->
-    <h3 class="p2 mb-3"><?= label("forstaff", $this); ?></h3>
-    <form action="">
-        <div class="form-row">
-            <textarea disabled name="staff_action" id="staff_action" cols="30" rows="5" class="form-control" placeholder="การดำเนินการ"></textarea>
-        </div>
-        <div class="form-row mt-3">
-            <label><?= label('operator_label', $this); ?> : <input disabled type="text" name="" id="" class="form-control"></label>
-        </div>
-        <input disabled class="btn btn-primary " type="submit" name="btnOpsave" id="btnOpsave" value="<?= label('save2', $this); ?>">
-    </form>
-    </div>
-
-
-
-    </div><!-- Main Section -->
-
-
-
-
-
-
-
-    </div><!-- Content Zone -->
-    </div><!-- Content Zone -->
-
-</body>
-
-
-</html>
+                
+                </form>
+                </div> -->

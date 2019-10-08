@@ -69,6 +69,31 @@ class Document extends MX_Controller
         get_footer();
     }
 
+    
+    public function add_dar2($darcode)
+    {
+        check_login();
+        checkuser_activate();
+
+        $data['get_fulldata'] = $this->doc_get_model->get_fulldata($darcode);//Get Main data
+        $data['get_doctype_use'] = $this->doc_get_model->get_doctype_use($darcode);
+        $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
+        $data['get_doc_sub_type'] = $this->doc_get_model->get_doc_sub_type();
+        $data['get_reason'] = $this->doc_get_model->get_reason();
+        $data['get_dept'] = $this->doc_get_model->get_dept();
+        $data['get_related_dept'] = $this->doc_get_model->get_related_dept();
+        $data['get_law'] = $this->doc_get_model->get_law();
+        $data['get_sds'] = $this->doc_get_model->get_sds();
+        $data['username'] = $this->doc_get_model->convertName($_SESSION['Fname'], $_SESSION['Lname']);
+        $data['get_sds_use'] = $this->doc_get_model->get_sds_use($darcode);
+        $data['get_law_use'] = $this->doc_get_model->get_law_use($darcode);
+        $data['get_related_use'] = $this->doc_get_model->get_related_use($darcode);
+
+        get_head();
+        get_contents('add_dar2',$data);
+        get_footer();
+    }
+
 
     public function list_dar()
     {
@@ -197,8 +222,28 @@ class Document extends MX_Controller
         $this->doc_get_model->checkHashtagFormat();
         $this->doc_add_model->save_sec1();
 
-        header("refresh:0; url=" . base_url('document/list_dar'));
     }
+
+
+    public function cancelSec1($darcode,$doccode)
+    {
+        $this->doc_add_model->cancelSec1_deleteHashtag($doccode);
+        $this->doc_add_model->cancelSec1_deleteRelatedDeptUse($darcode);
+        $this->doc_add_model->cancelSec1_deleteTypeUse($darcode);
+        $this->doc_add_model->cancelSec1_deleteDoccode($darcode);
+        header("refresh:0; url=".base_url('document/list_dar'));
+    }
+
+
+    public function save_sec1_2($darcode)
+    {
+        check_login();
+        checkuser_activate();
+        $this->doc_get_model->checkNull_add2();
+        $this->doc_add_model->save_sec1_2($darcode);
+        header("refresh:0; url=" . base_url('document/list_dar/'));
+    }
+
 
     public function save_sec2($darcode)
     {

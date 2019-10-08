@@ -289,7 +289,7 @@ public function get_last_dar($doccode)
     // Check Zone 
     public function checkNull_add()
     {
-        if (isset($_POST['btnUser_submit'])) {
+        if (isset($_POST['saveSec1_1'])) {
 
 
             // เริ่มต้นการตรวจสอบค่าว่าง
@@ -380,24 +380,28 @@ public function get_last_dar($doccode)
                 echo "window.history.back(-1)";
                 echo "</script>";
                 exit();
-            } else if ($_FILES['dc_data_file']['name'] == "") {
+            }else{
+                
+            }
+
+            // เสร็จสิ้นขั้นตอนการตรวจสอบค่าว่าง
+
+        }
+    }
+
+
+    public function checkNull_add2()
+    {
+        if(isset($_POST['btnUser_submit'])){
+            if ($_FILES['dc_data_file']['name'] == "") {
                 echo "<script>";
                 echo "alert('กรุณาแนบไฟล์เอกสารที่ต้องการดำเนินการด้วยค่ะ');";
-                echo "window.history.back(-1)";
-                echo "</script>";
-                exit();
-            } else if ($this->input->post('li_hashtag') == ""){
-                echo "<script>";
-                echo "alert('กรุณาระบุแฮชแท็กด้วยค่ะ');";
                 echo "window.history.back(-1)";
                 echo "</script>";
                 exit();
             }else {
                 
             }
-
-            // เสร็จสิ้นขั้นตอนการตรวจสอบค่าว่าง
-
         }
     }
     
