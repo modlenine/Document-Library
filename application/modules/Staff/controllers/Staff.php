@@ -182,6 +182,13 @@ public function manage_dashboard()
     get_footer();
 }
 
+public function manage_dashboard_gl()
+{
+    get_head();
+    get_content("dashboard/indexgl");
+    get_footer();
+}
+
 
 public function pin_isodoc($lib_main_id)
 {
@@ -193,6 +200,20 @@ public function unpin_isodoc($lib_main_id)
 {
     unpinIsoDoc($lib_main_id);
     header("refresh:0; url=".base_url('staff/manage_dashboard/'));
+}
+
+
+//gl
+public function pin_gldoc($gldoccode)
+{
+    pinGlDoc($gldoccode);
+    header("refresh:0; url=".base_url('staff/manage_dashboard_gl/'));
+}
+
+public function unpin_gldoc($gldoccode)
+{
+    unPinGlDoc($gldoccode);
+    header("refresh:0; url=".base_url('staff/manage_dashboard_gl/'));
 }
 
 

@@ -22,9 +22,9 @@ $get_file1s = $get_file2->row();
             <div class="container-fulid border p-4 bg-white">
                 <!-- Main Section -->
                 <div class="row">
-                    
+
                     <div class="col-md-12 form-group">
-                    <label class="pending_text" for="" style="color:red;">เอกสารนี้อยู่ระหว่างถูกร้องขอดำเนินการแก้ไข ยังไม่พร้อมให้แก้ไข เปลี่ยนแปลง หรือทำสำเนาในขณะนี้ค่ะ</label>
+                        <label class="pending_text" for="" style="color:red;">เอกสารนี้อยู่ระหว่างถูกร้องขอดำเนินการแก้ไข ยังไม่พร้อมให้แก้ไข เปลี่ยนแปลง หรือทำสำเนาในขณะนี้ค่ะ</label>
                         <a href="<?= base_url('document/change_document/') ?><?= $get_file1s->dc_data_doccode; ?>"><button class="btn btn-warning check_option"><i class="fas fa-edit" style="font-size:16px;"></i>&nbsp;&nbsp;เปลี่ยนแปลงเอกสาร</button></a>
                         <a href="<?= base_url('document/edit_dept/') ?><?= $get_file1s->dc_data_doccode; ?>"><button class="btn btn-info check_option"><i class="far fa-copy" style="font-size:16px;"></i>&nbsp;&nbsp;ขอสำเนาเพิ่ม</button></a>
                         <a href="<?= base_url('document/edit_document/') ?><?= $get_file1s->dc_data_doccode; ?>"><button class="btn btn-warning check_option"><i class="fas fa-exchange-alt" style="font-size:16px;"></i>&nbsp;&nbsp;ขอแก้ไขเอกสาร</button></a>
@@ -130,14 +130,12 @@ $get_file1s = $get_file2->row();
                                             <label><b>ประเภทการร้องขอ :</b>&nbsp;<?= get_reason($get_file2s['dc_data_reson']) ?></label>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for=""><b>รายละเอียดการร้องขอ :</b>&nbsp;<a class="reason_detail" href="#" data-toggle="modal" data-target="#reason_detail"
-                                            data_reason_detail = "<?=$get_file2s['dc_data_reson_detail']?>"
-                                            >ดูรายละเอียด&nbsp;<i class="fas fa-search-plus" style="font-size:18px;"></i></a></label>
+                                            <label for=""><b>รายละเอียดการร้องขอ :</b>&nbsp;<a class="reason_detail" href="#" data-toggle="modal" data-target="#reason_detail" data_reason_detail="<?= $get_file2s['dc_data_reson_detail'] ?>">ดูรายละเอียด&nbsp;<i class="fas fa-search-plus" style="font-size:18px;"></i></a></label>
                                         </div>
                                     </div>
 
-                                    
-<!-- Modal Section Reson detail -->
+
+                                    <!-- Modal Section Reson detail -->
 
 
 
@@ -146,10 +144,10 @@ $get_file1s = $get_file2->row();
                                         <div class="col-md-12">
                                             <label for=""><b>แผนกที่เกี่ยวข้อง :&nbsp;</b></label>
                                             <?php
-                                            
-                                            foreach(get_related_use($get_file2s['dc_data_darcode'])->result_array() as $get_ru){
-                                                echo $get_ru['related_dept_name']."&nbsp;,&nbsp;";
-                                            } ?>
+
+                                                foreach (get_related_use($get_file2s['dc_data_darcode'])->result_array() as $get_ru) {
+                                                    echo $get_ru['related_dept_name'] . "&nbsp;,&nbsp;";
+                                                } ?>
                                         </div>
                                     </div>
 
@@ -158,7 +156,7 @@ $get_file1s = $get_file2->row();
 
 
 
-<!-- Modal Section Reson detail -->
+                                    <!-- Modal Section Reson detail -->
 
 
                                     <div class="row mb-2">
@@ -167,17 +165,31 @@ $get_file1s = $get_file2->row();
                                         </div>
                                         <div class="col-md-6">
                                             <?php
-if($get_file2s['lib_main_modify_status'] == ""){
-    $show_status = $get_file2s['lib_main_status'];
-}else{
-    $show_status = $get_file2s['lib_main_modify_status'];
-}
+                                                if ($get_file2s['lib_main_modify_status'] == "") {
+                                                    $show_status = $get_file2s['lib_main_status'];
+                                                } else {
+                                                    $show_status = $get_file2s['lib_main_modify_status'];
+                                                }
 
-?>
+                                                ?>
                                             <label for=""><b>สถานะ :</b></label>&nbsp;<?= $show_status; ?>
-                                            <input hidden type="text" name="check_lib_status" id="check_lib_status" value="<?=$get_file2s['lib_main_modify_status']?>">
+                                            <input hidden type="text" name="check_lib_status" id="check_lib_status" value="<?= $get_file2s['lib_main_modify_status'] ?>">
                                         </div>
                                     </div>
+
+
+                                    <div class="form-row mt-2">
+                                        <div class="col-md-12">
+                                            <label><b>แฮชแท็ก :&nbsp;</b></label>
+                                            <?php
+                                                $get_hashtag = get_hashtag_iso($get_file2s['dc_data_doccode']);
+                                                foreach ($get_hashtag->result_array() as $ght) {
+                                                    echo "<a href='#'><label style='color:green;'>" . $ght['li_hashtag_name'] . "&nbsp;&nbsp;</label></a>";
+                                                }
+                                                ?>
+                                        </div>
+                                    </div>
+
 
                                 </div>
                             </div>
@@ -193,10 +205,10 @@ if($get_file2s['lib_main_modify_status'] == ""){
                             <div class="card-body text-primary table-responsive">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label for=""><a target="_blank" href="<?= base_url() ?><?= $get_file2s['lib_main_file_location_copy']; ?><?= $get_file1s->lib_main_doccode_copy?>"><i class="fas fa-search-plus" style="font-size:18px;"></i>&nbsp;&nbsp;ดูไฟล์ฉบับเต็ม</a></label>
+                                        <label for=""><a target="_blank" href="<?= base_url() ?><?= $get_file2s['lib_main_file_location_copy']; ?><?= $get_file1s->lib_main_doccode_copy ?>"><i class="fas fa-search-plus" style="font-size:18px;"></i>&nbsp;&nbsp;ดูไฟล์ฉบับเต็ม</a></label>
                                     </div>
                                     <div class="col-md-12">
-                                        <embed src="<?= base_url() . $get_file2s['lib_main_file_location_copy'].$get_file1s->lib_main_doccode_copy; ?>" type="application/pdf" width="100%" height="400px" />
+                                        <embed src="<?= base_url() . $get_file2s['lib_main_file_location_copy'] . $get_file1s->lib_main_doccode_copy; ?>" type="application/pdf" width="100%" height="400px" />
                                     </div>
                                 </div>
 

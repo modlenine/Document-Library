@@ -119,6 +119,49 @@ $rsget = $get_deptlib->row();
                 </div>
 
 
+
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <div class="card mb-3">
+                            <div class="card-header text-white bg-info">เอกสาร ทั้วไป แนะนำ</div>
+                            <div class="card-body">
+                             
+                            <table id="user_docpingl" class="table table-striped table-bordered dt-responsive" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>รหัสเอกสาร</th>
+                                    <th>ชื่อเอกสาร</th>
+                                    <th>วันที่ร้องขอ</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <?php $i = 1;
+                                foreach (glDocPin()->result_array() as $get_doc_lists) {
+                                    
+                                    ?>
+                                    <tr>
+                                        <th scope="row"><?= $i ?></th>
+                                        <td><a href="<?= base_url('librarys/viewfull_gl_document/') ?><?= $get_doc_lists['gl_doc_deptcode']."/". $get_doc_lists['gl_doc_folder_number']."/".$get_doc_lists['gl_doc_code']?>"><i class="fas fa-file-pdf" style="color:#CC0000;"></i>&nbsp;&nbsp;<?= $get_doc_lists['gl_doc_code'] ?></a></td>
+                                        <td><?= $get_doc_lists['gl_doc_name'] ?></td>
+                                        
+                                        <td><?= con_date($get_doc_lists['gl_doc_date_request']) ?></td>
+                                        
+                                    </tr>
+                                <?php $i++; } ?>
+                            </tbody>
+                        </table>
+                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <script type="text/javascript">
                     $(document).ready(function() {
 
@@ -132,6 +175,26 @@ $rsget = $get_deptlib->row();
 
                         t.on('order.dt search.dt', function() {
                             t.column(0, {
+                                search: 'applied',
+                                order: 'applied'
+                            }).nodes().each(function(cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        }).draw();
+
+
+
+
+                        var tt = $('#user_docpingl').DataTable({
+                            "columnDefs": [{
+                                "searchable": false,
+                                "orderable": false,
+                                "targets": 0
+                            }]
+                        });
+
+                        tt.on('order.dt search.dt', function() {
+                            tt.column(0, {
                                 search: 'applied',
                                 order: 'applied'
                             }).nodes().each(function(cell, i) {

@@ -5,6 +5,7 @@
 error_reporting(E_ALL & ~E_NOTICE);
 
 ?>
+
 <head>
 
     <!-- Latest compiled and minified CSS -->
@@ -170,22 +171,22 @@ error_reporting(E_ALL & ~E_NOTICE);
                     <div class="header-btn-lg pr-0">
                         <div class="widget-content p-0">
                             <div class="widget-content-wrapper">
-                            <div class="widget-content-left">
-                                <?php 
-                                $username = $_SESSION['username'];
-                                $result = get_group($username);
-                                $getdatarow = $result->row();
+                                <div class="widget-content-left">
+                                    <?php
+                                    $username = $_SESSION['username'];
+                                    $result = get_group($username);
+                                    $getdatarow = $result->row();
 
-                                $deptcode = get_deptcode_new($username)->dc_user_new_dept_code;
-                                ?>
+                                    $deptcode = get_deptcode_new($username)->dc_user_new_dept_code;
+                                    ?>
 
-                                <!-- Check Section -->
-                                <input hidden type="text" name="check_group" id="check_group" value="<?=$getdatarow->dc_gp_permis_name?>" />
-                                <input hidden type="text" name="check_username" id="check_username" value="<?= $getuserCon?>">
-                                <input hidden type="text" name="check_new_deptcode" id="check_new_deptcode" value="<?=$deptcode?>">
-                                <!-- Check Section -->
-                                
-                            </div>
+                                    <!-- Check Section -->
+                                    <input hidden type="text" name="check_group" id="check_group" value="<?= $getdatarow->dc_gp_permis_name ?>" />
+                                    <input hidden type="text" name="check_username" id="check_username" value="<?= $getuserCon ?>">
+                                    <input hidden type="text" name="check_new_deptcode" id="check_new_deptcode" value="<?= $deptcode ?>">
+                                    <!-- Check Section -->
+
+                                </div>
 
 
                                 <!-- <div class="widget-content-left">
@@ -281,22 +282,21 @@ error_reporting(E_ALL & ~E_NOTICE);
                 <div class="scrollbar-sidebar">
                     <div class="app-sidebar__inner">
 
-                    <?php
-                            if ($this->uri->segment(2) == "dashboard") {
-                                $dashmain = ' mm-active';
-                                $dashli = 'mm-active';
+                        <?php
+                        if ($this->uri->segment(2) == "dashboard") {
+                            $dashmain = ' mm-active';
+                            $dashli = 'mm-active';
+                        } else {
+                            $dashmain = '';
+                            $dashli = '';
+                        }
 
-                            }else{
-                                $dashmain = '';
-                                $dashli = '';
-                            }
-
-                            ?>
+                        ?>
 
                         <ul class="vertical-nav-menu">
                             <li class="app-sidebar__heading">Dashboards</li>
-                            <li class="<?=$dashmain?>">
-                                <a href="<?= base_url('document/dashboard'); ?>" class="<?=$dashli?>">
+                            <li class="<?= $dashmain ?>">
+                                <a href="<?= base_url('document/dashboard'); ?>" class="<?= $dashli ?>">
                                     <!-- <i class="metismenu-icon pe-7s-rocket"></i> -->
                                     <i class="metismenu-icon fas fa-chart-line"></i>
                                     Dashboard
@@ -379,21 +379,21 @@ error_reporting(E_ALL & ~E_NOTICE);
                             <li class="<?= $doc_list ?>">
                                 <a href="#">
                                     <i class="metismenu-icon fas fa-folder"></i>
-                                    รายการคำร้อง&nbsp;<span class="badge badge-pill badge-success"><?=count_darfile()?></span>
-                                <span class="badge badge-pill badge-warning"><?=count_glfile()?></span>
+                                    รายการคำร้อง&nbsp;<span class="badge badge-pill badge-success"><?= count_darfile() ?></span>
+                                    <span class="badge badge-pill badge-warning"><?= count_glfile() ?></span>
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                 </a>
                                 <ul>
                                     <li>
                                         <a class="navleft <?= $doc_list_iso ?>" href="<?= base_url("document/list_dar") ?>">
                                             <i class="metismenu-icon">
-                                            </i><span class="badge badge-pill badge-success"><?=count_darfile()?></span>&nbsp;&nbsp;รายการคำร้องเอกสาร ISO
+                                            </i><span class="badge badge-pill badge-success"><?= count_darfile() ?></span>&nbsp;&nbsp;รายการคำร้องเอกสาร ISO
                                         </a>
                                     </li>
                                     <li>
                                         <a class="navleft <?= $doc_list_gl ?>" href="<?= base_url("document/list_generel"); ?>">
                                             <i class="metismenu-icon">
-                                            </i><span class="badge badge-pill badge-warning"><?=count_glfile()?></span>&nbsp;&nbsp;รายการคำร้องเอกสารทั่วไป
+                                            </i><span class="badge badge-pill badge-warning"><?= count_glfile() ?></span>&nbsp;&nbsp;รายการคำร้องเอกสารทั่วไป
                                         </a>
                                     </li>
 
@@ -446,22 +446,25 @@ error_reporting(E_ALL & ~E_NOTICE);
                             <?php
                             if ($this->uri->segment(2) == "") {
                                 $isolist = 'mm-active';
-                               
-                            }else if($this->uri->segment(2) == "manage_dept"){
+                            } else if ($this->uri->segment(2) == "manage_dept") {
                                 $foradmin = 'mm-active';
                                 $manage_dept = 'mm-active';
                                 $isolist = '';
-                            } else if($this->uri->segment(2) == "view_user"){
+                            } else if ($this->uri->segment(2) == "view_user") {
                                 $foradmin = 'mm-active';
                                 $view_user = 'mm-active';
-                                $manage_dept = ''; 
-                            }else if ($this->uri->segment(2) == "manage_dashboard"){
+                                $manage_dept = '';
+                            } else if ($this->uri->segment(2) == "manage_dashboard") {
                                 $manage_dash = 'mm-active';
+                                $manage_dash_iso = 'mm-active';
                                 $manage_dashli = 'mm-active';
+                            }else if ($this->uri->segment(2) == "manage_dashboard_gl"){
+                                $manage_dash_gl = 'mm-active';
+                                $manage_dash = 'mm-active';
                             }
                             ?>
                             <li id="admin_section" class="app-sidebar__heading"></i>For Admin</li>
-                            <li id="admin_section" class="<?=$foradmin?>">
+                            <li id="admin_section" class="<?= $foradmin ?>">
                                 <a href="#">
                                     <i class="metismenu-icon fas fa-user-shield"></i>
                                     สำหรับผู้ดูแลระบบ
@@ -469,7 +472,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 </a>
                                 <ul>
                                     <li>
-                                        <a class="navleft <?=$manage_dept?>" href="<?= base_url('staff/manage_dept') ?>">
+                                        <a class="navleft <?= $manage_dept ?>" href="<?= base_url('staff/manage_dept') ?>">
                                             <i class="metismenu-icon"></i>
                                             จัดการตู้เอกสารทั่วไป
                                         </a>
@@ -487,10 +490,16 @@ error_reporting(E_ALL & ~E_NOTICE);
                                         </a>
                                         <ul>
                                             <li>
-                                            <a class="navleft <?= $manage_dash ?>" href="<?= base_url('staff/manage_dashboard') ?>">
-                                            <i class="metismenu-icon"></i>
-                                            ปักหมุดเอกสาร ISO
-                                        </a>
+                                                <a class="navleft <?= $manage_dash_iso ?>" href="<?= base_url('staff/manage_dashboard') ?>">
+                                                    <i class="metismenu-icon"></i>
+                                                    ปักหมุดเอกสาร ISO
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="navleft <?= $manage_dash_gl ?>" href="<?= base_url('staff/manage_dashboard_gl') ?>">
+                                                    <i class="metismenu-icon"></i>
+                                                    ปักหมุดเอกสาร ทั่วไป
+                                                </a>
                                             </li>
                                         </ul>
                                     </li>
@@ -501,14 +510,13 @@ error_reporting(E_ALL & ~E_NOTICE);
                             if ($this->uri->segment(2) == "admin_iso_list") {
                                 $isolistmain = 'mm-active';
                                 $isolistli = 'mm-active';
-                               
-                            }else {
+                            } else {
                                 $isolistmain = '';
                                 $isolistli = '';
                             }
                             ?>
 
-                            <li id="admin_section" class="<?=$isolistmain?>">
+                            <li id="admin_section" class="<?= $isolistmain ?>">
                                 <a href="#">
                                     <i class="metismenu-icon fas fa-folder"></i>
                                     รายการเอกสาร
@@ -516,7 +524,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="<?= base_url('staff') ?>" class="<?=$isolistli?>">
+                                        <a href="<?= base_url('staff') ?>" class="<?= $isolistli ?>">
                                             <i class="metismenu-icon"></i>
                                             ตู้เอกสาร ISO
                                         </a>

@@ -171,4 +171,143 @@ function unpinIsoDoc($lib_main_id)
 
 
 
+
+
+//Zone เอกสารทั่วไป
+function getGlDoc()
+{
+    $obj = new staff_fn();
+    return $obj->getci()->db->query("SELECT
+    gl_document.gl_doc_id,
+    gl_document.gl_doc_date_request,
+    gl_document.gl_doc_username,
+    gl_document.gl_doc_ecode,
+    gl_document.gl_doc_deptcode,
+    gl_document.gl_doc_deptname,
+    gl_document.gl_doc_name,
+    gl_document.gl_doc_code,
+    gl_document.gl_doc_folder_number,
+    gl_document.gl_doc_detail,
+    gl_document.gl_doc_file,
+    gl_document.gl_doc_file_location,
+    gl_document.gl_doc_approve_status,
+    gl_document.gl_doc_reson_detail,
+    gl_document.gl_doc_approve_by,
+    gl_document.gl_doc_status,
+    gl_document.gl_doc_hashtag,
+    gl_document.gl_doc_pin_status,
+    gl_document.gl_doc_pin_order
+    FROM
+    gl_document
+    WHERE gl_document.gl_doc_pin_status != 'pin'
+    ");
+}
+
+
+function glDocPin()
+{
+    $obj = new staff_fn();
+    return $obj->getci()->db->query("SELECT
+    gl_document.gl_doc_id,
+    gl_document.gl_doc_date_request,
+    gl_document.gl_doc_username,
+    gl_document.gl_doc_ecode,
+    gl_document.gl_doc_deptcode,
+    gl_document.gl_doc_deptname,
+    gl_document.gl_doc_name,
+    gl_document.gl_doc_code,
+    gl_document.gl_doc_folder_number,
+    gl_document.gl_doc_detail,
+    gl_document.gl_doc_file,
+    gl_document.gl_doc_file_location,
+    gl_document.gl_doc_approve_status,
+    gl_document.gl_doc_reson_detail,
+    gl_document.gl_doc_approve_by,
+    gl_document.gl_doc_status,
+    gl_document.gl_doc_hashtag,
+    gl_document.gl_doc_pin_status,
+    gl_document.gl_doc_pin_order
+    FROM
+    gl_document
+    WHERE gl_document.gl_doc_pin_status = 'pin'
+    ORDER BY gl_doc_pin_order DESC ");
+}
+
+
+function pinGlDoc($gldoccode)
+{
+    $obj = new staff_fn();
+    $checkOrderPin = $obj->getci()->db->query("SELECT gl_doc_pin_order FROM gl_document ORDER BY gl_doc_pin_order DESC LIMIT 1 ");
+    foreach($checkOrderPin->result_array() as $chkGl){
+        if($chkGl['gl_doc_pin_order'] == 0){
+            $pinroder = 1;
+        }else if ($chkGl['gl_doc_pin_order'] > 0){
+            $pinroder = $chkGl['gl_doc_pin_order'];
+            $pinroder++;
+        }
+    }
+
+
+    $arglpin = array(
+        "gl_doc_pin_status" => "pin",
+        "gl_doc_pin_order" => $pinroder
+    );
+
+    $obj->getci()->db->where("gl_doc_code",$gldoccode);
+    $result = $obj->getci()->db->update("gl_document",$arglpin);
+
+
+    if(!$result)
+    {
+        echo "<script>";
+        echo "alert('ปักหมุดไม่สำเร็จ')";
+        echo "</script>";
+        exit();
+        
+    }else{
+        echo "<script>";
+        echo "alert('ปักหมุดเรียบร้อยแล้ว')";
+        echo "</sctipt>";
+    }
+}
+
+
+function unPinGlDoc($gldoccode)
+{
+    $obj = new staff_fn();
+    $ar_unpin = array(
+        "gl_doc_pin_status" => 0,
+        "gl_doc_pin_order" => 0
+    );
+    $obj->getci()->db->where("gl_doc_code",$gldoccode);
+    $result = $obj->getci()->db->update("gl_document",$ar_unpin);
+
+    if(!$result)
+    {
+        echo "<script>";
+        echo "alert('ยกเลิกการปักหมุดไม่สำเร็จ')";
+        echo "</script>";
+        exit();
+        
+    }else{
+        echo "<script>";
+        echo "alert('ยกเลิกการปักหมุดเรียบร้อยแล้ว')";
+        echo "</sctipt>";
+    }
+}
+
+
+
+function countGlPin()
+{
+    $obj = new staff_fn();
+    $query = $obj->getci()->db->query("SELECT gl_doc_pin_status FROM gl_document WHERE gl_doc_pin_status ='pin' ");
+    return $query->num_rows();
+}
+
+
+
+
+
+
 ?>

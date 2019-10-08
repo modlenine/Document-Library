@@ -438,7 +438,7 @@ class Doc_add_model extends CI_Model
             } else {
 
 
-                if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04' && get_data_reson($darcode)->dc_data_reson != 'r-03') {
+                if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04' && get_data_reson($darcode)->dc_data_reson != 'r-03' && get_data_reson($darcode)->dc_data_reson != 'r-05') {
                     echo "ไม่เท่ากับ r-02";
                     $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
                     $del_hashtag = $this->db->delete('library_hashtag');
@@ -661,7 +661,7 @@ $mail->Body = $body;
                 }
             } else {
 
-                if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04' && get_data_reson($darcode)->dc_data_reson != 'r-03') {
+                if (get_data_reson($darcode)->dc_data_reson != 'r-02' && get_data_reson($darcode)->dc_data_reson != 'r-04' && get_data_reson($darcode)->dc_data_reson != 'r-03' && get_data_reson($darcode)->dc_data_reson != 'r-05') {
                     echo "ไม่เท่ากับ r-02";
                     $del_hashtag = $this->db->where('li_hashtag_doc_code', convert_darcode_to_doccode($darcode));
                     $del_hashtag = $this->db->delete('library_hashtag');
