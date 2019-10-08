@@ -271,10 +271,7 @@ public function fetch_iso_date()
 
     
 
-public function view_pinIsoDoc()
-{
 
-}
 
 
 

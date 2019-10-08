@@ -10,6 +10,7 @@ class Staff extends MX_Controller{
         $this->load->model("document/doc_get_model");
         $this->load->model("staff/get_staff_model");
         $this->load->model("staff/add_staff_model");
+        $this->load->model('librarys/get_lib_model');
     }
 
     public function index()
@@ -217,10 +218,89 @@ public function unpin_gldoc($gldoccode)
 }
 
 
+//Live search for iso document
+//For ajax live search doccode
+public function fetch_iso_doccode_admin()
+{
+    // $getuser = $this->get_lib_model->get_new_user();
+    // $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code);
+    // $rsget = $get_deptlib->row();
+
+    $query = '';
+
+        if($this->input->post('query')){
+            $query = $this->input->post('query');
+        }
+        $data['rs'] = searchby_docode_admin($query);
+        $this->load->view('result_iso_admin',$data);
+}
+//For ajax live search doccode
 
 
 
 
+//For ajax live search docname
+public function fetch_iso_docname_admin()
+{
+    // $getuser = $this->get_lib_model->get_new_user();
+    // $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code);
+    // $rsget = $get_deptlib->row();
+    
+    $query = '';
+
+
+
+        if($this->input->post('query')){
+            $query = $this->input->post('query');
+        }
+        $data['rs'] = searchby_docname_admin($query);
+        $this->load->view('result_iso_admin',$data);
+}
+//For ajax live search docname
+
+
+
+
+//For ajax live search docname
+public function fetch_iso_hashtag_admin()
+{
+    // $getuser = $this->get_lib_model->get_new_user();
+    // $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code);
+    // $rsget = $get_deptlib->row();
+    
+    $query = '';
+
+
+
+        if($this->input->post('query')){
+            $query = $this->input->post('query');
+        }
+        $data['rs'] = searchby_hashtag_admin($query);
+        $this->load->view('result_iso_admin',$data);
+}
+//For ajax live search docname
+
+
+
+//For ajax live search docname
+public function fetch_iso_date_admin()
+{
+    // $getuser = $this->get_lib_model->get_new_user();
+    // $get_deptlib = $this->get_lib_model->get_deptlib($getuser->dc_user_new_dept_code);
+    // $rsget = $get_deptlib->row();
+    
+    $start_date = '';
+    $end_date = '';
+
+
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
+
+
+        $data['rs'] = searchby_date_admin($start_date,$end_date);
+        $this->load->view('result_iso_admin',$data);
+}
+//For ajax live search docname
 
 
 

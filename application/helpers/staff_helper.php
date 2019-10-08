@@ -309,5 +309,72 @@ function countGlPin()
 
 
 
+function searchby_docode_admin($doccode)
+{
+    $obj = new staff_fn();
+    return $obj->getci()->db->query("SELECT * FROM
+    (SELECT MAX(dc_data_id) as dc_data_id_max , dc_data_doccode FROM dc_datamain GROUP BY dc_data_doccode)a
+    INNER JOIN
+    (SELECT * FROM dc_datamain)b ON a.dc_data_id_max = b.dc_data_id
+    INNER JOIN
+    (SELECT * FROM (SELECT MAX(lib_main_id) as lib_main_id_max  FROM library_main GROUP BY lib_main_doccode)c 
+    INNER JOIN (SELECT * FROM library_main)d ON c.lib_main_id_max = d.lib_main_id)aa 
+    ON a.dc_data_doccode = aa.lib_main_doccode WHERE a.dc_data_doccode LIKE '%$doccode%' ");
+}
+
+
+
+function searchby_docname_admin($docname)
+{
+    $obj = new staff_fn();
+    return $obj->getci()->db->query("SELECT * FROM
+    (SELECT MAX(dc_data_id) as dc_data_id_max , dc_data_doccode FROM dc_datamain GROUP BY dc_data_doccode)a
+    INNER JOIN
+    (SELECT * FROM dc_datamain)b ON a.dc_data_id_max = b.dc_data_id
+    INNER JOIN
+    (SELECT * FROM (SELECT MAX(lib_main_id) as lib_main_id_max  FROM library_main GROUP BY lib_main_doccode)c 
+    INNER JOIN (SELECT * FROM library_main)d ON c.lib_main_id_max = d.lib_main_id)aa 
+    ON a.dc_data_doccode = aa.lib_main_doccode WHERE b.dc_data_docname LIKE '%$docname%' ");
+}
+
+
+function searchby_hashtag_admin($hashtag)
+{
+    $obj = new staff_fn();
+    return $obj->getci()->db->query("SELECT * FROM
+    (SELECT MAX(dc_data_id) as dc_data_id_max , dc_data_doccode FROM dc_datamain GROUP BY dc_data_doccode)a
+    INNER JOIN
+    (SELECT * FROM dc_datamain)b ON a.dc_data_id_max = b.dc_data_id
+    INNER JOIN
+    (SELECT * FROM (SELECT MAX(lib_main_id) as lib_main_id_max  FROM library_main GROUP BY lib_main_doccode)c 
+    INNER JOIN (SELECT * FROM library_main)d ON c.lib_main_id_max = d.lib_main_id)aa 
+    ON a.dc_data_doccode = aa.lib_main_doccode 
+    INNER JOIN library_hashtag ON library_hashtag.li_hashtag_doc_code = aa.lib_main_doccode
+    WHERE library_hashtag.li_hashtag_name LIKE '%$hashtag%' ");
+}
+
+
+
+function searchby_date_admin($start_date,$end_date)
+{
+    $obj = new staff_fn();
+    return $obj->getci()->db->query("SELECT * FROM
+    (SELECT MAX(dc_data_id) as dc_data_id_max , dc_data_doccode FROM dc_datamain GROUP BY dc_data_doccode)a
+    INNER JOIN
+    (SELECT * FROM dc_datamain)b ON a.dc_data_id_max = b.dc_data_id
+    INNER JOIN
+    (SELECT * FROM (SELECT MAX(lib_main_id) as lib_main_id_max  FROM library_main GROUP BY lib_main_doccode)c 
+    INNER JOIN (SELECT * FROM library_main)d ON c.lib_main_id_max = d.lib_main_id)aa 
+    ON a.dc_data_doccode = aa.lib_main_doccode 
+    WHERE b.dc_data_date BETWEEN '$start_date' AND '$end_date' ");
+}
+
+
+
+
+
+
+
+
 
 ?>
