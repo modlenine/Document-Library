@@ -15,6 +15,9 @@
     <script src="https://code.highcharts.com/highcharts-3d.js"></script>
     <script src="https://code.highcharts.com/modules/data.js"></script>
 
+
+
+
 </head>
 
 <?php
@@ -26,7 +29,6 @@ $rsget = $get_deptlib->row();
 ?>
 
 <body>
-
     <div class="app-main__outer">
         <!-- Content Zone -->
         <div class="app-main__inner mb-5">
@@ -123,7 +125,7 @@ $rsget = $get_deptlib->row();
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <div class="card mb-3">
-                            <div class="card-header text-white bg-info">เอกสาร ทั้วไป แนะนำ</div>
+                            <div class="card-header text-white bg-info">เอกสาร ทั่วไป แนะนำ</div>
                             <div class="card-body">
                              
                             <table id="user_docpingl" class="table table-striped table-bordered dt-responsive" style="width:100%">

@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?= label("ld_title", $this); ?></title>
 
-    
 </head>
 
 <body>
@@ -21,7 +20,7 @@
 
                 <h1 style="text-align:center;"><?= label("h1text", $this); ?></h1>
 
-                <table id="view_dar" class="table table-striped table-bordered dt-responsive" style="width:100%">
+                <table id="view_dar" class="display" style="width:100%">
                     <thead>
                         <tr>
                             <th style="width:50px;"><?=label('id',$this);?></th>
@@ -109,6 +108,7 @@
                 cell.innerHTML = i + 1;
             });
         }).draw();
+
 
 
     });

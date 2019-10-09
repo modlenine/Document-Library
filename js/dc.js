@@ -402,8 +402,10 @@ $(function () {
 
         if (doc_search_method == "search_by_date") {
             $('#form_search_by_date').show();
+            $('#filter').hide();
         } else {
             $('#form_search_by_date').hide();
+            $('#filter').show();
         }
 
         if (doc_search_method == "search_by_docname") {
@@ -634,22 +636,79 @@ if($('#check_gl_status').val() == "Approved" || $('#check_gl_status').val() == "
 }
 
 
-// var rex = /[a-z]/;
-// var str = $('#li_hashtag').val();
-// $('#li_hashtag').blur(function(){
+//Check File size And File type
+/*********************Check Upload File*********ADD DAR*******************************/
+$('input[type=file][name=dc_data_file]').change(function () {/*********Add Page************/
+    var ext = $('#dc_data_file').val().split('.').pop().toLowerCase();
+//Allowed file types
+    if ($.inArray(ext, ['pdf']) == -1) {
+        alert('The file type is invalid!');
+        $('#dc_data_file').val("");
+    }
+    if (this.files[0].size > 10485760) {
+        alert("Maximum File size is 10MB !!");
+        this.value = "";
+        exit;
+    }
+});
 
-//     if(!check_is_username(str)){
-// alert('false');
-//     }else{
-//         alert('true');
-//     }
-    
 
-// });
+/*********************Check Upload File*********MASTER FILE*******************************/
+$('input[type=file][name=document_master]').change(function () {/*********Add Page************/
+    var ext = $('#document_master').val().split('.').pop().toLowerCase();
+//Allowed file types
+    if ($.inArray(ext, ['pdf']) == -1) {
+        alert('The file type is invalid!');
+        $('#document_master').val("");
+    }
+    if (this.files[0].size > 10485760) {
+        alert("Maximum File size is 10MB !!");
+        this.value = "";
+        exit;
+    }
+});
+
+
+
+/*********************Check Upload File*********COPY FILE*******************************/
+$('input[type=file][name=document_copy]').change(function () {/*********Add Page************/
+    var ext = $('#document_copy').val().split('.').pop().toLowerCase();
+//Allowed file types
+    if ($.inArray(ext, ['pdf']) == -1) {
+        alert('The file type is invalid!');
+        $('#document_copy').val("");
+    }
+    if (this.files[0].size > 10485760) {
+        alert("Maximum File size is 10MB !!");
+        this.value = "";
+        exit;
+    }
+});
 
 
 
 
+/*********************Check Upload File*********COPY FILE*******************************/
+$('input[type=file][name=gl_doc_file]').change(function () {/*********Add Page************/
+    var ext = $('#gl_doc_file').val().split('.').pop().toLowerCase();
+//Allowed file types
+    if ($.inArray(ext, ['pdf']) == -1) {
+        alert('The file type is invalid!');
+        $('#gl_doc_file').val("");
+    }
+    if (this.files[0].size > 10485760) {
+        alert("Maximum File size is 10MB !!");
+        this.value = "";
+        exit;
+    }
+});
+
+
+//Check File size And File type
+
+//page load
+$("#overlay").fadeOut(1200);
+$(".main-contain").removeClass("main-contain");
 
 
 
@@ -659,10 +718,6 @@ if($('#check_gl_status').val() == "Approved" || $('#check_gl_status').val() == "
 });
 // Ready function
 
-
-// function check_is_username(str){
-//     return /[a]{1}/.test(str);
-// }
 
 
 

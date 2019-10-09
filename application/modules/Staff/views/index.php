@@ -37,7 +37,7 @@
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <a href="<?= base_url('librarys/view_by_dept') ?><?php echo "/"; ?>"><button type="button" class="btn btn-warning"><i class="fas fa-sync-alt"></i>&nbsp;Reset</button></a>
+                        <a href="<?= base_url('staff/admin_iso_list') ?><?php echo "/"; ?>"><button type="button" class="btn btn-warning"><i class="fas fa-sync-alt"></i>&nbsp;Reset</button></a>
                     </div>
                 </div>
 
@@ -71,7 +71,6 @@
                         &nbsp;&nbsp;
                         <button type="submit" name="btn_search_date" id="btn_search_date" class="btn btn-success"><i class="fas fa-search"></i>&nbsp;ค้นหา</button>
                     </div>
-
                 </div>
                 <!-- </form> -->
                 <!-- Search With Date -->
@@ -184,7 +183,7 @@
 
 
 
-        load_datas();
+load_datas();
 
 $('#document_code').keyup(function() {
 var search = $(this).val();

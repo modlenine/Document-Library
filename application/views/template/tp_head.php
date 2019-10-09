@@ -74,6 +74,23 @@ error_reporting(E_ALL & ~E_NOTICE);
         .status_color {
             color: green;
         }
+
+        #overlay {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background: #333333;
+            width: 100%;
+            height: 100%;
+            opacity: .95;
+            filter: alpha(opacity=95);
+            -moz-opacity: .95;
+            z-index: 999;
+            background: #fff url(http://i.imgur.com/KUJoe.gif) 50% 50% no-repeat;
+        }
+        thead input {
+        width: 100%;
+    }
     </style>
 
 
@@ -83,6 +100,7 @@ error_reporting(E_ALL & ~E_NOTICE);
     get_modal();
     ?>
 </head>
+<div id="overlay"></div>
 
 <body>
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
@@ -458,7 +476,7 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 $manage_dash = 'mm-active';
                                 $manage_dash_iso = 'mm-active';
                                 $manage_dashli = 'mm-active';
-                            }else if ($this->uri->segment(2) == "manage_dashboard_gl"){
+                            } else if ($this->uri->segment(2) == "manage_dashboard_gl") {
                                 $manage_dash_gl = 'mm-active';
                                 $manage_dash = 'mm-active';
                             }
@@ -538,33 +556,30 @@ error_reporting(E_ALL & ~E_NOTICE);
                                 </ul>
                             </li>
 
-                            <!-- <li id="admin_section">
+
+
+                            <li id="admin_section" class="">
                                 <a href="#">
-                                    <i class="metismenu-icon fas fa-cogs"></i>
-                                    ตั้งค่า
+                                    <i class="metismenu-icon fas fa-folder"></i>
+                                    รายงาน
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="<?= base_url('librarys/index') ?>">
+                                        <a href="<?=base_url('staff/darLogSheet')?>" class="">
                                             <i class="metismenu-icon"></i>
-                                            สิทธิ์การใช้งานของ User
+                                            DAR LOG SHEET
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="#" class="">
                                             <i class="metismenu-icon"></i>
-                                            สิทธิ์การใช้งานของ ตู้เอกสาร
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="metismenu-icon"></i>
-                                            ตั้งค่าผู้ใช้งาน
+                                            ทะเบียนเอกสาร
                                         </a>
                                     </li>
                                 </ul>
-                            </li> -->
+                            </li>
+
 
 
 

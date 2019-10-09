@@ -61,6 +61,8 @@ class Doc_get_model extends CI_Model
     {
         return $this->db->query("SELECT
 dc_datamain.dc_data_doccode,
+dc_datamain.dc_data_docname,
+dc_datamain.dc_data_edit,
 dc_datamain.dc_data_doccode_display,
 dc_datamain.dc_data_id,
 dc_datamain.dc_data_law_doccode,
