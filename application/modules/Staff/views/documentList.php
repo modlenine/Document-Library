@@ -32,7 +32,7 @@
 
             <div class="container-fulid border p-4 bg-white">
 
-                <h1 style="text-align:center;">DAR LOG SHEET</h1>
+                <h1 style="text-align:center;">Document List</h1>
 
                 <div class="row mb-2 mt-4">
                     <div class="col-md-4">
@@ -46,16 +46,18 @@
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <a href="<?= base_url('staff/darLogSheet') ?><?php echo "/"; ?>"><button type="button" class="btn btn-warning"><i class="fas fa-sync-alt"></i>&nbsp;Reset</button></a>
+                        <a href="<?= base_url('staff/documentList') ?><?php echo "/"; ?>"><button type="button" class="btn btn-warning"><i class="fas fa-sync-alt"></i>&nbsp;Reset</button></a>
                     </div>
                     <div class="col-md-4">
                         <select name="filter" id="filter" class="form-control">
-                            <option value="">All</option>
-                            <option value="Creating DAR">Creating DAR</option>
-                            <option value="Open">Open</option>
-                            <option value="Manager Approved">Manager Approved</option>
-                            <option value="Qmr Approved">Qmr Approved</option>
-                            <option value="Complete">Complete</option>
+                            <option value="">แสดงข้อมูลตามประเภทเอกสาร</option>
+
+                            <?php
+                            foreach (docType()->result_array() as $callDocType) { ?>
+                            <option value="<?=$callDocType['dc_sub_type_code']?>"><?=$callDocType['dc_sub_type_name']?></option>
+                            <?php
+                            }
+                            ?>
                         </select>
                     </div>
                 </div>
@@ -68,12 +70,14 @@
                         <input type="date" name="end_date" id="end_date" class="form-control datepicker_search">
                         &nbsp;&nbsp;
                         <select name="filter_withdate" id="filter_withdate" class="form-control">
-                            <option value="">Filter By Status</option>
-                            <option value="Creating DAR">Creating DAR</option>
-                            <option value="Open">Open</option>
-                            <option value="Manager Approved">Manager Approved</option>
-                            <option value="Qmr Approved">Qmr Approved</option>
-                            <option value="Complete">Complete</option>
+                            <option value="">แสดงข้อมูลตามประเภทเอกสาร</option>
+
+                            <?php
+                            foreach (docType()->result_array() as $callDocType) { ?>
+                            <option value="<?=$callDocType['dc_sub_type_code']?>"><?=$callDocType['dc_sub_type_name']?></option>
+                            <?php
+                            }
+                            ?>
                         </select>&nbsp;&nbsp;
                         <button type="submit" name="btn_search_date" id="btn_search_date" class="btn btn-success"><i class="fas fa-search"></i>&nbsp;ค้นหา</button>
                     </div>
@@ -86,6 +90,8 @@
 
 
 
+
+
             </div>
 
         </div><!-- Content Zone -->
@@ -95,12 +101,35 @@
 <script type="text/javascript">
     $(document).ready(function() {
 
+        // var t = $('#dar_log_sheetxx').DataTable({
+        //     "columnDefs": [{
+        //         "searchable": false,
+        //         "orderable": false,
+        //         "targets": 0
+        //     }],
+        //     "order": [
+        //         [0, 'desc']
+        //     ]
+        // });
+
+        // t.on('order.dt search.dt', function() {
+        //     t.column(0, {
+        //         search: 'applied',
+        //         order: 'applied'
+        //     }).nodes().each(function(cell, i) {
+        //         cell.innerHTML = i + 1;
+        //     });
+        // }).draw();
+
+
+
+
         load_datas();
 
         $('#filter').change(function() {
             var search = $(this).val();
             if (search != '') {
-                filter_data(search);
+                filterDocList_data(search);
             } else {
                 load_datas();
             }
@@ -119,7 +148,7 @@
                 load_search_dates(fromdate, todate);
 
             } else if (fromdate == '' && todate == '' && filter_withdate != '') {
-                filter_data(filter_withdate);
+                filterDocList_data(filter_withdate);
 
             } else {
                 load_datas();
@@ -135,14 +164,14 @@
 
     function load_datas(status) {
         $.ajax({
-            url: "<?php echo base_url(); ?>staff/fetch_darlog/",
+            url: "<?php echo base_url(); ?>staff/fetch_docList/",
             method: "POST",
             data: {
                 status: status
             },
             success: function(data) {
                 $('#result').html(data);
-                var tt = $('#dar_log_sheet').DataTable({
+                var tt = $('#docList').DataTable({
                     "columnDefs": [{
                         "searching": false,
                         "orderable": false,
@@ -153,15 +182,16 @@
                     ],
                     dom: 'Bfrtip',
                     buttons: [{
-                        extend: 'excel',
-                        messageTop: 'DAR LOG SHEET',
-                        title:''
-                    }, 
-                    {
-                        extend:'print',
-                        messageTop: '<strong>DAR LOG SHEET</strong>',
-                        title:''
-                    }]
+                            extend: 'excel',
+                            messageTop: 'DAR LOG SHEET',
+                            title: ''
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<strong>DAR LOG SHEET</strong>',
+                            title: ''
+                        }
+                    ]
                 });
 
                 tt.on('order.dt search.dt', function() {
@@ -178,16 +208,16 @@
 
 
 
-    function filter_data(status) {
+    function filterDocList_data(docType) {
         $.ajax({
-            url: "<?php echo base_url(); ?>staff/fetch_filter_data/",
+            url: "<?php echo base_url(); ?>staff/filterDocList_data/",
             method: "POST",
             data: {
-                status: status
+                docType: docType
             },
             success: function(data) {
                 $('#result').html(data);
-                var tt = $('#dar_log_sheet').DataTable({
+                var tt = $('#docList').DataTable({
                     "columnDefs": [{
                         "searching": false,
                         "orderable": false,
@@ -198,15 +228,16 @@
                     ],
                     dom: 'Bfrtip',
                     buttons: [{
-                        extend: 'excel',
-                        messageTop: 'DAR LOG SHEET',
-                        title:''
-                    }, 
-                    {
-                        extend:'print',
-                        messageTop: '<strong>DAR LOG SHEET</strong>',
-                        title:''
-                    }]
+                            extend: 'excel',
+                            messageTop: 'DAR LOG SHEET',
+                            title: ''
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<strong>DAR LOG SHEET</strong>',
+                            title: ''
+                        }
+                    ]
                 });
 
                 tt.on('order.dt search.dt', function() {
@@ -227,7 +258,7 @@
 
     function load_search_date(start_date, end_date, filter_withdate) {
         $.ajax({
-            url: "<?php echo base_url(); ?>staff/fetch_date_darlog",
+            url: "<?php echo base_url(); ?>staff/fetch_doclist_date",
             method: "POST",
             data: {
                 start_date: start_date,
@@ -236,7 +267,7 @@
             },
             success: function(data) {
                 $('#result').html(data);
-                var tt = $('#dar_log_sheet').DataTable({
+                var tt = $('#docList').DataTable({
                     "columnDefs": [{
                         "searching": false,
                         "orderable": false,
@@ -247,15 +278,16 @@
                     ],
                     dom: 'Bfrtip',
                     buttons: [{
-                        extend: 'excel',
-                        messageTop: 'DAR LOG SHEET',
-                        title:''
-                    }, 
-                    {
-                        extend:'print',
-                        messageTop: '<strong>DAR LOG SHEET</strong>',
-                        title:''
-                    }]
+                            extend: 'excel',
+                            messageTop: 'DAR LOG SHEET',
+                            title: ''
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<strong>DAR LOG SHEET</strong>',
+                            title: ''
+                        }
+                    ]
                 });
 
                 tt.on('order.dt search.dt', function() {
@@ -274,7 +306,7 @@
 
     function load_search_dates(start_date, end_date) {
         $.ajax({
-            url: "<?php echo base_url(); ?>staff/fetch_date_darlogs",
+            url: "<?php echo base_url(); ?>staff/fetch_doclist_dates",
             method: "POST",
             data: {
                 start_date: start_date,
@@ -282,7 +314,7 @@
             },
             success: function(data) {
                 $('#result').html(data);
-                var tt = $('#dar_log_sheet').DataTable({
+                var tt = $('#docList').DataTable({
                     "columnDefs": [{
                         "searching": false,
                         "orderable": false,
@@ -293,15 +325,16 @@
                     ],
                     dom: 'Bfrtip',
                     buttons: [{
-                        extend: 'excel',
-                        messageTop: 'DAR LOG SHEET',
-                        title:''
-                    }, 
-                    {
-                        extend:'print',
-                        messageTop: '<strong>DAR LOG SHEET</strong>',
-                        title:''
-                    }]
+                            extend: 'excel',
+                            messageTop: 'DAR LOG SHEET',
+                            title: ''
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<strong>DAR LOG SHEET</strong>',
+                            title: ''
+                        }
+                    ]
                 });
 
                 tt.on('order.dt search.dt', function() {

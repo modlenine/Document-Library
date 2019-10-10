@@ -487,6 +487,144 @@ function searchby_date_darlogs($start_date,$end_date)
 
 
 
+//ทะเบียนเอกสาร
+//Get Document type for loop
+function docType()
+{
+    $obj = new staff_fn();
+    return $obj->getci()->db->get("dc_sub_type");
+}
+
+
+function getlist_docList()
+{
+    $obj = new staff_fn();
+    return $obj->getci()->db->query("SELECT
+    dc_datamain.dc_data_doccode,
+    dc_datamain.dc_data_docname,
+    dc_datamain.dc_data_edit,
+    dc_datamain.dc_data_doccode_display,
+    dc_datamain.dc_data_id,
+    dc_datamain.dc_data_law_doccode,
+    dc_datamain.dc_data_sds_doccode,
+    dc_datamain.dc_data_sub_type,
+    dc_datamain.dc_data_date,
+    dc_datamain.dc_data_date_start,
+    dc_datamain.dc_data_store,
+    dc_datamain.dc_data_store_type,
+    dc_datamain.dc_data_user,
+    dc_datamain.dc_data_reson,
+    dc_datamain.dc_data_status,
+    dc_sub_type.dc_sub_type_name,
+    dc_reason_request.dc_reason_name,
+    dc_datamain.dc_data_darcode
+    FROM
+    dc_datamain
+    INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
+    INNER JOIN dc_reason_request ON dc_reason_request.dc_reason_code = dc_datamain.dc_data_reson order by dc_datamain.dc_data_id desc");
+}
+
+
+function getlist_docList_filter($docType)
+{
+    $obj = new staff_fn();
+    return $obj->getci()->db->query("SELECT
+    dc_datamain.dc_data_doccode,
+    dc_datamain.dc_data_docname,
+    dc_datamain.dc_data_edit,
+    dc_datamain.dc_data_doccode_display,
+    dc_datamain.dc_data_id,
+    dc_datamain.dc_data_law_doccode,
+    dc_datamain.dc_data_sds_doccode,
+    dc_datamain.dc_data_sub_type,
+    dc_datamain.dc_data_date,
+    dc_datamain.dc_data_date_start,
+    dc_datamain.dc_data_store,
+    dc_datamain.dc_data_store_type,
+    dc_datamain.dc_data_user,
+    dc_datamain.dc_data_reson,
+    dc_datamain.dc_data_status,
+    dc_sub_type.dc_sub_type_name,
+    dc_reason_request.dc_reason_name,
+    dc_datamain.dc_data_darcode
+    FROM
+    dc_datamain
+    INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
+    INNER JOIN dc_reason_request ON dc_reason_request.dc_reason_code = dc_datamain.dc_data_reson 
+    WHERE dc_datamain.dc_data_sub_type = '$docType'
+    order by dc_datamain.dc_data_id desc");
+}
+
+
+
+function getlist_docList_date($start_date,$end_date,$filter_withdate)
+{
+    $obj = new staff_fn();
+    return $obj->getci()->db->query("SELECT
+    dc_datamain.dc_data_doccode,
+    dc_datamain.dc_data_docname,
+    dc_datamain.dc_data_edit,
+    dc_datamain.dc_data_doccode_display,
+    dc_datamain.dc_data_id,
+    dc_datamain.dc_data_law_doccode,
+    dc_datamain.dc_data_sds_doccode,
+    dc_datamain.dc_data_sub_type,
+    dc_datamain.dc_data_date,
+    dc_datamain.dc_data_date_start,
+    dc_datamain.dc_data_store,
+    dc_datamain.dc_data_store_type,
+    dc_datamain.dc_data_user,
+    dc_datamain.dc_data_reson,
+    dc_datamain.dc_data_status,
+    dc_sub_type.dc_sub_type_name,
+    dc_reason_request.dc_reason_name,
+    dc_datamain.dc_data_darcode
+    FROM
+    dc_datamain
+    INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
+    INNER JOIN dc_reason_request ON dc_reason_request.dc_reason_code = dc_datamain.dc_data_reson 
+    WHERE dc_datamain.dc_data_date BETWEEN '$start_date' AND '$end_date' AND dc_datamain.dc_data_sub_type = '$filter_withdate'
+    order by dc_datamain.dc_data_id desc");
+}
+
+
+
+function getlist_docList_dates($start_date,$end_date)
+{
+    $obj = new staff_fn();
+    return $obj->getci()->db->query("SELECT
+    dc_datamain.dc_data_doccode,
+    dc_datamain.dc_data_docname,
+    dc_datamain.dc_data_edit,
+    dc_datamain.dc_data_doccode_display,
+    dc_datamain.dc_data_id,
+    dc_datamain.dc_data_law_doccode,
+    dc_datamain.dc_data_sds_doccode,
+    dc_datamain.dc_data_sub_type,
+    dc_datamain.dc_data_date,
+    dc_datamain.dc_data_date_start,
+    dc_datamain.dc_data_store,
+    dc_datamain.dc_data_store_type,
+    dc_datamain.dc_data_user,
+    dc_datamain.dc_data_reson,
+    dc_datamain.dc_data_status,
+    dc_sub_type.dc_sub_type_name,
+    dc_reason_request.dc_reason_name,
+    dc_datamain.dc_data_darcode
+    FROM
+    dc_datamain
+    INNER JOIN dc_sub_type ON dc_sub_type.dc_sub_type_code = dc_datamain.dc_data_sub_type
+    INNER JOIN dc_reason_request ON dc_reason_request.dc_reason_code = dc_datamain.dc_data_reson 
+    WHERE dc_datamain.dc_data_date BETWEEN '$start_date' AND '$end_date'
+    order by dc_datamain.dc_data_id desc");
+}
+
+
+
+
+
+
+
 
 
 

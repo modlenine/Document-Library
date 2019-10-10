@@ -306,12 +306,12 @@ class Staff extends MX_Controller
         $data['get_list'] = getlist_darlog();
         $this->load->view('result_darlog', $data);
     }
-    
+
 
     public function fetch_filter_data()
     {
         $status = '';
-        if($this->input->post('status')){
+        if ($this->input->post('status')) {
             $status = $this->input->post('status');
         }
 
@@ -331,7 +331,7 @@ class Staff extends MX_Controller
         $end_date = $this->input->post('end_date');
         $filter_withdate = $this->input->post('filter_withdate');
 
-        $data['get_list'] = searchby_date_darlog($start_date,$end_date,$filter_withdate);
+        $data['get_list'] = searchby_date_darlog($start_date, $end_date, $filter_withdate);
         $this->load->view('result_darlog', $data);
     }
 
@@ -345,11 +345,9 @@ class Staff extends MX_Controller
         $start_date = $this->input->post('start_date');
         $end_date = $this->input->post('end_date');
 
-        $data['get_list'] = searchby_date_darlogs($start_date,$end_date);
+        $data['get_list'] = searchby_date_darlogs($start_date, $end_date);
         $this->load->view('result_darlog', $data);
     }
-
-
 
 
     //Report
@@ -362,8 +360,87 @@ class Staff extends MX_Controller
         $data['get_list'] = $this->doc_get_model->get_list();
 
         get_head();
-        get_contents('darlog',$data);
+        get_contents('darlog', $data);
         get_footer();
     }
+
+
+
+    //ทะเบียนเอกสาร
+    public function documentList()
+    {
+        check_login();
+        checkuser_activate();
+        $data['get_list'] = $this->doc_get_model->get_list();
+
+        get_head();
+        get_contents('documentList', $data);
+        get_footer();
+    }
+
+
+    public function fetch_docList()
+    {
+        $data['get_list'] = getlist_docList();
+        $this->load->view('result_documentList', $data);
+    }
+
+    
+    public function filterDocList_data()
+    {
+        $docType = '';
+        if($this->input->post('docType')){
+            $docType = $this->input->post('docType');
+        }
+
+        $data['get_list'] = getlist_docList_filter($docType);
+        $this->load->view('result_documentList', $data);
+    }
+
+
+
+    public function fetch_doclist_date()
+    {
+        $start_date = '';
+        $end_date = '';
+        $filter_withdate = '';
+
+
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
+        $filter_withdate = $this->input->post('filter_withdate');
+
+        $data['get_list'] = getlist_docList_date($start_date, $end_date, $filter_withdate);
+        $this->load->view('result_documentList', $data);
+    }
+
+
+    public function fetch_doclist_dates()
+    {
+        $start_date = '';
+        $end_date = '';
+
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
+
+        $data['get_list'] = getlist_docList_dates($start_date, $end_date);
+        $this->load->view('result_documentList', $data);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 // End Class

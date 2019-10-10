@@ -12,7 +12,8 @@ error_reporting(E_ALL & ~E_NOTICE);
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
 
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+    <script src="<?= base_url("js/jquery.min.js") ?>"></script>
 
     <!-- Popper JS -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
@@ -37,68 +38,68 @@ error_reporting(E_ALL & ~E_NOTICE);
     * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
     =========================================================
     * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-    -->
-    <link href="https://fonts.googleapis.com/css?family=Sarabun&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link href="<?= base_url("main.css"); ?>" rel="stylesheet">
-    <link href="<?= base_url("css/custom.css"); ?>" rel="stylesheet">
-    <script src="<?= base_url("js/dc.js") ?>"></script>
+-->
+<link href="https://fonts.googleapis.com/css?family=Sarabun&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link href="<?= base_url("main.css"); ?>" rel="stylesheet">
+<link href="<?= base_url("css/custom.css"); ?>" rel="stylesheet">
+<script src="<?= base_url("js/dc.js") ?>"></script>
 
-    <!-- Data table -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<!-- Data table -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
+<script src="<?= base_url("js/jquery.dataTables.min.js") ?>"></script>
 
-    <script type="text/javascript" src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/1.0.7/css/responsive.dataTables.min.css" />
-    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-    <!-- Data table -->
-
-
-
-    <!-- Date pickadate Style -->
-    <link rel="stylesheet" href="https://common.olemiss.edu/_js/pickadate.js-3.5.3/lib/themes/classic.css" id="theme_base">
-    <link rel="stylesheet" href="https://common.olemiss.edu/_js/pickadate.js-3.5.3/lib/themes/classic.date.css" id="theme_date">
-    <!-- Date pickadate Style -->
+<!-- <script type="text/javascript" src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script> -->
+<script src="<?= base_url("js/dataTables.responsive.min.js") ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/1.0.7/css/responsive.dataTables.min.css" />
+<!-- <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script> -->
+<script src="<?= base_url("js/dataTables2.responsive.min.js") ?>"></script>
+<!-- Data table -->
 
 
 
-    <style>
-        * {
-            font-family: 'Sarabun', sans-serif;
-        }
+<!-- Date pickadate Style -->
+<link rel="stylesheet" href="https://common.olemiss.edu/_js/pickadate.js-3.5.3/lib/themes/classic.css" id="theme_base">
+<link rel="stylesheet" href="https://common.olemiss.edu/_js/pickadate.js-3.5.3/lib/themes/classic.date.css" id="theme_date">
+<!-- Date pickadate Style -->
 
-        body {
-            font-size: .85rem !important;
-        }
 
-        .status_color {
-            color: green;
-        }
 
-        #overlay {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            background: #333333;
-            width: 100%;
-            height: 100%;
-            opacity: .95;
-            filter: alpha(opacity=95);
-            -moz-opacity: .95;
-            z-index: 999;
-            background: #fff url(http://i.imgur.com/KUJoe.gif) 50% 50% no-repeat;
-        }
-        thead input {
-        width: 100%;
+<style>
+    * {
+        font-family: 'Sarabun', sans-serif;
     }
-    </style>
+
+    body {
+        font-size: .85rem !important;
+    }
+
+    .status_color {
+        color: green;
+    }
+
+    #overlay {   
+    position: absolute;  
+    top: 0px;   
+    left: 0px;  
+    background: #333333;   
+    width: 100%;   
+    height: 100%;   
+    opacity: .95;   
+    filter: alpha(opacity=95);   
+    -moz-opacity: .95;  
+    z-index: 999;  
+    background: #fff url(http://i.imgur.com/KUJoe.gif) 50% 50% no-repeat;
+}
+</style>
 
 
-    <?php
-    $getuser = $this->login_model->getuser();
-    $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname);
-    get_modal();
-    ?>
+<?php
+$getuser = $this->login_model->getuser();
+$getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname);
+get_modal();
+?>
 </head>
 <div id="overlay"></div>
 
@@ -557,22 +558,33 @@ error_reporting(E_ALL & ~E_NOTICE);
                             </li>
 
 
-
-                            <li id="admin_section" class="">
+                            <?php
+                            if ($this->uri->segment(2) == "darLogSheet") {
+                                $reportMain = 'mm-active';
+                                $darLogSheet = 'mm-active';
+                            }else if($this->uri->segment(2) == "documentList"){
+                                $reportMain = 'mm-active';
+                                $documentList = 'mm-active';
+                            } else {
+                                $reportMain = '';
+                                $darLogSheet = '';
+                            }
+                            ?>
+                            <li id="admin_section" class="<?=$reportMain?>">
                                 <a href="#">
-                                    <i class="metismenu-icon fas fa-folder"></i>
+                                    <i class="metismenu-icon fas fa-poll-h"></i>
                                     รายงาน
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="<?=base_url('staff/darLogSheet')?>" class="">
+                                        <a href="<?=base_url('staff/darLogSheet')?>" class="<?=$darLogSheet?>">
                                             <i class="metismenu-icon"></i>
                                             DAR LOG SHEET
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="">
+                                        <a href="<?=base_url('staff/documentList')?>" class="<?=$documentList?>">
                                             <i class="metismenu-icon"></i>
                                             ทะเบียนเอกสาร
                                         </a>

@@ -636,6 +636,7 @@ if($('#check_gl_status').val() == "Approved" || $('#check_gl_status').val() == "
 }
 
 
+
 //Check File size And File type
 /*********************Check Upload File*********ADD DAR*******************************/
 $('input[type=file][name=dc_data_file]').change(function () {/*********Add Page************/
@@ -706,9 +707,9 @@ $('input[type=file][name=gl_doc_file]').change(function () {/*********Add Page**
 
 //Check File size And File type
 
-//page load
-$("#overlay").fadeOut(1200);
+$("#overlay").fadeOut(600);
 $(".main-contain").removeClass("main-contain");
+
 
 
 
@@ -717,6 +718,8 @@ $(".main-contain").removeClass("main-contain");
 
 });
 // Ready function
+
+
 
 
 

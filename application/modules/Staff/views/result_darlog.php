@@ -1,4 +1,4 @@
-<table id="dar_log_sheet" class="display" style="width:100%">
+<table id="dar_log_sheet" class="table table-striped table-bordered dt-responsive" style="width:100%">
                     <thead>
                         <tr>
                             <th style="width:50px;">No.</th>
