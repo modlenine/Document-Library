@@ -47,7 +47,7 @@
 
                             <tr>
                                 <td><?= $i ?></td>
-                                <td><?= $rslist['dc_data_doccode_display']; ?></td>
+                                <td><?= $rslist['dc_data_doccode']; ?></td>
                                 <td><?= $rslist['dc_sub_type_name']; ?></td>
                                 <td><?= $rslist['dc_data_docname']; ?></td>
                                 <td><?= $rslist['dc_data_edit']; ?></td>
