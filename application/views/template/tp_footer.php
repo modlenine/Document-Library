@@ -12,8 +12,8 @@
 <script src="<?= base_url("js/picker.js") ?>"></script>
 <script src="<?= base_url("js/picker.date.js") ?>"></script>
 <script src="<?= base_url("js/picker.time.js") ?>"></script>
-<script src="<?= base_url("js/picker.legacy.js") ?>"></script>
-<script src="<?= base_url("js/picker.main.js") ?>"></script>
+<script src="<?= base_url("js/legacy.js") ?>"></script>
+<script src="<?= base_url("js/main.js") ?>"></script>
 <script src="<?= base_url("js/rainbow.js") ?>"></script>
 
 

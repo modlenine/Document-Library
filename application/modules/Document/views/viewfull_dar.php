@@ -246,7 +246,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
                                                 <label for=""><?= label("doc_id", $this); ?></label>
                                             </div>
                                             <div class="col-md-8">
-                                                <input type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $getF->dc_data_doccode_display; ?>" disabled>
+                                                <input type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $getF->dc_data_doccode; ?>" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -296,7 +296,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
                                                 <label for=""><?= label("time_store", $this); ?></label>
                                             </div>
                                             <div class="col-md-8 form-inline">
-                                                <input type="number" name="dc_data_store" id="dc_data_store" value="<?= $getF->dc_data_store; ?>" class="form-control" disabled>
+                                                <input type="text" name="dc_data_store" id="dc_data_store" value="<?= $getF->dc_data_store; ?>" class="form-control" disabled>
                                                 <select name="dc_data_store_type" id="dc_data_store_type" class="form-control" disabled>
                                                     <option value="<?= $getF->dc_data_store_type; ?>"><?= $getF->dc_data_store_type; ?></option>
                                                     <option value="เดือน">เดือน</option>
@@ -636,7 +636,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
             <div class="form-inline mb-2">
                 <div class="form-group col-md-4">
 
-                    <input type="file" name="document_master" id="document_master" class="form-control m-2" accept=".pdf">
+                    <input type="file" name="document_master_cancel" id="document_master_cancel" class="form-control m-2" accept=".pdf">
                     <label for="">อัพโหลดไฟล์สำหรับ จัดเก็บ</label>
 
                 </div>

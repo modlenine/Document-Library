@@ -212,7 +212,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                             <label for=""><?= label("doc_id", $this); ?></label>
                                         </div>
                                         <div class="col-md-8">
-                                        <input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $get_fulldatas->dc_data_doccode_display; ?>">
+                                        <input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $get_fulldatas->dc_data_doccode; ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -227,6 +227,11 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                     $count_data_edit = $result_edit->dc_data_edit;
                                     $count_data_edit++;
                                     $checkNumRow++;
+                                    if($count_data_edit < 10){
+                                        $dataedits = '0'.$count_data_edit;
+                                    }else{
+                                        $dataedits = $count_data_edit;
+                                    }
                                     ?>
                                 <!-- Doc Edit -->
                                 <div class="row mb-2">
@@ -236,7 +241,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                             <label for=""><?= label("doc_num_edit", $this); ?></label>
                                         </div>
                                         <div class="col-md-8">
-                                        <input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $count_data_edit; ?>" class="form-control" readonly>
+                                        <input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $dataedits; ?>" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>

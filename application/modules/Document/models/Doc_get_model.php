@@ -361,12 +361,6 @@ public function get_last_dar($doccode)
                 echo "window.history.back(-1)";
                 echo "</script>";
                 exit();
-            } else if ($this->input->post('dc_data_store_type') == "") {
-                echo "<script>";
-                echo "alert('กรุณาระบุระยะเวลาจัดเก็บด้วยค่ะ');";
-                echo "window.history.back(-1)";
-                echo "</script>";
-                exit();
             } else if ($this->input->post('dc_data_reson') == "") {
                 echo "<script>";
                 echo "alert('กรุณาระบุเหตุผลด้วยค่ะ');";

@@ -431,10 +431,16 @@ get_modal();
                                 $add_doc = 'mm-active';
                                 $add_gl = 'mm-active';
                                 $add_iso = '';
+                            } else if($this->uri->segment(2) == "add_dar_manual"){
+                                $add_doc = 'mm-active';
+                                $add_iso = '';
+                                $add_iso_manual = 'mm-active';
+                                $add_gl = '';
                             } else {
                                 $add_doc = '';
                                 $add_gl = '';
                                 $add_iso = '';
+                                $add_iso_manual = '';
                             }
                             ?>
                             <li class="<?= $add_doc ?>">
@@ -448,6 +454,12 @@ get_modal();
                                         <a class="navleft <?= $add_iso ?>" href="<?= base_url("document/add_dar"); ?>">
                                             <i class="metismenu-icon">
                                             </i>เพิ่มคำร้องเอกสาร ISO
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="navleft <?= $add_iso_manual ?>" href="<?= base_url("document/add_dar_manual"); ?>">
+                                            <i class="metismenu-icon">
+                                            </i>เพิ่มคำร้องเอกสาร ISO Manual
                                         </a>
                                     </li>
                                     <li>

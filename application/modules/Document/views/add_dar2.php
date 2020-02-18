@@ -245,7 +245,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
                                                 <label for=""><?= label("doc_id", $this); ?></label>
                                             </div>
                                             <div class="col-md-8">
-                                                <input type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $getF->dc_data_doccode_display; ?>" disabled>
+                                                <input type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $getF->dc_data_doccode; ?>" disabled>
                                                 
                                             </div>
                                         </div>
@@ -296,13 +296,14 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
                                                 <label for=""><?= label("time_store", $this); ?></label>
                                             </div>
                                             <div class="col-md-8 form-inline">
-                                                <input type="number" name="dc_data_store" id="dc_data_store" value="<?= $getF->dc_data_store; ?>" class="form-control" disabled>
+                                                <input type="text" name="dc_data_store" id="dc_data_store" value="<?= $getF->dc_data_store; ?>" class="form-control" disabled>
                                                 <select name="dc_data_store_type" id="dc_data_store_type" class="form-control" disabled>
                                                     <option value="<?= $getF->dc_data_store_type; ?>"><?= $getF->dc_data_store_type; ?></option>
                                                     <option value="เดือน">เดือน</option>
                                                     <option value="ปี">ปี</option>
                                                 </select>
                                             </div>
+
                                         </div>
                                     </div>
                                     <!-- Doc Store -->

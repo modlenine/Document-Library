@@ -28,7 +28,7 @@
                 <h4 style="text-align:center;"><?= label("dar_no", $this); ?></h4>
                 <hr>
 
-                <form action="save_sec1" method="POST" name="form1" id="form1" enctype="multipart/form-data" >
+                <form action="save_sec1" method="POST" name="form1" id="form1" enctype="multipart/form-data">
                     <!-- Form Section 1 -->
 
                     <div class="form-row">
@@ -102,10 +102,10 @@
                                     </div>
                                 </div>
                             </div>
-                                <!-- Date request -->
+                            <!-- Date request -->
 
-                                <!-- User Request -->
-                                <div class="row mb-2">
+                            <!-- User Request -->
+                            <div class="row mb-2">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -147,10 +147,10 @@
                                     </div>
                                 </div>
                             </div>
-                                <!-- Department -->
+                            <!-- Department -->
 
-                                <!-- Document name -->
-                                <div class="row mb-2">
+                            <!-- Document name -->
+                            <div class="row mb-2">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -179,17 +179,17 @@
                                     </div>
                                 </div>
                             </div>
-                                <!-- Doccode -->
+                            <!-- Doccode -->
 
-                                <!-- Doc Edit -->
-                                <div class="row mb-2">
+                            <!-- Doc Edit -->
+                            <div class="row mb-2">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("doc_num_edit", $this); ?></label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input readonly type="number" name="dc_data_edit" id="dc_data_edit" value="" class="form-control">
+                                            <input readonly type="number" name="dc_data_edit" id="dc_data_edit" step="0.01" value="00" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -213,19 +213,23 @@
                                 </div>
                                 <!-- Date Start -->
 
-                                
+
 
                             </div>
 
                             <div class="row">
-                                                <!-- Doc Store -->
+                                <!-- Doc Store -->
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("time_store", $this); ?></label>
                                         </div>
                                         <div class="col-md-8 form-inline">
-                                            <input type="number" name="dc_data_store" id="dc_data_store" value="" class="form-control">
+                                            <select name="dc_data_store" id="dc_data_store" class="form-control">
+                                                <?php foreach (get_dcdatastore() as $rsGetDcStore) {
+                                                    echo "<option value='" . $rsGetDcStore['dc_datastore_name'] . "'>" . $rsGetDcStore['dc_datastore_name'] . "</option>";
+                                                } ?>
+                                            </select>
                                             <select name="dc_data_store_type" id="dc_data_store_type" class="form-control">
                                                 <option value="ปี">ปี</option>
                                                 <option value="เดือน">เดือน</option>
@@ -283,13 +287,13 @@
                         <?php }; ?>
 
                     </div>
-                    
+
                     <!-- Input text for other related dept-->
                     <div style="text-align:center;color:red;" class="mt-3 p-2 border"><?= label('memo2', $this); ?></div>
 
                     <div class="form-row">
                         <div class="form-group col-md-6 mt-2">
-                            <input type="text" name="li_hashtag[]" id="li_hashtag" class="form-control" placeholder="กรุณาระบุ Hashtag เช่น #คู่มือการใช้งาน" required maxlength="40" onblur="check();"/>
+                            <input type="text" name="li_hashtag[]" id="li_hashtag" class="form-control" placeholder="กรุณาระบุ Hashtag เช่น #คู่มือการใช้งาน" required maxlength="40" onblur="check();" />
                             <label id="characterLeft"></label><br>
                             <button type="button" name="dar_addmore" id="dar_addmore" class="btn btn-primary mt-2 dar_addmore"><i class="fas fa-hashtag"></i>&nbsp;เพิ่ม Hashtag</button>
                         </div>
@@ -297,18 +301,18 @@
 
                     <div class="row mt-2">
                         <div class="col-md-6">
-                        <button type="submit" name="saveSec1_1" id="saveSec1_1" class="btn btn-primary">บันทึกข้อมูล</button>
+                            <button type="submit" name="saveSec1_1" id="saveSec1_1" class="btn btn-primary">บันทึกข้อมูล</button>
                         </div>
-                        
+
                     </div>
                     <hr>
-                    </form><!-- Form Section 1 -->
+                </form><!-- Form Section 1 -->
 
 
 
 
 
-                    <!-- <div id="savesec1_2" style="display:none">
+                <!-- <div id="savesec1_2" style="display:none">
                     <div class="form-row mt-2">
                     <form action="" method="post">
                         <div class="form-group">

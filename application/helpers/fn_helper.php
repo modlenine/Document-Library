@@ -744,6 +744,61 @@ function get_email_user($query_where)
 
 
 
+// Get dc datastore
+function get_dcdatastore()
+{
+    $obj=new myfn();
+    $result = $obj->get_ci()->db->query("SELECT * FROM dc_datastore_cat ORDER BY dc_datastore_id ASC");
+    return $result->result_array();
+}
+
+
+
+//Check doccode
+function checkDoccode($checkDoccode)
+{
+    $obj = new myfn();
+    return $obj->get_ci()->db->query("SELECT dc_data_doccode_display FROM dc_datamain WHERE dc_data_doccode_display = '$checkDoccode' ");
+ 
+}
+
+
+
+function getgldataforemail($gldoccode)
+{
+    $obj = new myfn();
+    return $obj->get_ci()->db->query("SELECT 
+    gl_doc_id,
+    gl_doc_date_request,
+    gl_doc_username,
+    gl_doc_ecode,
+    gl_doc_deptcode,
+    gl_doc_deptname,
+    gl_doc_name,
+    gl_doc_code,
+    gl_doc_folder_number,
+    gl_doc_detail,
+    gl_doc_file,
+    gl_doc_file_location,
+    gl_doc_approve_status,
+    gl_doc_reson_detail,
+    gl_doc_approve_by,
+    gl_doc_status,
+	gl_dept_name
+    FROM gl_document
+	INNER JOIN gl_department on gl_department.gl_dept_code = gl_document.gl_doc_deptcode
+    WHERE gl_doc_code = '$gldoccode'
+    ");
+}
+
+
+function getDataFile($doccode)
+{
+    $obj = new myfn();
+    $query = $obj->get_ci()->db->query("SELECT * from library_main where lib_main_doccode = '$doccode'
+order by lib_main_id desc limit 1");
+    return $query->row();
+}
 
 
 

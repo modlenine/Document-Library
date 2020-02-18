@@ -161,6 +161,19 @@ $(function () {
         ]
     });
 
+
+
+    $('.datepicker_manual').pickadate({
+        monthsFull: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฏาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+        weekdaysShort: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+        today: 'วันนี้',
+        clear: 'ล้าง',
+        formatSubmit: 'yyyy/mm/dd',
+        hiddenName: true,
+        editable: true
+    });
+
+
     $('.datepicker_search').pickadate({
         monthsFull: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฏาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
         weekdaysShort: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
@@ -671,6 +684,23 @@ $('input[type=file][name=document_master]').change(function () {/*********Add Pa
 
 
 
+/*********************Check Upload File*********MASTER FILE*******************************/
+$('input[type=file][name=document_master_cancel]').change(function () {/*********Add Page************/
+    var ext = $('#document_master_cancel').val().split('.').pop().toLowerCase();
+//Allowed file types
+    if ($.inArray(ext, ['pdf']) == -1) {
+        alert('The file type is invalid!');
+        $('#document_master_cancel').val("");
+    }
+    if (this.files[0].size > 10485760) {
+        alert("Maximum File size is 10MB !!");
+        this.value = "";
+        exit;
+    }
+});
+
+
+
 /*********************Check Upload File*********COPY FILE*******************************/
 $('input[type=file][name=document_copy]').change(function () {/*********Add Page************/
     var ext = $('#document_copy').val().split('.').pop().toLowerCase();
@@ -709,6 +739,27 @@ $('input[type=file][name=gl_doc_file]').change(function () {/*********Add Page**
 
 $("#overlay").fadeOut(600);
 $(".main-contain").removeClass("main-contain");
+
+
+
+
+
+
+// Updata 29-11-2019
+$('#dc_data_store').on("change" , function (){
+    if($('#dc_data_store').val() == "ตลอดอายุการใช้งาน"){
+        $('#dc_data_store_type').prop("disabled" , true);
+    }else{
+        $('#dc_data_store_type').prop("disabled" , false);
+    }
+});
+
+
+
+
+
+
+
 
 
 

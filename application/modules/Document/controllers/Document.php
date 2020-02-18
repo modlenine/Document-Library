@@ -579,6 +579,51 @@ class Document extends MX_Controller
         $this->doc_add_model->save_gl_doc2($gl_doc_code);
     }
 
+    public function add_dar_manual()
+    {
+        check_login();
+        checkuser_activate();
+
+        $data['get_doc_type'] = $this->doc_get_model->get_doc_type();
+        $data['get_doc_sub_type'] = $this->doc_get_model->get_doc_sub_type();
+        $data['get_reason'] = $this->doc_get_model->get_reason();
+        $data['get_dept'] = $this->doc_get_model->get_dept();
+        $data['get_related_dept'] = $this->doc_get_model->get_related_dept();
+        $data['get_law'] = $this->doc_get_model->get_law();
+        $data['get_sds'] = $this->doc_get_model->get_sds();
+        $data['username'] = $this->doc_get_model->convertName($_SESSION['Fname'], $_SESSION['Lname']);
+
+
+        get_head();
+        get_contents('add_dar_manual' , $data);
+        get_footer();
+    }
+
+
+
+    public function save_sec1_manual()
+    {
+        check_login();
+        checkuser_activate();
+        $this->doc_get_model->checkNull_add();
+        $this->doc_get_model->checkHashtagFormat();
+        $this->doc_add_model->save_sec1_manual();
+    }
+
+
+    public function checkDoccode()
+    {
+        $query = '';
+        $query = $this->input->post('query');
+       $result = $this->db->query("SELECT dc_data_doccode_display FROM dc_datamain WHERE dc_data_doccode_display = '$query' ");
+       if($result->num_rows() >= 1){
+            $count = 1;
+       }else{
+           $count = 0;
+       }
+       echo $count;
+    }
+
 
 
 

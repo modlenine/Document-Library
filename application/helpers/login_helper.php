@@ -54,6 +54,22 @@ function check_permission_pinIso($related_code,$doccode)
     $obj->get_ci()->login_model->check_pin($related_code,$doccode);
 }
 
+function loginlog($username)
+{
+    $obj = new mylogin();
+    // insert login log
+    $logindata = array(
+        "dcuser_loginusername" => $username,
+        "dcuser_logindatetime" => date("Y-m-d H:i:s"),
+        "dcuser_loginstatus" => "login",
+        "dcuser_browser" => $obj->get_ci()->agent->browser(),
+        "dcuser_browser_version" => $obj->get_ci()->agent->version(),
+        "dcuser_ip" => $obj->get_ci()->input->ip_address(),
+        "dcuser_os" => $obj->get_ci()->agent->platform()
+      );
+      $obj->get_ci()->db->insert("dc_userloginlog" , $logindata);
+}
+
 
 
 

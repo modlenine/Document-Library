@@ -20,10 +20,11 @@ class Login_model extends CI_Model
 
   public function check_login()
   {
+    $this->load->library('user_agent');
     // เข้ารหัส input
 
     $user = mysqli_real_escape_string($this->escape_string(), $_POST['username']);
-    $pass = mysqli_real_escape_string($this->escape_string(), ($_POST['password']));
+    $pass = mysqli_real_escape_string($this->escape_string(), md5($_POST['password']));
     // If System go on Please add md5 to element name password 'md5'
 
 
@@ -53,6 +54,19 @@ class Login_model extends CI_Model
         $_SESSION['memberemail'] = $r['memberemail'];
 
 
+
+        // insert login log
+        // $logindata = array(
+        //   "dcuser_loginusername" => $r['username'],
+        //   "dcuser_logindatetime" => date("Y-m-d H:i:s"),
+        //   "dcuser_loginstatus" => "login",
+        //   "dcuser_browser" => $this->agent->browser(),
+        //   "dcuser_browser_version" => $this->agent->version(),
+        //   "dcuser_ip" => $this->input->ip_address(),
+        //   "dcuser_os" => $this->agent->platform()
+        // );
+        // $this->db->insert("dc_userloginlog" , $logindata);
+        loginlog($r['username']);
 
 
         $check = check_new_user($r['username']);
