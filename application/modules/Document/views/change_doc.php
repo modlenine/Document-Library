@@ -212,7 +212,16 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                             <label for=""><?= label("doc_id", $this); ?></label>
                                         </div>
                                         <div class="col-md-8">
-                                        <input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $get_fulldatas->dc_data_doccode; ?>">
+                                        <?php
+                                            if ($get_fulldatas->dc_data_sub_type == "l") {
+                                                $doccode = $get_fulldatas->dc_data_doccode_display;
+                                            } else {
+                                                $doccode = $get_fulldatas->dc_data_doccode;
+                                            }
+
+                                            ?>
+
+                                        <input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $doccode; ?>">
                                         </div>
                                     </div>
                                 </div>

@@ -54,6 +54,13 @@ $getGroupCheck = $getdatarow->dc_gp_permis_name;
                                 $cardcolor = '';
                             }
 
+
+                            if ($get_file2s['dc_data_sub_type'] == "l") {
+                                $doccode = $get_file2s['dc_data_doccode_display'];
+                            } else {
+                                $doccode = $get_file2s['dc_data_doccode'];
+                            } 
+
                             ?>
                             <div class="card border-danger mb-3">
                                 <div class="card-header bg-info text-white" style="<?= $cardcolor ?>"><i class="fas fa-file-signature" style="font-size:18px;">&nbsp;&nbsp;</i>Document Detail&nbsp;:&nbsp;<?= $get_file2s['dc_data_doccode']; ?></div>
@@ -75,7 +82,7 @@ $getGroupCheck = $getdatarow->dc_gp_permis_name;
                                             <label for="" class=""><b>เลขที่ใบ DAR :</b></label>&nbsp;<?= $get_file2s['dc_data_darcode']; ?>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for=""><b>เลขที่เอกสาร : </b></label>&nbsp;<?= $get_file2s['dc_data_doccode']; ?>
+                                            <label for=""><b>เลขที่เอกสาร : </b></label>&nbsp;<?= $doccode; ?>
                                         </div>
                                     </div>
 

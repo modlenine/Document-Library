@@ -246,7 +246,14 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
                                                 <label for=""><?= label("doc_id", $this); ?></label>
                                             </div>
                                             <div class="col-md-8">
-                                                <input type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $getF->dc_data_doccode; ?>" disabled>
+                                            <?php
+                                            if ($getF->dc_data_sub_type == "l") {
+                                                $doccode = $getF->dc_data_doccode_display;
+                                            } else {
+                                                $doccode = $getF->dc_data_doccode;
+                                            }
+                                            ?>
+                                                <input type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $doccode; ?>" disabled>
                                             </div>
                                         </div>
                                     </div>
