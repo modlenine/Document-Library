@@ -92,7 +92,7 @@ function cut_doccode1($doccode)
 
 function cut_doccode2($doccode)
 {
-    return substr($doccode,0,9);
+    return substr($doccode,0,13);
 }
 
 function cut_doccode3($doccode)

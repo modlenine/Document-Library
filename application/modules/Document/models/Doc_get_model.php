@@ -849,7 +849,7 @@ public function get_last_dar($doccode)
                     $lawfull_code = $rs_short_dept . "-L-" . $lawcode . "-001";
                     return $lawfull_code;
                 } else {
-                    $law_query_get = $this->db->query("SELECT dc_data_doccode , SUBSTR(dc_data_doccode,11) AS cut_dc_data_sub_type_law FROM dc_datamain WHERE dc_data_doccode LIKE '%$rs_short_dept-L-$lawcode%' ORDER BY dc_data_doccode DESC LIMIT 1");
+                    $law_query_get = $this->db->query("SELECT dc_data_doccode , SUBSTR(dc_data_doccode_display,11) AS cut_dc_data_sub_type_law FROM dc_datamain WHERE dc_data_doccode LIKE '%$rs_short_dept-L-$lawcode%' ORDER BY dc_data_doccode DESC LIMIT 1");
                     foreach ($law_query_get->result_array() as $rslaw) {
                         $rslaws = $rslaw['cut_dc_data_sub_type_law'];
                     }
