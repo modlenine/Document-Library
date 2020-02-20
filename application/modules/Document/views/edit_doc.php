@@ -26,14 +26,17 @@ $get_fulldatas = $getfulldata_edit->row();
 
             <div class="container-fulid border p-4 bg-white">
                 <!-- Main Section -->
-                <h5 style="font-size:12px;text-align:right;"><?= label('form_code', $this); ?></h5>
+                <h5 style="font-size:12px;text-align:right;"><?= selectFormcode($get_fulldatas->dc_data_darcode) ?></h5>
                 <h2 style="text-align:center;"><?= label("dar_title_th", $this); ?></h2>
                 <h3 style="text-align:center;"><?= label("dar_title_en", $this); ?></h3>
-                <h4 style="text-align:center;"><?= label("dar_no", $this).$get_fulldatas->dc_data_darcode?></h4>
+                <h4 style="text-align:center;"><?= label("dar_no", $this) . $get_fulldatas->dc_data_darcode ?></h4>
                 <hr>
 
                 <form action="<?= base_url('document/save_sec1_edit/') . $get_fulldatas->dc_data_doccode; ?>" method="POST" name="form1" id="form1" enctype="multipart/form-data">
                     <!-- Form Section 1 -->
+                    <!-- Get Form Code -->
+                    <input hidden type="text" name="formcode" id="formcode" value="<?= getFormcode(); ?>">
+
                     <?php
                     $get_doc_type_use = $this->db->query("SELECT
 dc_datamain.dc_data_doccode,
@@ -60,7 +63,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                             ?>
                             <!-- Doc type loop -->
                             <div class="col-lg-2 col-md-3 col-sm-3 col-4">
-                                <label class="checkbox-inline"><input <?= $checked; ?> type="checkbox" name="dc_data_type[]" id="dc_data_type" value="<?php echo $rs_type['dc_type_code']; ?>" onclick="return false"/>&nbsp;<?php echo $rs_type['dc_type_name']; ?></label>
+                                <label class="checkbox-inline"><input <?= $checked; ?> type="checkbox" name="dc_data_type[]" id="dc_data_type" value="<?php echo $rs_type['dc_type_code']; ?>" onclick="return false" />&nbsp;<?php echo $rs_type['dc_type_name']; ?></label>
                             </div>
                             <!-- Doc type loop -->
                         <?php }; ?>
@@ -96,7 +99,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
                             <!-- Get law -->
                             <select name="get_law" id="get_law" class="form-control">
-                                <option value="<?=$get_fulldatas->dc_data_sub_type_law;?>"><?=$get_fulldatas->dc_data_sub_type_law;?></option>
+                                <option value="<?= $get_fulldatas->dc_data_sub_type_law; ?>"><?= $get_fulldatas->dc_data_sub_type_law; ?></option>
                                 <?php
                                 foreach ($get_law->result_array() as $gl) {
                                     echo "<option value='" . $gl['dc_law_code'] . "'>" . $gl['dc_law_name'] . "</option>";
@@ -109,7 +112,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
                             <!-- Get sds -->
                             <select name="get_sds" id="get_sds" class="form-control">
-                                <option value="<?=$get_fulldatas->dc_data_sub_type_sds;?>"><?=$get_fulldatas->dc_data_sub_type_sds;?></option>
+                                <option value="<?= $get_fulldatas->dc_data_sub_type_sds; ?>"><?= $get_fulldatas->dc_data_sub_type_sds; ?></option>
                                 <?php
                                 foreach ($get_sds->result_array() as $gsds) {
                                     echo "<option value='" . $gsds['dc_sds_code'] . "'>" . $gsds['dc_sds_name'] . "</option>";
@@ -128,7 +131,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
 
 
-                        <div class="row mb-2">
+                            <div class="row mb-2">
                                 <!-- Date request -->
                                 <div class="col-md-12">
                                     <div class="row">
@@ -136,23 +139,23 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                             <label class="text-center"><?= label("date_request", $this); ?>&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>
                                         </div>
                                         <div class="col-md-8">
-                                        <input class="input-medium form-control datepicker" type="date" data-value="<?=date('Y/m/d')?>" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date">
+                                            <input class="input-medium form-control datepicker" type="date" data-value="<?= date('Y/m/d') ?>" placeholder="วว/ดด/ปปปป" name="dc_data_date" id="dc_data_date">
                                         </div>
                                     </div>
                                 </div>
-                        </div>
-                                <!-- Date request -->
+                            </div>
+                            <!-- Date request -->
 
-                                <!-- User Request -->
-                                <div class="row mb-2">
+                            <!-- User Request -->
+                            <div class="row mb-2">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("user_request", $this); ?></label>
                                         </div>
                                         <div class="col-md-8">
-                                        <input readonly type="text" name="dc_data_user" id="dc_data_user" value="<?= $username; ?>" class="form-control">
-                                        
+                                            <input readonly type="text" name="dc_data_user" id="dc_data_user" value="<?= $username; ?>" class="form-control">
+
                                         </div>
                                     </div>
                                 </div>
@@ -171,31 +174,31 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                             <label for=""><?= label("department", $this); ?></label>
                                         </div>
                                         <div class="col-md-8">
-                                        <select readonly name="dc_data_dept" id="dc_data_dept" class="form-control">
-                                        <option value="<?= $get_fulldatas->dc_dept_code; ?>"><?= $get_fulldatas->dc_dept_main_name; ?></option>
+                                            <select readonly name="dc_data_dept" id="dc_data_dept" class="form-control">
+                                                <option value="<?= $get_fulldatas->dc_dept_code; ?>"><?= $get_fulldatas->dc_dept_main_name; ?></option>
 
-                                        <!-- <?php
-                                        foreach ($get_dept->result_array() as $rs_gd) {
-                                            echo "<option value='" . $rs_gd['dc_dept_code'] . "'>" . $rs_gd['dc_dept_main_name'] . "</option>";
-                                        }
-                                        ?> -->
+                                                <!-- <?php
+                                                        foreach ($get_dept->result_array() as $rs_gd) {
+                                                            echo "<option value='" . $rs_gd['dc_dept_code'] . "'>" . $rs_gd['dc_dept_main_name'] . "</option>";
+                                                        }
+                                                        ?> -->
 
-                                    </select>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                                <!-- Department -->
+                            <!-- Department -->
 
-                                <!-- Document name -->
-                                <div class="row mb-2">
+                            <!-- Document name -->
+                            <div class="row mb-2">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("doc_name", $this); ?></label>
                                         </div>
                                         <div class="col-md-8">
-                                        <input readonly type="text" name="dc_data_docname" id="dc_data_docname" value="<?= $get_fulldatas->dc_data_docname; ?>" class="form-control">
+                                            <input readonly type="text" name="dc_data_docname" id="dc_data_docname" value="<?= $get_fulldatas->dc_data_docname; ?>" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -213,7 +216,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                             <label for=""><?= label("doc_id", $this); ?></label>
                                         </div>
                                         <div class="col-md-8">
-                                        <?php
+                                            <?php
                                             if ($get_fulldatas->dc_data_sub_type == "l") {
                                                 $doccode = $get_fulldatas->dc_data_doccode_display;
                                             } else {
@@ -223,36 +226,36 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                             ?>
 
 
-                                        <input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $doccode; ?>">
+                                            <input readonly type="text" name="dc_data_doccode" id="dc_data_doccode" class="form-control" value="<?= $doccode; ?>">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                                <!-- Doccode -->
+                            <!-- Doccode -->
 
 
-                                <?php
-                                    $checkEdit = $this->db->query("SELECT dc_data_edit FROM dc_datamain WHERE dc_data_doccode='$get_fulldatas->dc_data_doccode' AND dc_data_edit > '0' ORDER BY dc_data_id DESC ");
-                                    $checkNumRow = $checkEdit->num_rows();
-                                    $result_edit= $checkEdit->row();
-                                    $count_data_edit = $result_edit->dc_data_edit;
-                                    $count_data_edit++;
-                                    $checkNumRow++;
-                                    if($count_data_edit < 10){
-                                        $dataedits = '0'.$count_data_edit;
-                                    }else{
-                                        $dataedits = $count_data_edit;
-                                    }
-                                    ?>
-                                <!-- Doc Edit -->
-                                <div class="row mb-2">
+                            <?php
+                            $checkEdit = $this->db->query("SELECT dc_data_edit FROM dc_datamain WHERE dc_data_doccode='$get_fulldatas->dc_data_doccode' AND dc_data_edit > '0' ORDER BY dc_data_id DESC ");
+                            $checkNumRow = $checkEdit->num_rows();
+                            $result_edit = $checkEdit->row();
+                            $count_data_edit = $result_edit->dc_data_edit;
+                            $count_data_edit++;
+                            $checkNumRow++;
+                            if ($count_data_edit < 10) {
+                                $dataedits = '0' . $count_data_edit;
+                            } else {
+                                $dataedits = $count_data_edit;
+                            }
+                            ?>
+                            <!-- Doc Edit -->
+                            <div class="row mb-2">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("doc_num_edit", $this); ?></label>
                                         </div>
                                         <div class="col-md-8">
-                                        <input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $dataedits; ?>" class="form-control" readonly>
+                                            <input type="number" name="dc_data_edit" id="dc_data_edit" value="<?= $dataedits; ?>" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -270,7 +273,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                                             <label for=""><?= label("date_start_use", $this); ?>&nbsp;&nbsp;</label><i class="far fa-calendar-alt" style="font-size:18px;"></i>
                                         </div>
                                         <div class="col-md-8">
-                                        <input class="input-medium form-control datepicker" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date_start" id="dc_data_date_start">
+                                            <input class="input-medium form-control datepicker" type="date" placeholder="วว/ดด/ปปปป" name="dc_data_date_start" id="dc_data_date_start">
                                         </div>
                                     </div>
                                 </div>
@@ -281,19 +284,19 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
 
                             <div class="row">
-                                                <!-- Doc Store -->
+                                <!-- Doc Store -->
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for=""><?= label("time_store", $this); ?></label>
                                         </div>
                                         <div class="col-md-8 form-inline">
-                                        <input type="number" name="dc_data_store" id="dc_data_store" value="<?= $get_fulldatas->dc_data_store; ?>" class="form-control">
-                                        <select name="dc_data_store_type" id="dc_data_store_type" class="form-control">
-                                            <option value="<?= $get_fulldatas->dc_data_store_type; ?>"><?= $get_fulldatas->dc_data_store_type; ?></option>
-                                            <option value="เดือน">เดือน</option>
-                                            <option value="ปี">ปี</option>
-                                        </select>
+                                            <input type="number" name="dc_data_store" id="dc_data_store" value="<?= $get_fulldatas->dc_data_store; ?>" class="form-control">
+                                            <select name="dc_data_store_type" id="dc_data_store_type" class="form-control">
+                                                <option value="<?= $get_fulldatas->dc_data_store_type; ?>"><?= $get_fulldatas->dc_data_store_type; ?></option>
+                                                <option value="เดือน">เดือน</option>
+                                                <option value="ปี">ปี</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -321,7 +324,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                             }
                             ?>
                             <div class="col-lg-3 col-md-3 col-sm-3 col-6">
-                                <label class="checkbox-inline"><input <?= $checked ?> type="radio" name="dc_data_reson" id="dc_data_reson" value="<?php echo $rs_reason['dc_reason_code']; ?>" onclick="return false"/>&nbsp;<?php echo $rs_reason['dc_reason_name']; ?></label>
+                                <label class="checkbox-inline"><input <?= $checked ?> type="radio" name="dc_data_reson" id="dc_data_reson" value="<?php echo $rs_reason['dc_reason_code']; ?>" onclick="return false" />&nbsp;<?php echo $rs_reason['dc_reason_name']; ?></label>
                             </div>
                             <!-- Reason request loop -->
                         <?php }; ?>
@@ -365,7 +368,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                             ?>
 
                             <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                                <label class="checkbox-inline"><input <?= $checked ?> class="related_dept" type="checkbox" name="related_dept_code[]" id="related_dept_code" value="<?php echo $rs_related_dept['related_code']; ?>" onclick="return false"/>&nbsp;<?php echo $rs_related_dept['related_dept_name']; ?></label>
+                                <label class="checkbox-inline"><input <?= $checked ?> class="related_dept" type="checkbox" name="related_dept_code[]" id="related_dept_code" value="<?php echo $rs_related_dept['related_code']; ?>" onclick="return false" />&nbsp;<?php echo $rs_related_dept['related_dept_name']; ?></label>
                             </div>
                             <!-- Related dept loop -->
                         <?php }; ?>
@@ -380,14 +383,14 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
                     <div class="form-row mt-2">
                         <div class="form-group">
                             <label for=""><?= label("uploadfile", $this); ?></label>
-                            <input type="file" name="dc_data_file" id="dc_data_file" class="form-control" accept=".pdf" >
+                            <input type="file" name="dc_data_file" id="dc_data_file" class="form-control" accept=".pdf">
                         </div>
                     </div>
 
                     <div class="col-md-3 mt-2">
                         <input type="submit" name="btnUser_submit" id="btnUser_submit" value="<?= label('btnUser_submit', $this); ?>" class="btn btn-primary btn-block">
                     </div>
-                    <input hidden type="text" name="darcode_h" id="darcode_h" value="<?=$get_fulldatas->dc_data_darcode?>">
+                    <input hidden type="text" name="darcode_h" id="darcode_h" value="<?= $get_fulldatas->dc_data_darcode ?>">
                     <!-- Check darcode -->
                 </form><!-- Form Section 1 -->
                 <hr>
@@ -396,7 +399,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
 
 
-    </div><!-- Main Section -->
+            </div><!-- Main Section -->
 
 
 
@@ -404,7 +407,7 @@ WHERE dc_datamain.dc_data_doccode = '$get_fulldatas->dc_data_doccode' ");
 
 
 
-    </div><!-- Content Zone -->
+        </div><!-- Content Zone -->
     </div><!-- Content Zone -->
 
 </body>

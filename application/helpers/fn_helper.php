@@ -801,6 +801,21 @@ order by lib_main_id desc limit 1");
 }
 
 
+function getFormcode()
+{
+    $obj =new myfn();
+    $query = $obj->get_ci()->db->query("SELECT * FROM dc_formcode ORDER BY dc_formcode_order DESC LIMIT 1");
+    return $query->row()->dc_formcode_name;
+}
+
+function selectFormcode($darcode)
+{
+    $obj = new myfn();
+    $query = $obj->get_ci()->db->query("SELECT dc_data_formcode FROM dc_datamain WHERE dc_data_darcode = '$darcode' ");
+    return $query->row()->dc_data_formcode;
+}
+
+
 
 
 

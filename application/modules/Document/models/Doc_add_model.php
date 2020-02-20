@@ -164,7 +164,8 @@ class Doc_add_model extends CI_Model
                 "dc_data_store_type" => $this->input->post("dc_data_store_type"),
                 "dc_data_reson" => $this->input->post("dc_data_reson"),
                 "dc_data_reson_detail" => $this->input->post("dc_data_reson_detail"),
-                "dc_data_status" => "Creating DAR"
+                "dc_data_status" => "Creating DAR",
+                "dc_data_formcode" => $this->input->post("formcode")
             );
 
 
@@ -1394,7 +1395,8 @@ class Doc_add_model extends CI_Model
                 "dc_data_file" => $file_name_date,
                 "dc_data_file_location" => $filelocation,
                 "dc_data_status" => "Open",
-                "dc_data_old_dar" => $darcode_h
+                "dc_data_old_dar" => $darcode_h,
+                "dc_data_formcode" => $this->input->post("formcode")
             );
 
 
@@ -1577,7 +1579,8 @@ class Doc_add_model extends CI_Model
             "dc_data_file" => $this->input->post("dc_data_file"),
             "dc_data_file_location" => $this->input->post("dc_data_file_location"),
             "dc_data_status" => "Open",
-            "dc_data_old_dar" => $this->input->post("dc_data_old_dar")
+            "dc_data_old_dar" => $this->input->post("dc_data_old_dar"),
+            "dc_data_formcode" => $this->input->post("formcode")
         );
 
 
@@ -1750,7 +1753,8 @@ class Doc_add_model extends CI_Model
             "dc_data_file" => $this->input->post("dc_data_file"),
             "dc_data_file_location" => $this->input->post("dc_data_file_location"),
             "dc_data_status" => "Open",
-            "dc_data_old_dar" => $this->input->post("dc_data_old_dar")
+            "dc_data_old_dar" => $this->input->post("dc_data_old_dar"),
+            "dc_data_formcode" => $this->input->post("formcode")
         );
 
 
@@ -2212,7 +2216,8 @@ class Doc_add_model extends CI_Model
                 "dc_data_file" => $file_name_date,
                 "dc_data_file_location" => $filelocation,
                 "dc_data_status" => "Open",
-                "dc_data_old_dar" => $darcode_h
+                "dc_data_old_dar" => $darcode_h,
+                "dc_data_formcode" => $this->input->post("formcode")
             );
 
 
@@ -2781,7 +2786,8 @@ class Doc_add_model extends CI_Model
                 "dc_data_reson_detail" => $this->input->post("dc_data_reson_detail"),
                 "dc_data_file" => $file_name_date,
                 "dc_data_file_location" => $filelocation,
-                "dc_data_status" => "Open"
+                "dc_data_status" => "Open",
+                "dc_data_formcode" => $this->input->post("formcode")
             );
 
 

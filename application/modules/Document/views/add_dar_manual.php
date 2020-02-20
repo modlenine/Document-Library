@@ -30,6 +30,9 @@
 
                 <form action="save_sec1_manual" method="POST" name="form1" id="form1" enctype="multipart/form-data">
                     <!-- Form Section 1 -->
+<!-- Get Form Code -->
+<input hidden type="text" name="formcode" id="formcode" value="<?= getFormcode(); ?>">
+
 
                     <div class="form-row">
                         <?php foreach ($get_doc_type->result_array() as $rs_type) { ?>

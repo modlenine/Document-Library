@@ -38,7 +38,7 @@ $getuserCon = $this->doc_get_model->convertName($getuser->Fname, $getuser->Lname
 
             <div class="container-fulid border p-4 bg-white">
                 <!-- Main Section -->
-                <h5 style="font-size:12px;text-align:right;"><?= label('form_code', $this); ?></h5>
+                <h5 style="font-size:12px;text-align:right;"><?= selectFormcode($getF->dc_data_darcode) ?></h5>
                 <div class="row">
                     <div class="col-md-6">
                         <form action="<?= base_url('document/pdf/print_dar') ?>" method="post" target="_blank">

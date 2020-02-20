@@ -22,7 +22,7 @@
 
             <div class="container-fulid border p-4 bg-white">
                 <!-- Main Section -->
-                <h5 style="font-size:12px;text-align:right;"><?= label('form_code', $this); ?></h5>
+                <h5 style="font-size:12px;text-align:right;"><?= getFormcode(); ?></h5>
                 <h2 style="text-align:center;"><?= label("dar_title_th", $this); ?></h2>
                 <h3 style="text-align:center;"><?= label("dar_title_en", $this); ?></h3>
                 <h4 style="text-align:center;"><?= label("dar_no", $this); ?></h4>
@@ -30,7 +30,8 @@
 
                 <form action="save_sec1" method="POST" name="form1" id="form1" enctype="multipart/form-data">
                     <!-- Form Section 1 -->
-
+                    <!-- Get Form Code -->
+                    <input hidden type="text" name="formcode" id="formcode" value="<?= getFormcode(); ?>">
                     <div class="form-row">
                         <?php foreach ($get_doc_type->result_array() as $rs_type) { ?>
                             <!-- Doc type loop -->
